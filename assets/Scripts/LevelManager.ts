@@ -22,11 +22,15 @@ export class LevelManager extends Component {
 
     start() {
         setInterval(() => {
-            let enemy = instantiate(this.enemyPrefab);
-            enemy.parent = this.enemyLayer;
-            enemy.position = this.startPoint.position;
-            enemy.getComponent(Enemy).init(this.levelPath.map(node => node.position))
-            this.enemyList.push(enemy);
+            let newEnemy = instantiate(this.enemyPrefab);
+            newEnemy.parent = this.enemyLayer;
+            newEnemy.position = this.startPoint.position;
+            
+            const enemy = newEnemy.getComponent(Enemy);
+            enemy.init(this.levelPath.map(node => node.position))
+            enemy.levelManager = this;
+
+            this.enemyList.push(newEnemy);
         }, 3000);
     }
 

@@ -79,10 +79,10 @@ export class GameManager extends Component {
         this.canvas2.angle = angleInDegrees;
         console.log(angleInDegrees); // Kết quả sẽ là 90 độ nếu hai vector vuông góc
 
-        let diff:Vec2 = new Vec2();
-        Vec2.subtract(diff, vecA, vecB);
-        const angle = Math.atan2(diff.x,diff.y) * (180 / Math.PI);
-        console.log('angle',angle);
+        // let diff:Vec2 = new Vec2();
+        // Vec2.subtract(diff, vecA, vecB);
+        // const angle = Math.atan2(diff.x,diff.y) * (180 / Math.PI);
+        // console.log('angle',angle);
         
     }
 

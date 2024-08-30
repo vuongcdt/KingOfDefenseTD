@@ -28,7 +28,7 @@ export class Tower extends Component {
     @property
     private _range: number = 600;
 
-    private _damage: number = 4;
+    private _damage: number = 1;
     private _target: Node;
     private _avatar: Sprite;
     private _isAttack: boolean;

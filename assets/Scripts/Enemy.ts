@@ -8,14 +8,17 @@ export class Enemy extends Component {
     private canvas: Node;
     @property
     private speed: number = 1;
-    @property(LevelManager)
-    private levelManager: LevelManager;
 
+    private _levelManager: LevelManager;
     private _health: number = 10;
     private _damage: number;
     private _avatar: Sprite;
     private _paths: Vec3[] = [];
     private tweenMove: Tween<Node>[] = []
+
+    public set levelManager(value: LevelManager) {
+        this._levelManager = value;
+    }
 
     init(path: Vec3[]) {
         this._paths = [];
@@ -38,9 +41,11 @@ export class Enemy extends Component {
 
     setHP(damage: number) {
         this._health -= damage;
+
+        
         if (this._health<0) {
-            this.levelManager.removeEnemy(this.node);
-            this.node.parent = null;
+            this._levelManager.removeEnemy(this.node);
+            tween(this.node).removeSelf().start();
         }
     }
 
