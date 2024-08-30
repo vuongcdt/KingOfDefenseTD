@@ -6,15 +6,18 @@ const { ccclass, property } = _decorator;
 export class Enemy extends Component {
     @property(Node)
     private canvas: Node;
+    @property(Node)
+    private healthBar: Node;
     @property
     private speed: number = 1;
 
     private _levelManager: LevelManager;
-    private _health: number = 10;
+    private _currentHealth: number;
     private _damage: number;
     private _avatar: Sprite;
     private _paths: Vec3[] = [];
     private tweenMove: Tween<Node>[] = []
+    private _health: number = 10;
 
     public set levelManager(value: LevelManager) {
         this._levelManager = value;
@@ -27,12 +30,14 @@ export class Enemy extends Component {
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
-            this.tweenMove.push(tween(this.node).to(timeMove, {
-                position: point
-            }))
+            this.tweenMove.push(tween(this.node)
+                .to(timeMove, { position: point })
+            )
         });
 
-        tween(this.node).sequence(...this.tweenMove).start()
+        tween(this.node).sequence(...this.tweenMove)
+            .start();
+        this._currentHealth = this._health;
     }
 
     getTimeMove(start: Vec3, end: Vec3) {
@@ -40,10 +45,12 @@ export class Enemy extends Component {
     }
 
     setHP(damage: number) {
-        this._health -= damage;
+        this._currentHealth -= damage;
 
-        
-        if (this._health<0) {
+        this.healthBar.active = true;
+        this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
+
+        if (this._currentHealth < 0) {
             this._levelManager.removeEnemy(this.node);
             tween(this.node).removeSelf().start();
         }

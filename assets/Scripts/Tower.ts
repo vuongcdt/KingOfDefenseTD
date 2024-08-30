@@ -1,6 +1,7 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { Ammo } from "./Ammo";
+import { Enemy } from "./Enemy";
 const { ccclass, property } = _decorator;
 
 @ccclass('Tower')
@@ -22,36 +23,16 @@ export class Tower extends Component {
 
     @property
     private speed: number = 1;
-
     @property
-    private reloadTime: number = 0.5;
-    @property
-    private _range: number = 600;
+    private range: number = 600;
 
-    private _damage: number = 1;
+    private _reloadTime: number = 0.8;
+    private _damage: number = 2;
     private _target: Node;
     private _avatar: Sprite;
-    private _isAttack: boolean;
-    private _isActive: boolean = true;
+    private _isActive: boolean = false;
     private _countdown: number = 0;
-
-    get damage() {
-        return this._damage
-    }
-
-    set damage(val: number) {
-        this._damage = val
-    }
-
-    get range() {
-        return this._range
-    }
-
-    set range(val: number) {
-        this._range = val
-    }
-
-    private elapsedTime: number = 1000 * this.reloadTime;
+    private _listEnemy: Node[] = [];
 
     protected start(): void {
         this._avatar = this.getComponent(Sprite);
@@ -60,46 +41,59 @@ export class Tower extends Component {
         this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
+
+        let collider = this.getComponent(Collider2D);
+        if (collider) {
+            collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+            collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+        }
+    }
+
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        const enemy = otherCollider.node;
+
+        if (enemy) {
+            this._listEnemy.push(enemy)
+        }
+    }
+
+    onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        const enemy = otherCollider.node;
+
+        if (enemy) {
+            this._listEnemy = this._listEnemy.filter(e => e != enemy);
+            this._target = null;
+        }
     }
 
     protected update(dt: number): void {
         this._countdown += dt;
-        
-        const enemyNearest = this.findEnemyNearest();
 
-        if (enemyNearest && !this._isAttack && this._isActive) {
-            // console.log('1');
-
-            this._isAttack = true;
-            this._target = enemyNearest;
-
-            // if(this._countdown >=this.reloadTime){
-            //     this._isAttack = false;
-            //     this.attackEnemy();
-            // }
-
-            setTimeout(() => {
-                // console.log('2');
-                this._isAttack = false;
-                this.attackEnemy();
-            }, 1000 * this.reloadTime);
+        if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
+            this._countdown = 0;
+            this.attackEnemy();
         }
-
     }
 
     attackEnemy() {
+        if (!this._target) {
+            this._target = this._listEnemy[0];
+        }
+
         const ammo = instantiate(this.ammoPrefab);
+
         ammo.parent = this.ammoLayer;
         ammo.position = this.node.position;
 
-        ammo.getComponent(Ammo).init(new Vec3(this._target.position.x, this._target.position.y), this.speed, this._damage);
+        const target = new Vec3(this._target.position.x, this._target.position.y);
+        ammo.getComponent(Ammo).init(target, this.speed, this._damage);
     }
 
     findEnemyNearest(): Node {
 
         return this.levelManager.enemyList
             .find(enemy => {
-                return Vec3.distance(enemy.position, this.node.position) <= this._range
+                return Vec3.distance(enemy.position, this.node.position) <= this.range
             })
     }
 
