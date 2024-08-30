@@ -305,13 +305,13 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.7,
-      "y": -0.2
+      "x": 0.1,
+      "y": -0.1
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 81.1,
-      "height": 9.6
+      "width": 99.4,
+      "height": 9.4
     },
     "_id": ""
   },

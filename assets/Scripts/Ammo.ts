@@ -25,7 +25,7 @@ export class Ammo extends Component {
         this._damage = damage;
 
         tween(this.node).to(speed, { position: target })
-            // .removeSelf()
+            .removeSelf()
             .start();
 
         let diff: Vec3 = new Vec3();

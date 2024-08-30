@@ -7,8 +7,6 @@ const { ccclass, property } = _decorator;
 @ccclass('Tower')
 export class Tower extends Component {
     @property(Node)
-    private ammoLayer: Node;
-    @property(Node)
     private action: Node;
     @property(Node)
     private actionUpgrade: Node;
@@ -16,10 +14,10 @@ export class Tower extends Component {
     private actionSell: Node;
     @property(SpriteFrame)
     private sprite: SpriteFrame;
+    @property(SpriteFrame)
+    private spritePlace: SpriteFrame;
     @property(Prefab)
     private ammoPrefab: Prefab;
-    @property(LevelManager)
-    private levelManager: LevelManager;
 
     @property
     private speed: number = 1;
@@ -36,7 +34,7 @@ export class Tower extends Component {
 
     protected start(): void {
         this._avatar = this.getComponent(Sprite);
-        this.onInActive();
+        this.onHideAction();
 
         this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
@@ -61,7 +59,7 @@ export class Tower extends Component {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
-        if (enemy) {
+        if (enemy.name == 'Enemy') {
             this._listEnemy.push(enemy)
         }
     }
@@ -69,7 +67,7 @@ export class Tower extends Component {
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
-        if (enemy) {
+        if (enemy.name == 'Enemy') {
             this._listEnemy = this._listEnemy.filter(e => e != enemy);
             this._target = null;
         }
@@ -82,8 +80,12 @@ export class Tower extends Component {
 
         const ammo = instantiate(this.ammoPrefab);
 
-        ammo.parent = this.ammoLayer;
         ammo.position = this.node.position;
+        // ammo.parent = this.node;
+        
+        console.log('node', this.node.worldPosition);
+        console.log('ammo', ammo.worldPosition);
+        
 
         const target = new Vec3(this._target.position.x, this._target.position.y);
         ammo.getComponent(Ammo).init(target, this.speed, this._damage);
@@ -96,16 +98,16 @@ export class Tower extends Component {
     onUpgrade() {
         this._avatar.spriteFrame = this.sprite;
         this._isActive = true;
-        this.onInActive();
+        this.onHideAction();
     }
 
     onSell() {
-        this._avatar.spriteFrame = null;
+        this._avatar.spriteFrame = this.spritePlace;
         this._isActive = false;
-        this.onInActive();
+        this.onHideAction();
     }
 
-    onInActive() {
+    onHideAction() {
         this.action.setParent(null);
     }
 }
