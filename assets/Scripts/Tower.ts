@@ -1,5 +1,4 @@
 import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
-import { LevelManager } from "./LevelManager";
 import { Ammo } from "./Ammo";
 import { Enemy } from "./Enemy";
 const { ccclass, property } = _decorator;
@@ -18,12 +17,11 @@ export class Tower extends Component {
     private spritePlace: SpriteFrame;
     @property(Prefab)
     private ammoPrefab: Prefab;
-
+    
     @property
     private speed: number = 1;
-    @property
-    private range: number = 600;
-
+    
+    private _levelManager: Node;
     private _reloadTime: number = 0.8;
     private _damage: number = 2;
     private _target: Node;
@@ -31,6 +29,10 @@ export class Tower extends Component {
     private _isActive: boolean = false;
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
+
+    public set levelManager(value: Node) {
+        this._levelManager = value;
+    }
 
     protected start(): void {
         this._avatar = this.getComponent(Sprite);
@@ -81,12 +83,8 @@ export class Tower extends Component {
         const ammo = instantiate(this.ammoPrefab);
 
         ammo.position = this.node.position;
-        // ammo.parent = this.node;
+        ammo.parent = this._levelManager;
         
-        console.log('node', this.node.worldPosition);
-        console.log('ammo', ammo.worldPosition);
-        
-
         const target = new Vec3(this._target.position.x, this._target.position.y);
         ammo.getComponent(Ammo).init(target, this.speed, this._damage);
     }

@@ -1,5 +1,6 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab } from 'cc';
 import { Enemy } from './Enemy';
+import { Tower } from './Tower';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -31,9 +32,7 @@ export class LevelManager extends Component {
             const tower = instantiate(this.tower);
             tower.parent = this.node;
             tower.position = point.position;
-            
-            console.log('point', point.worldPosition);
-
+            tower.getComponent(Tower).levelManager = this.node;
         })
 
         setInterval(() => {
