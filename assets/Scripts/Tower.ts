@@ -1,6 +1,7 @@
 import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { Enemy } from "./Enemy";
+import { LevelManager } from "./LevelManager";
 const { ccclass, property } = _decorator;
 
 @ccclass('Tower')
@@ -29,6 +30,11 @@ export class Tower extends Component {
     private _isActive: boolean = false;
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
+    private _enemyName: string;
+
+    public set enemyName(value: string) {
+        this._enemyName = value;
+    }
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -61,7 +67,7 @@ export class Tower extends Component {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
-        if (enemy.name == 'Enemy') {
+        if (enemy.name == this._enemyName) {
             this._listEnemy.push(enemy)
         }
     }
@@ -69,7 +75,7 @@ export class Tower extends Component {
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
-        if (enemy.name == 'Enemy') {
+        if (enemy.name == this._enemyName) {
             this._listEnemy = this._listEnemy.filter(e => e != enemy);
             this._target = null;
         }
@@ -90,6 +96,7 @@ export class Tower extends Component {
     }
 
     onTouchStart(event: EventTouch) {
+        this._levelManager.getComponent(LevelManager).onHideActionTower(this);
         this.action.setParent(this.node);
     }
 
