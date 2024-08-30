@@ -49,6 +49,15 @@ export class Tower extends Component {
         }
     }
 
+    update(dt: number): void {
+        this._countdown += dt;
+
+        if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
+            this._countdown = 0;
+            this.attackEnemy();
+        }
+    }
+
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
@@ -66,15 +75,6 @@ export class Tower extends Component {
         }
     }
 
-    protected update(dt: number): void {
-        this._countdown += dt;
-
-        if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
-            this._countdown = 0;
-            this.attackEnemy();
-        }
-    }
-
     attackEnemy() {
         if (!this._target) {
             this._target = this._listEnemy[0];
@@ -87,14 +87,6 @@ export class Tower extends Component {
 
         const target = new Vec3(this._target.position.x, this._target.position.y);
         ammo.getComponent(Ammo).init(target, this.speed, this._damage);
-    }
-
-    findEnemyNearest(): Node {
-
-        return this.levelManager.enemyList
-            .find(enemy => {
-                return Vec3.distance(enemy.position, this.node.position) <= this.range
-            })
     }
 
     onTouchStart(event: EventTouch) {

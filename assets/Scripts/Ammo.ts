@@ -32,8 +32,6 @@ export class Ammo extends Component {
         Vec3.subtract(diff, this.node.position, target);
         const angle = Math.atan2(diff.x, diff.y) * (180 / Math.PI);
 
-        console.log(speed);
-
         this.node.angle = 90 - angle;
     }
 
