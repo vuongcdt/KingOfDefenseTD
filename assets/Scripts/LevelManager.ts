@@ -39,6 +39,16 @@ export class LevelManager extends Component {
     }
 
     spawnEnemy() {
+        let newEnemy = instantiate(this.enemyPrefab);
+        newEnemy.parent = this.enemyLayer;
+        newEnemy.position = this.startPoint.position;
+
+        const enemy = newEnemy.getComponent(Enemy);
+        enemy.init(this.levelPath.map(node => node.position))
+        enemy.levelManager = this;
+
+        this.enemyList.push(newEnemy);
+        return;
         setInterval(() => {
             let newEnemy = instantiate(this.enemyPrefab);
             newEnemy.parent = this.enemyLayer;

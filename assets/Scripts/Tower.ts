@@ -115,7 +115,7 @@ export class Tower extends Component {
         }, 100);
 
         var normalize = this._diffTowerToTarget.normalize();
-        normalize.multiplyScalar(80);
+        normalize.multiplyScalar(this.muzzle.position.y);
         ammo.position = this.node.position.subtract(normalize);
         
         ammo.parent = this._levelManager;

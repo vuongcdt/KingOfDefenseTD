@@ -9,12 +9,12 @@ export class Enemy extends Component {
     private healthBar: Node;
     @property
     private speed: number = 1;
-
+    @property(Node)
+    private avatar: Node;
 
     private _levelManager: LevelManager;
     private _currentHealth: number;
     private _damage: number;
-    private _avatar: Sprite;
     private _paths: Vec3[] = [];
     private tweenMove: Tween<Node>[] = []
     private _health: number = 10;
@@ -27,12 +27,19 @@ export class Enemy extends Component {
         this._paths = [];
         this._paths.push(...path);
 
+        let currentPos = this.node.position;
+
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
             this.tweenMove.push(tween(this.node)
+                .call(() => {
+                    this.setRotationAvatar(currentPos, point);
+                    currentPos = point;
+                })
                 .to(timeMove, { position: point })
             )
+
         });
 
         tween(this.node)
@@ -42,6 +49,14 @@ export class Enemy extends Component {
             .start();
 
         this._currentHealth = this._health;
+    }
+
+    setRotationAvatar(currentPos: Vec3, newPos: Vec3) {
+        let diff = new Vec3();
+        Vec3.subtract(diff, currentPos, newPos);
+        const angle = 270 - Math.atan2(diff.x, diff.y) * (180 / Math.PI);
+
+        this.node.angle = angle;
     }
 
     checkkGameOver() {
