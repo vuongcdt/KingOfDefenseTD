@@ -18,6 +18,7 @@ export class Enemy extends Component {
     private _paths: Vec3[] = [];
     private tweenMove: Tween<Node>[] = []
     private _health: number = 10;
+    private _currentPos: Vec3;
 
     public set levelManager(value: LevelManager) {
         this._levelManager = value;
@@ -27,19 +28,15 @@ export class Enemy extends Component {
         this._paths = [];
         this._paths.push(...path);
 
-        let currentPos = this.node.position;
+        this._currentPos = this.node.position;
+        this.node.angle = 180;
 
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
-            this.tweenMove.push(tween(this.node)
-                .call(() => {
-                    this.setRotationAvatar(currentPos, point);
-                    currentPos = point;
-                })
-                .to(timeMove, { position: point })
-            )
-
+            const t1 = tween(this.node).to(timeMove, { position: point });
+            const t2 = tween(this.node).to(timeMove / 7, { angle: this.getAngleAvatar(this._currentPos, point) });
+            this.tweenMove.push(tween(this.node).parallel(t1, t2))
         });
 
         tween(this.node)
@@ -51,12 +48,14 @@ export class Enemy extends Component {
         this._currentHealth = this._health;
     }
 
-    setRotationAvatar(currentPos: Vec3, newPos: Vec3) {
+    getAngleAvatar(currentPos: Vec3, newPos: Vec3) {
         let diff = new Vec3();
         Vec3.subtract(diff, currentPos, newPos);
         const angle = 270 - Math.atan2(diff.x, diff.y) * (180 / Math.PI);
 
-        this.node.angle = angle;
+        this._currentPos = newPos;
+        return angle;
+
     }
 
     checkkGameOver() {

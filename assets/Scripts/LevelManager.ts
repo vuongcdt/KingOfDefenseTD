@@ -31,6 +31,9 @@ export class LevelManager extends Component {
     start() {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.spawnEnemy();
+        setInterval(() => {
+            this.spawnEnemy();
+        }, 2000);
         this.spawnTowerPlacement();
     }
 
@@ -48,18 +51,6 @@ export class LevelManager extends Component {
         enemy.levelManager = this;
 
         this.enemyList.push(newEnemy);
-        return;
-        setInterval(() => {
-            let newEnemy = instantiate(this.enemyPrefab);
-            newEnemy.parent = this.enemyLayer;
-            newEnemy.position = this.startPoint.position;
-
-            const enemy = newEnemy.getComponent(Enemy);
-            enemy.init(this.levelPath.map(node => node.position))
-            enemy.levelManager = this;
-
-            this.enemyList.push(newEnemy);
-        }, 2000);
     }
 
     spawnTowerPlacement() {
