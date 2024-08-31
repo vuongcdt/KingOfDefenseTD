@@ -23,6 +23,7 @@ export class LevelManager extends Component {
 
     private _towerList: Tower[] = [];
     private _enemyList: Node[] = [];
+
     public get enemyList(): Node[] {
         return this._enemyList;
     }
@@ -48,7 +49,7 @@ export class LevelManager extends Component {
             enemy.levelManager = this;
 
             this.enemyList.push(newEnemy);
-        }, 3000);
+        }, 2000);
     }
 
     spawnTowerPlacement() {

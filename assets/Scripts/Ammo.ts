@@ -21,18 +21,14 @@ export class Ammo extends Component {
 
     }
 
-    init(target: Vec3, speed: number, damage: number) {
+    init(target: Vec3, speed: number, damage: number, angleShoot: number) {
+
         this._damage = damage;
+        this.node.angle = angleShoot;
 
         tween(this.node).to(speed, { position: target })
             .removeSelf()
             .start();
-
-        let diff: Vec3 = new Vec3();
-        Vec3.subtract(diff, this.node.position, target);
-        const angle = Math.atan2(diff.x, diff.y) * (180 / Math.PI);
-
-        this.node.angle = 90 - angle;
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {

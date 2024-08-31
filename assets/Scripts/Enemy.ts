@@ -1,15 +1,15 @@
-import { _decorator, Component, Node, Sprite, Tween, tween, Vec3 } from "cc";
+import { _decorator, Canvas, Component, find, Node, Sprite, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
+import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
 export class Enemy extends Component {
     @property(Node)
-    private canvas: Node;
-    @property(Node)
     private healthBar: Node;
     @property
     private speed: number = 1;
+
 
     private _levelManager: LevelManager;
     private _currentHealth: number;
@@ -35,9 +35,21 @@ export class Enemy extends Component {
             )
         });
 
-        tween(this.node).sequence(...this.tweenMove)
+        tween(this.node)
+            .sequence(...this.tweenMove)
+            .removeSelf()
+            .call(this.checkkGameOver)
             .start();
+
         this._currentHealth = this._health;
+    }
+
+    checkkGameOver() {
+        const canvas = find("Canvas");
+
+        const gameManager = canvas.getComponentInChildren(GameManager);
+
+        gameManager.checkGameOver();
     }
 
     getTimeMove(start: Vec3, end: Vec3) {
@@ -50,7 +62,7 @@ export class Enemy extends Component {
         this.healthBar.active = true;
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
 
-        if (this._currentHealth < 0) {
+        if (this._currentHealth <= 0) {
             this._levelManager.removeEnemy(this.node);
             tween(this.node).removeSelf().start();
         }
@@ -59,6 +71,7 @@ export class Enemy extends Component {
     start(): void {
 
     }
+
     update(dt: number): void {
 
     }
