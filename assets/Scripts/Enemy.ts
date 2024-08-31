@@ -16,7 +16,8 @@ export class Enemy extends Component {
     private _currentHealth: number;
     private _damage: number;
     private _paths: Vec3[] = [];
-    private tweenMove: Tween<Node>[] = []
+    private tweenMove: Tween<Node>[] = [];
+    private tweenRotation: Tween<Node>[] = [];
     private _health: number = 10;
     private _currentPos: Vec3;
 
@@ -29,21 +30,31 @@ export class Enemy extends Component {
         this._paths.push(...path);
 
         this._currentPos = this.node.position;
-        this.node.angle = 180;
+        this.avatar.angle = 180;
 
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
             const t1 = tween(this.node).to(timeMove, { position: point });
-            const t2 = tween(this.node).to(timeMove / 7, { angle: this.getAngleAvatar(this._currentPos, point) });
-            this.tweenMove.push(tween(this.node).parallel(t1, t2))
+            const t2 = tween(this.avatar)
+                .to(0.2 * timeMove, { angle: this.getAngleAvatar(this._currentPos, point) })
+                .delay(0.8 * timeMove);
+
+            this.tweenMove.push(t1);
+            this.tweenRotation.push(t2);
         });
+
+        tween(this.avatar)
+            .sequence(...this.tweenRotation)
+            .call(this.checkkGameOver)
+            .start();
 
         tween(this.node)
             .sequence(...this.tweenMove)
             .removeSelf()
             .call(this.checkkGameOver)
             .start();
+
 
         this._currentHealth = this._health;
     }
@@ -55,7 +66,6 @@ export class Enemy extends Component {
 
         this._currentPos = newPos;
         return angle;
-
     }
 
     checkkGameOver() {

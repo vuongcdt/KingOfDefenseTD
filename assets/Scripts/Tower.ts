@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { Enemy } from "./Enemy";
 import { LevelManager } from "./LevelManager";
@@ -65,6 +65,11 @@ export class Tower extends Component {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
+
+        // if (PhysicsSystem2D.instance) {
+        //     PhysicsSystem2D.instance.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+        //     PhysicsSystem2D.instance.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+        // }
     }
 
     update(dt: number): void {
@@ -88,7 +93,6 @@ export class Tower extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
-
         if (enemy.name == this._enemyName) {
             this._listEnemy.push(enemy)
         }
@@ -96,7 +100,6 @@ export class Tower extends Component {
 
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
-
         if (enemy.name == this._enemyName) {
             this._listEnemy = this._listEnemy.filter(e => e != enemy);
             this._target = null;
@@ -117,7 +120,7 @@ export class Tower extends Component {
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzle.position.y);
         ammo.position = this.node.position.subtract(normalize);
-        
+
         ammo.parent = this._levelManager;
 
         const target = new Vec3(this._target.position.x, this._target.position.y);
