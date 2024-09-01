@@ -18,13 +18,12 @@ export class Tower extends Component {
     private muzzle: Node;
     @property(SpriteFrame)
     private avatarSprite: SpriteFrame;
-    @property(SpriteFrame)
-    private background: SpriteFrame;
+    @property({ type: [SpriteFrame] })
+    private backgrounds: SpriteFrame[] = [];
     @property(SpriteFrame)
     private backgroundDefault: SpriteFrame;
     @property(Prefab)
     private ammoPrefab: Prefab;
-
     @property
     private damage: number = 3;
 
@@ -41,6 +40,7 @@ export class Tower extends Component {
     private _listEnemy: Node[] = [];
     private _enemyName: string;
     private _angleShoot: number;
+    private _levelTower: number = 0;
     private _diffTowerToTarget: Vec3;
 
     public set enemyName(value: string) {
@@ -56,7 +56,7 @@ export class Tower extends Component {
         this._background = this.getComponent(Sprite);
         this.onHideAction();
 
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(Node.EventType.TOUCH_START, this.onShowAction, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
 
@@ -65,11 +65,6 @@ export class Tower extends Component {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
-
-        // if (PhysicsSystem2D.instance) {
-        //     PhysicsSystem2D.instance.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-        //     PhysicsSystem2D.instance.on(Contact2DType.END_CONTACT, this.onEndContact, this);
-        // }
     }
 
     update(dt: number): void {
@@ -127,20 +122,25 @@ export class Tower extends Component {
         ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot);
     }
 
-    onTouchStart(event: EventTouch) {
+    onShowAction(event: EventTouch) {
         this._levelManager.getComponent(LevelManager).onHideActionTower(this);
         this.action.setParent(this.node);
+        this.actionSell.active = this._levelTower != 0;
+        this.actionUpgrade.active = this._levelTower != this.backgrounds.length - 1;
     }
 
     onUpgrade() {
-        this._background.spriteFrame = this.background;
+        this._levelTower++;
+
+        this._background.spriteFrame = this.backgrounds[this._levelTower];
         this._isActive = true;
         this._avatar.spriteFrame = this.avatarSprite;
         this.onHideAction();
     }
 
     onSell() {
-        this._background.spriteFrame = this.backgroundDefault;
+        this._levelTower = 0;
+        this._background.spriteFrame = this.backgrounds[this._levelTower];
         this._avatar.spriteFrame = null;
         this._isActive = false;
         this.onHideAction();

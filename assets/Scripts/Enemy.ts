@@ -12,7 +12,6 @@ export class Enemy extends Component {
     @property(Node)
     private avatar: Node;
 
-    private _levelManager: LevelManager;
     private _currentHealth: number;
     private _damage: number;
     private _paths: Vec3[] = [];
@@ -20,10 +19,6 @@ export class Enemy extends Component {
     private tweenRotation: Tween<Node>[] = [];
     private _health: number = 10;
     private _currentPos: Vec3;
-
-    public set levelManager(value: LevelManager) {
-        this._levelManager = value;
-    }
 
     init(path: Vec3[]) {
         this._paths = [];
@@ -87,7 +82,6 @@ export class Enemy extends Component {
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
 
         if (this._currentHealth <= 0) {
-            this._levelManager.removeEnemy(this.node);
             tween(this.node).removeSelf().start();
         }
     }

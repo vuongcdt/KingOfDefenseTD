@@ -22,11 +22,6 @@ export class LevelManager extends Component {
     private tower: Prefab;
 
     private _towerList: Tower[] = [];
-    private _enemyList: Node[] = [];
-
-    public get enemyList(): Node[] {
-        return this._enemyList;
-    }
 
     start() {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -48,9 +43,6 @@ export class LevelManager extends Component {
 
         const enemy = newEnemy.getComponent(Enemy);
         enemy.init(this.levelPath.map(node => node.position))
-        enemy.levelManager = this;
-
-        this.enemyList.push(newEnemy);
     }
 
     spawnTowerPlacement() {
@@ -65,10 +57,6 @@ export class LevelManager extends Component {
 
             this._towerList.push(tower);
         })
-    }
-
-    removeEnemy(enemyRemove: Node) {
-        this._enemyList = this._enemyList.filter(enemy => enemy != enemyRemove);
     }
 
     onTouchStart(event: EventTouch) {

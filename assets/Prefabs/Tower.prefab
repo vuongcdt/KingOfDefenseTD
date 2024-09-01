@@ -805,10 +805,28 @@
       "__uuid__": "aac5d9b5-627c-4209-91c3-42fdc91cf544@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
-    "background": {
-      "__uuid__": "4a360888-64c6-4444-aa5b-c4df9adc92e4@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    },
+    "backgrounds": [
+      {
+        "__uuid__": "9d384307-dc39-432c-8b9c-f369aa311e89@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "4a360888-64c6-4444-aa5b-c4df9adc92e4@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "1abb2bad-e14d-4cee-bd8f-7865a8398290@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "afa25d02-99c9-4479-ae29-e010f8aa6ab6@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "b7afb79b-784b-42bd-8031-661d59a585c0@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      }
+    ],
     "backgroundDefault": {
       "__uuid__": "9d384307-dc39-432c-8b9c-f369aa311e89@f9941",
       "__expectedType__": "cc.SpriteFrame"
@@ -817,7 +835,7 @@
       "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
       "__expectedType__": "cc.Prefab"
     },
-    "damage": 3,
+    "damage": 2.9,
     "speed": 0.5,
     "_id": ""
   },
@@ -898,7 +916,6 @@
       "__id__": 0
     },
     "fileId": "1bq71/lS9Gqbr8TGqdeSsi",
-    "instance": null,
-    "targetOverrides": null
+    "instance": null
   }
 ]
