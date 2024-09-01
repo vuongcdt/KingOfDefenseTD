@@ -1,9 +1,12 @@
-import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, tween, Vec3 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, SpriteFrame, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
 export class Ammo extends Component {
+    @property([SpriteFrame])
+    private avatarSprites: SpriteFrame[] = [];
+
     private _damage: number;
 
     start() {
@@ -21,7 +24,7 @@ export class Ammo extends Component {
 
     }
 
-    init(target: Vec3, speed: number, damage: number, angleShoot: number) {
+    init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
 
         this._damage = damage;
         this.node.angle = angleShoot;

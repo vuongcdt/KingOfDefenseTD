@@ -16,17 +16,16 @@ export class Tower extends Component {
     private headTower: Node;
     @property(Node)
     private muzzle: Node;
-    @property(SpriteFrame)
-    private avatarSprite: SpriteFrame;
-    @property({ type: [SpriteFrame] })
+    @property([SpriteFrame])
+    private avatarSprites: SpriteFrame[] = [];
+    @property([SpriteFrame])
+    private shootAvatarSprites: SpriteFrame[] = [];
+    @property([SpriteFrame])
     private backgrounds: SpriteFrame[] = [];
-    @property(SpriteFrame)
-    private backgroundDefault: SpriteFrame;
     @property(Prefab)
     private ammoPrefab: Prefab;
     @property
     private damage: number = 3;
-
     @property
     private speed: number = 1;
 
@@ -105,21 +104,32 @@ export class Tower extends Component {
         if (!this._target) {
             this._target = this._listEnemy[0];
         }
-        this.muzzle.active = true;
-        const ammo = instantiate(this.ammoPrefab);
 
-        setTimeout(() => {
-            this.muzzle.active = false;
-        }, 100);
+        this.shooting();
+
+        const ammo = instantiate(this.ammoPrefab);
 
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzle.position.y);
-        ammo.position = this.node.position.subtract(normalize);
+
+        ammo.position = this._levelTower > 2
+            ? this.node.position
+            : this.node.position.subtract(normalize);
 
         ammo.parent = this._levelManager;
 
         const target = new Vec3(this._target.position.x, this._target.position.y);
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot);
+        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
+    }
+
+    shooting() {
+        this.muzzle.active = this._levelTower < 3;
+        this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTower];
+
+        setTimeout(() => {
+            this.muzzle.active = false;
+            this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
+        }, 100);
     }
 
     onShowAction(event: EventTouch) {
@@ -131,18 +141,18 @@ export class Tower extends Component {
 
     onUpgrade() {
         this._levelTower++;
-
-        this._background.spriteFrame = this.backgrounds[this._levelTower];
-        this._isActive = true;
-        this._avatar.spriteFrame = this.avatarSprite;
-        this.onHideAction();
+        this.onSetSprite();
     }
 
     onSell() {
         this._levelTower = 0;
+        this.onSetSprite();
+    }
+
+    onSetSprite() {
         this._background.spriteFrame = this.backgrounds[this._levelTower];
-        this._avatar.spriteFrame = null;
-        this._isActive = false;
+        this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
+        this._isActive = this._levelTower > 0;
         this.onHideAction();
     }
 
