@@ -2140,7 +2140,7 @@
         "__id__": 40
       }
     ],
-    "towerPlacement": [
+    "towerPlacements": [
       {
         "__id__": 52
       },
@@ -2148,10 +2148,6 @@
         "__id__": 54
       }
     ],
-    "tower": {
-      "__uuid__": "831a4f43-0b33-4e83-89f6-e0d7645cb875",
-      "__expectedType__": "cc.Prefab"
-    },
     "_id": "dbK60o61NESIWyoaENoVwA"
   },
   {

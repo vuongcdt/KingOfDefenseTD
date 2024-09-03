@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "ab34f3a2-4acb-42e8-a00a-b84abcd211d8",
+  "uuid": "11f446f8-1032-45fe-bb6d-c5d26d26ee78",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "TowerRocket"
+    "syncNodeName": "TowerPlacement"
   }
 }

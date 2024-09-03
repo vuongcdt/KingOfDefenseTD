@@ -1,6 +1,7 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab } from 'cc';
 import { Enemy } from './Enemy';
 import { Tower } from './Tower';
+import { TowerPlacement } from './TowerPlacement';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -17,11 +18,11 @@ export class LevelManager extends Component {
     @property(Node)
     private levelPath: Node[] = [];
     @property(Node)
-    private towerPlacement: Node[] = [];
+    private towerPlacements: Node[] = [];
     @property(Prefab)
-    private tower: Prefab;
+    private towerPlacementPrefab: Prefab;
 
-    private _towerList: Tower[] = [];
+    private _towerPlacementList: TowerPlacement[] = [];
 
     start() {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -46,30 +47,30 @@ export class LevelManager extends Component {
     }
 
     spawnTowerPlacement() {
-        this.towerPlacement.forEach(point => {
-            const newTower = instantiate(this.tower);
-            newTower.parent = this.node;
-            newTower.position = point.position;
+        this.towerPlacements.forEach(point => {
+            const towerPlacement = instantiate(this.towerPlacementPrefab);
+            towerPlacement.parent = this.node;
+            towerPlacement.position = point.position;
+            towerPlacement.getComponent(TowerPlacement).levelManager = this.node;
 
-            const tower = newTower.getComponent(Tower);
+            const tower = towerPlacement.getComponent(TowerPlacement);
             tower.levelManager = this.node;
-            tower.enemyName = this.enemyPrefab.name;
 
-            this._towerList.push(tower);
+            this._towerPlacementList.push(tower);
         })
     }
 
     onTouchStart(event: EventTouch) {
-        this._towerList.forEach(tower => {
+        this._towerPlacementList.forEach(tower => {
             tower.onHideAction();
         })
     }
 
-    onHideActionTower(self: Tower) {
-        this._towerList
-            .filter(tower => tower != self)
-            .forEach(tower => {
-                tower.onHideAction();
+    onHideActionTower(towerPlacementSelf: TowerPlacement) {
+        this._towerPlacementList
+            .filter(towerPlacement => towerPlacement != towerPlacementSelf)
+            .forEach(towerPlacement => {
+                towerPlacement.onHideAction();
             })
     }
 }

@@ -5,9 +5,9 @@ export enum GameState {
 }
 
 
-export enum GunType {
+export enum TowerType {
     None,
-    Gun,
-    Rocket,
+    GunTower,
+    RocketTower,
     // BigRocket,
 }

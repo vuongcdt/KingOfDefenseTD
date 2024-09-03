@@ -1,6 +1,6 @@
 import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
-import { GunType } from './Enums';
+import { TowerType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
