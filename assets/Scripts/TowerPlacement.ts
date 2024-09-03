@@ -26,7 +26,6 @@ export class TowerPlacement extends Component {
     private _levelManager: Node;
     private _background: Sprite;
     private _levelTower: number = 0;
-    private _gunType: TowerType;
     private _tower: Tower;
 
     public set levelManager(value: Node) {
@@ -63,14 +62,12 @@ export class TowerPlacement extends Component {
     }
 
     onBuyGun() {
-        this._gunType = TowerType.GunTower;
         this._levelTower++;
         this.initTower(this.gunTowerPrefab);
         this.onSetSprite();
     }
 
     onBuyRocket() {
-        this._gunType = TowerType.RocketTower;
         this._levelTower++;
         this.initTower(this.rocketTowerPrefab);
         this.onSetSprite();
@@ -85,7 +82,6 @@ export class TowerPlacement extends Component {
     }
 
     onSell() {
-        this._gunType = TowerType.None;
         this._levelTower = 0;
         this.onSetSprite();
     }
