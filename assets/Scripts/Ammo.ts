@@ -1,11 +1,14 @@
-import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, SpriteFrame, tween, Vec3 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
+import { GunType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
 export class Ammo extends Component {
     @property([SpriteFrame])
-    private avatarSprites: SpriteFrame[] = [];
+    private bodySprites: SpriteFrame[] = [];
+    @property([SpriteFrame])
+    private rocketTailSprites: SpriteFrame[] = [];
 
     private _damage: number;
 
@@ -14,20 +17,18 @@ export class Ammo extends Component {
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
-
-        // if (PhysicsSystem2D.instance) {
-        //     PhysicsSystem2D.instance.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-        // }
     }
 
     update(deltaTime: number) {
 
     }
 
-    init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
-
+    init(target: Vec3, speed: number, damage: number, angleShoot: number, ammoType: GunType) {
         this._damage = damage;
         this.node.angle = angleShoot;
+
+        this.getComponent(Sprite).spriteFrame = this.bodySprites[ammoType];
+        this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[ammoType];
 
         tween(this.node).to(speed, { position: target })
             .removeSelf()

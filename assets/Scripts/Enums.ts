@@ -3,3 +3,11 @@ export enum GameState {
     OverGame,
     PauseGame,
 }
+
+
+export enum GunType {
+    None,
+    Gun,
+    Rocket,
+    // BigRocket,
+}

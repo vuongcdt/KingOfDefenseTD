@@ -2,6 +2,7 @@ import { _decorator, Collider2D, Component, Contact2DType, EventTouch, instantia
 import { Ammo } from "./Ammo";
 import { Enemy } from "./Enemy";
 import { LevelManager } from "./LevelManager";
+import { GunType } from "./Enums";
 const { ccclass, property } = _decorator;
 
 @ccclass('Tower')
@@ -9,19 +10,31 @@ export class Tower extends Component {
     @property(Node)
     private action: Node;
     @property(Node)
+    private actionBuyRocket: Node;
+    @property(Node)
     private actionUpgrade: Node;
     @property(Node)
     private actionSell: Node;
     @property(Node)
+    private actionBuyGun: Node;
+    @property(Node)
     private headTower: Node;
     @property(Node)
-    private muzzle: Node;
+    private muzzleDouble: Node;
+    @property(Node)
+    private muzzleSingle: Node;
     @property([SpriteFrame])
-    private avatarSprites: SpriteFrame[] = [];
+    private avatarGunSprites: SpriteFrame[] = [];
+    @property([SpriteFrame])
+    private avatarRocketSprites: SpriteFrame[] = [];
     @property([SpriteFrame])
     private shootAvatarSprites: SpriteFrame[] = [];
     @property([SpriteFrame])
     private backgrounds: SpriteFrame[] = [];
+    @property([Number])
+    private gunBarrelNumbers: number[] = [];
+    @property([Number])
+    private rocketNumbers: number[] = [];
     @property(Prefab)
     private ammoPrefab: Prefab;
     @property
@@ -41,6 +54,7 @@ export class Tower extends Component {
     private _angleShoot: number;
     private _levelTower: number = 0;
     private _diffTowerToTarget: Vec3;
+    private _gunType: GunType;
 
     public set enemyName(value: string) {
         this._enemyName = value;
@@ -56,8 +70,10 @@ export class Tower extends Component {
         this.onHideAction();
 
         this.node.on(Node.EventType.TOUCH_START, this.onShowAction, this);
-        this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
+        this.actionBuyRocket.on(Node.EventType.TOUCH_START, this.onBuyRocket, this);
+        this.actionBuyGun.on(Node.EventType.TOUCH_START, this.onBuyGun, this);
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
+        this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
 
         let collider = this.getComponent(Collider2D);
         if (collider) {
@@ -107,28 +123,49 @@ export class Tower extends Component {
 
         this.shooting();
 
-        const ammo = instantiate(this.ammoPrefab);
-
         var normalize = this._diffTowerToTarget.normalize();
-        normalize.multiplyScalar(this.muzzle.position.y);
+        normalize.multiplyScalar(this.muzzleDouble.position.y);
 
-        ammo.position = this._levelTower > 2
+        const gunBarrelNumber = this._gunType == GunType.Gun
+            ? this.gunBarrelNumbers[this._levelTower]
+            : this.rocketNumbers[this._levelTower];
+        const position = this._levelTower > 2
             ? this.node.position
             : this.node.position.subtract(normalize);
 
+        if (gunBarrelNumber == 1) {
+            this.initAmmo(normalize, position);
+        } else {
+            this.initAmmo(normalize, position, -20);
+            this.initAmmo(normalize, position, 20);
+        }
+    }
+
+    initAmmo(normalize: Vec3, position: Vec3, offsetX: number = 0) {
+        const ammo = instantiate(this.ammoPrefab);
+        ammo.position = new Vec3(position.x + offsetX, position.y);
+
         ammo.parent = this._levelManager;
 
-        const target = new Vec3(this._target.position.x, this._target.position.y);
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
+        const target = new Vec3(this._target.position.x + offsetX, this._target.position.y);
+
+        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._gunType);
     }
 
     shooting() {
-        this.muzzle.active = this._levelTower < 3;
-        this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTower];
+        // this.muzzle.active = this._levelTower < 3;
+        this.muzzleDouble.active = this._gunType == GunType.Gun && this._levelTower != 2;
+        this.muzzleSingle.active = this._gunType == GunType.Gun && this._levelTower == 2;
+        if (this._gunType == GunType.Rocket) {
+            this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTower];
+        }
 
         setTimeout(() => {
-            this.muzzle.active = false;
-            this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
+            this.muzzleDouble.active = false;
+            this.muzzleSingle.active = false;
+            if (this._gunType == GunType.Rocket) {
+                this._avatar.spriteFrame = this.avatarRocketSprites[this._levelTower];
+            }
         }, 100);
     }
 
@@ -136,7 +173,9 @@ export class Tower extends Component {
         this._levelManager.getComponent(LevelManager).onHideActionTower(this);
         this.action.setParent(this.node);
         this.actionSell.active = this._levelTower != 0;
-        this.actionUpgrade.active = this._levelTower != this.backgrounds.length - 1;
+        this.actionUpgrade.active = this._levelTower != 0 && this._levelTower != this.backgrounds.length - 1;;
+        this.actionBuyGun.active = this._levelTower == 0;
+        this.actionBuyRocket.active = this._levelTower == 0;
     }
 
     onUpgrade() {
@@ -144,14 +183,29 @@ export class Tower extends Component {
         this.onSetSprite();
     }
 
+    onBuyGun() {
+        this._gunType = GunType.Gun;
+        this._levelTower++;
+        this.onSetSprite();
+    }
+
+    onBuyRocket() {
+        this._gunType = GunType.Rocket;
+        this._levelTower++;
+        this.onSetSprite();
+    }
+
     onSell() {
+        this._gunType = GunType.None;
         this._levelTower = 0;
         this.onSetSprite();
     }
 
     onSetSprite() {
         this._background.spriteFrame = this.backgrounds[this._levelTower];
-        this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
+        this._avatar.spriteFrame = this._gunType == GunType.Rocket
+            ? this.avatarRocketSprites[this._levelTower]
+            : this.avatarGunSprites[this._levelTower];
         this._isActive = this._levelTower > 0;
         this.onHideAction();
     }
