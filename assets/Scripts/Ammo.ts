@@ -23,12 +23,12 @@ export class Ammo extends Component {
 
     }
 
-    init(target: Vec3, speed: number, damage: number, angleShoot: number, ammoType: GunType) {
+    init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
         this._damage = damage;
         this.node.angle = angleShoot;
 
-        this.getComponent(Sprite).spriteFrame = this.bodySprites[ammoType];
-        this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[ammoType];
+        this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
+        this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[levelTower];
 
         tween(this.node).to(speed, { position: target })
             .removeSelf()

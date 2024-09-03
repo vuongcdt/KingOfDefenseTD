@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "Ammo",
+    "_name": "Rocket",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Ammo",
+    "_name": "Rocket",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -248,23 +248,32 @@
     "bodySprites": [
       null,
       {
-        "__uuid__": "c4b3da27-198b-496a-b43f-fa6b8d920fbd@f9941",
+        "__uuid__": "d39cd987-0cc0-4378-a787-dfbf03e73f67@f9941",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "e33c3bf8-9210-48ba-a909-e242a33040e8@f9941",
+        "__uuid__": "d39cd987-0cc0-4378-a787-dfbf03e73f67@f9941",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
-        "__uuid__": "914612bb-6770-421e-979e-1bdd7be0ef49@f9941",
+        "__uuid__": "55042d96-942b-4e26-9813-4a123fc5352e@f9941",
         "__expectedType__": "cc.SpriteFrame"
       }
     ],
     "rocketTailSprites": [
       null,
-      null,
-      null,
-      null
+      {
+        "__uuid__": "db1a8065-71cb-4148-ac5e-04beb6b176df@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "db1a8065-71cb-4148-ac5e-04beb6b176df@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "64b1ff98-dabb-416b-8b2e-31e1d98d2b24@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      }
     ],
     "_id": ""
   },

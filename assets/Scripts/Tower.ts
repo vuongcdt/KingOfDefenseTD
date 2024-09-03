@@ -149,7 +149,8 @@ export class Tower extends Component {
 
         const target = new Vec3(this._target.position.x + offsetX, this._target.position.y);
 
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._gunType);
+        // ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._gunType);
+        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
     }
 
     shooting() {
