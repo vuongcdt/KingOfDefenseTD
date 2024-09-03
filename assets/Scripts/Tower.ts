@@ -1,7 +1,5 @@
 import { _decorator, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { Enemy } from "./Enemy";
-import { LevelManager } from "./LevelManager";
 import { TowerType } from "./Enums";
 const { ccclass, property } = _decorator;
 
@@ -22,7 +20,7 @@ export class Tower extends Component {
     @property(Prefab)
     private ammoPrefab: Prefab;
     @property({ type: Enum(TowerType) })
-    private gunType: TowerType;
+    private towerType: TowerType;
     @property
     private damage: number = 3;
     @property
@@ -51,7 +49,8 @@ export class Tower extends Component {
     public set levelTower(value: number) {
         this._levelTower = value;
     }
-    protected start(): void {
+
+    start(): void {
         let collider = this.getComponent(Collider2D);
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
@@ -133,17 +132,17 @@ export class Tower extends Component {
     }
 
     shooting() {
-        // this.muzzle.active = this._levelTower < 3;
-        this.muzzleDouble.active = this.gunType == TowerType.GunTower && this._levelTower != 2;
-        this.muzzleSingle.active = this.gunType == TowerType.GunTower && this._levelTower == 2;
-        if (this.gunType == TowerType.RocketTower) {
+        this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTower != 2;
+        this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTower == 2;
+
+        if (this.towerType == TowerType.RocketTower) {
             this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTower];
         }
 
         setTimeout(() => {
             this.muzzleDouble.active = false;
             this.muzzleSingle.active = false;
-            if (this.gunType == TowerType.RocketTower) {
+            if (this.towerType == TowerType.RocketTower) {
                 this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
             }
         }, 100);

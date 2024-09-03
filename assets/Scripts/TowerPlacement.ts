@@ -1,5 +1,4 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, Vec3 } from 'cc';
-import { TowerType } from './Enums';
 import { LevelManager } from './LevelManager';
 import { Tower } from './Tower';
 const { ccclass, property } = _decorator;
@@ -32,7 +31,7 @@ export class TowerPlacement extends Component {
         this._levelManager = value;
     }
 
-    protected start(): void {
+    start(): void {
         this._background = this.getComponent(Sprite);
         this.onHideAction();
 
@@ -77,6 +76,7 @@ export class TowerPlacement extends Component {
         const tower = instantiate(prefab);
         tower.parent = this._levelManager;
         tower.position = this.node.position;
+
         this._tower = tower.getComponent(Tower);
         this._tower.initTower(this._levelTower, this.node.position, this._levelManager);
     }
@@ -88,9 +88,10 @@ export class TowerPlacement extends Component {
 
     onSetSprite() {
         this._background.spriteFrame = this.backgrounds[this._levelTower];
-        this.onHideAction();
         this._tower.levelTower = this._levelTower;
         this._tower.onSetSprite();
+        
+        this.onHideAction();
     }
 
     onHideAction() {

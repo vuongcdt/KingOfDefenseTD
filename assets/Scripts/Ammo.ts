@@ -1,6 +1,5 @@
 import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
-import { TowerType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
@@ -36,7 +35,6 @@ export class Ammo extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-
         const enemy = otherCollider.node.getComponent(Enemy);
 
         if (enemy) {

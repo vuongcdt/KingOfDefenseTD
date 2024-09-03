@@ -1,12 +1,10 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab } from 'cc';
 import { Enemy } from './Enemy';
-import { Tower } from './Tower';
 import { TowerPlacement } from './TowerPlacement';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
 export class LevelManager extends Component {
-
     @property(Node)
     private maskLayer: Node = null;
     @property(Node)
