@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { TowerType } from "./Enums";
 const { ccclass, property } = _decorator;
@@ -15,7 +15,7 @@ export class Tower extends Component {
     private avatarSprites: SpriteFrame[] = [];
     @property([SpriteFrame])
     private shootAvatarSprites: SpriteFrame[] = [];
-    @property([Number])
+    @property([CCInteger])
     private gunBarrelNumbers: number[] = [];
     @property(Prefab)
     private ammoPrefab: Prefab;
@@ -33,14 +33,14 @@ export class Tower extends Component {
     private _isActive: boolean = false;
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
-    private _enemyName: string = 'Enemy';
+    private _enemyNames: string[] = ['Soldier', 'Tank', 'Plane'];
     private _angleShoot: number;
     private _levelTower: number = 0;
     private _diffTowerToTarget: Vec3;
 
-    public set enemyName(value: string) {
-        this._enemyName = value;
-    }
+    // public set enemyName(value: string[]) {
+    //     this._enemyName = value;
+    // }
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -52,9 +52,14 @@ export class Tower extends Component {
 
     start(): void {
         let collider = this.getComponent(Collider2D);
+
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
+        }
+
+        if (this.towerType == TowerType.GunTower) {
+            this._enemyNames = ['Soldier', 'Tank'];
         }
     }
 
@@ -70,6 +75,7 @@ export class Tower extends Component {
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
 
         this.headTower.angle = this._angleShoot;
+        console.log('onBeginContact', this._isActive, this._levelTower);
 
         if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
             this._countdown = 0;
@@ -79,14 +85,15 @@ export class Tower extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
-        if (enemy.name == this._enemyName) {
+
+        if (this._enemyNames.find(name => name == enemy.name)) {
             this._listEnemy.push(enemy)
         }
     }
 
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
-        if (enemy.name == this._enemyName) {
+        if (this._enemyNames.find(name => name == enemy.name)) {
             this._listEnemy = this._listEnemy.filter(e => e != enemy);
             this._target = null;
         }
@@ -115,11 +122,12 @@ export class Tower extends Component {
         }
     }
 
-    initTower(levelTower: number, positionParent: Vec3, levelManager: Node) {
+    initTower(levelTower: number, levelManager: Node) {
         this._levelTower = levelTower;
         this._levelManager = levelManager;
         this._avatar = this.headTower.getComponent(Sprite);
         this.onSetSprite();
+        console.log('initTower2', this._levelTower);
     }
 
     initAmmo(position: Vec3, offsetX: number = 0) {

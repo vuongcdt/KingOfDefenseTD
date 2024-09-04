@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "Enemy",
+    "_name": "Soldier",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Enemy",
+    "_name": "Soldier",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -172,10 +172,7 @@
       "b": 255,
       "a": 255
     },
-    "_spriteFrame": {
-      "__uuid__": "0430467e-5fc4-47df-8da0-7b4b376b4d79@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_fillType": 0,
     "_sizeMode": 2,
@@ -530,6 +527,10 @@
     "speed": 1,
     "avatar": {
       "__id__": 2
+    },
+    "avatarSprites": {
+      "__uuid__": "0430467e-5fc4-47df-8da0-7b4b376b4d79@f9941",
+      "__expectedType__": "cc.SpriteFrame"
     },
     "_id": ""
   },

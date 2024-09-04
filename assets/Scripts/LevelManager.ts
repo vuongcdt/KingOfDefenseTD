@@ -12,9 +12,15 @@ export class LevelManager extends Component {
     @property(Node)
     private startPoint: Node = null;
     @property(Prefab)
-    private enemyPrefab: Prefab = null;
+    private soldierPrefab: Prefab = null;
+    @property(Prefab)
+    private tankPrefab: Prefab = null;
+    @property(Prefab)
+    private planePrefab: Prefab = null;
     @property(Node)
-    private levelPath: Node[] = [];
+    private wayPath: Node[] = [];
+    @property(Node)
+    private planePath: Node[] = [];
     @property(Node)
     private towerPlacements: Node[] = [];
     @property(Prefab)
@@ -24,10 +30,20 @@ export class LevelManager extends Component {
 
     start() {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.spawnEnemy();
+        this.spawnEnemy(this.soldierPrefab,this.wayPath);
+
+        // setInterval(() => {
+        //     this.spawnEnemy(this.soldierPrefab,this.wayPath);
+        // }, 2000);
+
         setInterval(() => {
-            this.spawnEnemy();
+            this.spawnEnemy(this.tankPrefab,this.wayPath);
         }, 2000);
+
+        setInterval(() => {
+            this.spawnEnemy(this.planePrefab,this.planePath);
+        }, 7000);
+
         this.spawnTowerPlacement();
     }
 
@@ -35,13 +51,13 @@ export class LevelManager extends Component {
 
     }
 
-    spawnEnemy() {
-        let newEnemy = instantiate(this.enemyPrefab);
+    spawnEnemy(prefab: Prefab, path: Node[]) {
+        let newEnemy = instantiate(prefab);
         newEnemy.parent = this.enemyLayer;
         newEnemy.position = this.startPoint.position;
 
         const enemy = newEnemy.getComponent(Enemy);
-        enemy.init(this.levelPath.map(node => node.position))
+        enemy.init(path.map(node => node.position), this)
     }
 
     spawnTowerPlacement() {

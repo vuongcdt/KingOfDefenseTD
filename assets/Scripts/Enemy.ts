@@ -1,4 +1,4 @@
-import { _decorator, Canvas, Component, find, Node, Sprite, Tween, tween, Vec3 } from "cc";
+import { _decorator, Canvas, Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
@@ -11,6 +11,8 @@ export class Enemy extends Component {
     private speed: number = 1;
     @property(Node)
     private avatar: Node;
+    @property(SpriteFrame)
+    private avatarSprites: SpriteFrame;
 
     private _currentHealth: number;
     private _damage: number;
@@ -19,10 +21,14 @@ export class Enemy extends Component {
     private tweenRotation: Tween<Node>[] = [];
     private _health: number = 10;
     private _currentPos: Vec3;
+    private _levelManage: LevelManager;
 
-    init(path: Vec3[]) {
+    init(path: Vec3[], levelManage: LevelManager) {
+        this._levelManage = levelManage;
+        this.healthBar.active = false;
         this._paths = [];
         this._paths.push(...path);
+        this.avatar.getComponent(Sprite).spriteFrame = this.avatarSprites;
 
         this._currentPos = this.node.position;
         this.avatar.angle = 180;
@@ -87,7 +93,6 @@ export class Enemy extends Component {
     }
 
     start(): void {
-
     }
 
     update(dt: number): void {

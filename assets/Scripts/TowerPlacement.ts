@@ -78,7 +78,9 @@ export class TowerPlacement extends Component {
         tower.position = this.node.position;
 
         this._tower = tower.getComponent(Tower);
-        this._tower.initTower(this._levelTower, this.node.position, this._levelManager);
+        this._tower.initTower(this._levelTower, this._levelManager);
+        console.log('initTower',this._levelTower);
+        
     }
 
     onSell() {

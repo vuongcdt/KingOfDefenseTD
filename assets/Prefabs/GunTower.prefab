@@ -38,10 +38,13 @@
       },
       {
         "__id__": 42
+      },
+      {
+        "__id__": 44
       }
     ],
     "_prefab": {
-      "__id__": 44
+      "__id__": 46
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -938,7 +941,7 @@
       "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
       "__expectedType__": "cc.Prefab"
     },
-    "gunType": 1,
+    "towerType": 1,
     "damage": 2.9,
     "speed": 0.5,
     "_id": ""
@@ -1010,6 +1013,76 @@
   {
     "__type__": "cc.CompPrefabInfo",
     "fileId": "357k3/AR5JX5k41MWTKc4y"
+  },
+  {
+    "__type__": "4f399ZCvLtIi5Ajo8kFlgS5",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": false,
+    "__prefab": {
+      "__id__": 45
+    },
+    "headTower": {
+      "__id__": 2
+    },
+    "muzzleDouble": {
+      "__id__": 3
+    },
+    "muzzleSingle": {
+      "__id__": 19
+    },
+    "avatarSprites": [
+      null,
+      {
+        "__uuid__": "a8c82f74-4540-44a6-8b9e-95cc0e68d8a9@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "aac5d9b5-627c-4209-91c3-42fdc91cf544@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "60ea52e9-3143-48ac-b652-af101c7a9955@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      }
+    ],
+    "shootAvatarSprites": [
+      null,
+      {
+        "__uuid__": "a8c82f74-4540-44a6-8b9e-95cc0e68d8a9@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "aac5d9b5-627c-4209-91c3-42fdc91cf544@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "60ea52e9-3143-48ac-b652-af101c7a9955@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      }
+    ],
+    "gunBarrelNumbers": [
+      1,
+      2,
+      1,
+      2
+    ],
+    "ammoPrefab": {
+      "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
+      "__expectedType__": "cc.Prefab"
+    },
+    "towerType": 1,
+    "damage": 3,
+    "speed": 0.5,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "d2ULpHZbpDeLG6l1eywsTK"
   },
   {
     "__type__": "cc.PrefabInfo",
