@@ -19,13 +19,12 @@ export class GameManager extends Component {
     }
 
     checkGameOver() {
-        console.log('checkGameOver');
-        // this._enemyNum--;
-        // if (this._enemyNum <= 0) {
-        //     game.pause();
-        //     this._gameState = GameState.OverGame;
-        //     this.gameoverPopup.active = true;
-        // }
+        this._enemyNum--;
+        if (this._enemyNum <= 0) {
+            game.pause();
+            this._gameState = GameState.OverGame;
+            this.gameoverPopup.active = true;
+        }
     }
 
     onReplayGame(){

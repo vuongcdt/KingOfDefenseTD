@@ -41,21 +41,23 @@ export class Enemy extends Component {
                 .to(0.2 * timeMove, { angle: this.getAngleAvatar(this._currentPos, point) })
                 .delay(0.8 * timeMove);
 
+            if (index == this._paths.length - 1) {
+                t1.call(this.checkGameOver);
+            }
+
             this.tweenMove.push(t1);
             this.tweenRotation.push(t2);
         });
 
+
         tween(this.avatar)
             .sequence(...this.tweenRotation)
-            .call(this.checkkGameOver)
             .start();
 
         tween(this.node)
             .sequence(...this.tweenMove)
             .removeSelf()
-            .call(this.checkkGameOver)
             .start();
-
 
         this._currentHealth = this._health;
     }
@@ -69,7 +71,10 @@ export class Enemy extends Component {
         return angle;
     }
 
-    checkkGameOver() {
+    checkGameOver() {
+        console.log('checkGameOver');
+        return;
+
         const canvas = find("Canvas");
 
         const gameManager = canvas.getComponentInChildren(GameManager);

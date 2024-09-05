@@ -42,7 +42,7 @@ export class LevelManager extends Component {
 
         setInterval(() => {
             this.spawnEnemy(this.planePrefab,this.planePath);
-        }, 7000);
+        }, 5000);
 
         this.spawnTowerPlacement();
     }

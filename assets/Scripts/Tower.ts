@@ -75,7 +75,6 @@ export class Tower extends Component {
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
 
         this.headTower.angle = this._angleShoot;
-        console.log('onBeginContact', this._isActive, this._levelTower);
 
         if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
             this._countdown = 0;
@@ -127,7 +126,6 @@ export class Tower extends Component {
         this._levelManager = levelManager;
         this._avatar = this.headTower.getComponent(Sprite);
         this.onSetSprite();
-        console.log('initTower2', this._levelTower);
     }
 
     initAmmo(position: Vec3, offsetX: number = 0) {
