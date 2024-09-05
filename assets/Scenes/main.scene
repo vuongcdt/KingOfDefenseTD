@@ -1741,7 +1741,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "PlacePath",
+    "_name": "PlanePath",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
