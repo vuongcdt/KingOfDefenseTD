@@ -128,11 +128,11 @@ export class Tower extends Component {
         this.onSetSprite();
     }
 
-    initAmmo(position: Vec3, offsetX: number = 0) {
-        const target = new Vec3(this._target.position.x + offsetX, this._target.position.y);
+    initAmmo(position: Vec3, offset: number = 0) {
+        const target = new Vec3(this._target.position.x + offset, this._target.position.y + offset);
         const ammo = instantiate(this.ammoPrefab);
 
-        ammo.position = new Vec3(position.x + offsetX, position.y + offsetX);
+        ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
         ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
     }
