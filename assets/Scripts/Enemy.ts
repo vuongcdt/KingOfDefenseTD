@@ -42,7 +42,7 @@ export class Enemy extends Component {
                 .delay(0.8 * timeMove);
 
             if (index == this._paths.length - 1) {
-                t1.call(this.checkGameOver);
+                t1.call(()=>this.checkGameOver());
             }
 
             this.tweenMove.push(t1);
@@ -56,6 +56,7 @@ export class Enemy extends Component {
 
         tween(this.node)
             .sequence(...this.tweenMove)
+            // .call(this.checkGameOver)
             .removeSelf()
             .start();
 
