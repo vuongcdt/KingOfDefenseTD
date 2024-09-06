@@ -1,6 +1,7 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
+import Store from './Store';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -27,21 +28,25 @@ export class LevelManager extends Component {
     private towerPlacementPrefab: Prefab;
 
     private _towerPlacementList: TowerPlacement[] = [];
+    private _store: Store;
 
     start() {
+        this._store = Store.getInstance();
+        this._store.setLevelManage(this.node);
+        
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.spawnEnemy(this.soldierPrefab,this.wayPath);
+        this.spawnEnemy(this.soldierPrefab, this.wayPath);
 
         // setInterval(() => {
         //     this.spawnEnemy(this.soldierPrefab,this.wayPath);
         // }, 2000);
 
         setInterval(() => {
-            this.spawnEnemy(this.tankPrefab,this.wayPath);
+            this.spawnEnemy(this.tankPrefab, this.wayPath);
         }, 2000);
 
         setInterval(() => {
-            this.spawnEnemy(this.planePrefab,this.planePath);
+            this.spawnEnemy(this.planePrefab, this.planePath);
         }, 5000);
 
         this.spawnTowerPlacement();

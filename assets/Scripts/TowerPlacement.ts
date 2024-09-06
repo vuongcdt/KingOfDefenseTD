@@ -1,12 +1,16 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { LevelManager } from './LevelManager';
 import { Tower } from './Tower';
+import Store from './Store';
+import { Turent } from './Turent';
 const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')
 export class TowerPlacement extends Component {
     @property(Prefab)
     private gunTowerPrefab: Prefab;
+    @property(Prefab)
+    private turrentPrefab: Prefab;
     @property(Prefab)
     private rocketTowerPrefab: Prefab;
     @property(Node)
@@ -26,12 +30,15 @@ export class TowerPlacement extends Component {
     private _background: Sprite;
     private _levelTower: number = 0;
     private _tower: Tower;
+    private _turrent: Turent;
+    private _store: Store;
 
     public set levelManager(value: Node) {
         this._levelManager = value;
     }
 
     start(): void {
+        this._store = Store.getInstance();
         this._background = this.getComponent(Sprite);
         this.onHideAction();
 
@@ -62,12 +69,14 @@ export class TowerPlacement extends Component {
 
     onBuyGun() {
         this._levelTower++;
+        // this.initTurrent(this.turrentPrefab);
         this.initTower(this.gunTowerPrefab);
         this.onSetSprite();
     }
 
     onBuyRocket() {
         this._levelTower++;
+        // this.initTurrent(this.turrentPrefab);
         this.initTower(this.rocketTowerPrefab);
         this.onSetSprite();
     }
@@ -81,6 +90,16 @@ export class TowerPlacement extends Component {
         this._tower.initTower(this._levelTower, this._levelManager);
     }
 
+    initTurrent(prefab: Prefab) {
+        const turrent = instantiate(prefab);
+        turrent.parent = this._levelManager;
+        // turrent.position = new Vec3(this.node.position.x - 50, this.node.position.y - 50);
+        turrent.position = this.node.position;
+
+        this._turrent = turrent.getComponent(Turent);
+        this._turrent.initTurrent(this._levelTower);
+    }
+
     onSell() {
         this._levelTower = 0;
         this.onSetSprite();
@@ -90,7 +109,7 @@ export class TowerPlacement extends Component {
         this._background.spriteFrame = this.backgrounds[this._levelTower];
         this._tower.levelTower = this._levelTower;
         this._tower.onSetSprite();
-        
+        // this._turrent.onSetLevelTurrent(this._levelTower);
         this.onHideAction();
     }
 

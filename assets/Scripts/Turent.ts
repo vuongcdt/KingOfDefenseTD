@@ -2,6 +2,7 @@ import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, Even
 import { Ammo } from "./Ammo";
 import { TowerType, TurretType } from "./Enums";
 import { LevelManager } from "./LevelManager";
+import Store from "./Store";
 const { ccclass, property } = _decorator;
 
 @ccclass('Turent')
@@ -28,27 +29,22 @@ export class Turent extends Component {
     private reloadTime: number = 0.8;
     @property({ type: [Enum(TurretType)] })
     private enemyNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
-    @property(Node)
-    private levelManager: Node;
 
+    private _levelManager: Node;
     private _target: Node;
     private _avatar: Sprite;
     private _isActive: boolean = true;
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
     private _angleShoot: number;
-    private _levelTower: number = 0;
+    private _levelTurrent: number = 0;
     private _diffTowerToTarget: Vec3;
-
-    // public set levelManager(value: Node) {
-    //     this.levelManager = value;
-    // }
-
-    // public set levelTower(value: number) {
-    //     this._levelTower = value;
-    // }
+    private _store: Store;
 
     start(): void {
+        this._store = Store.getInstance();
+        this._levelManager = this._store.getLevelManage();
+
         let collider = this.getComponent(Collider2D);
 
         if (collider) {
@@ -56,10 +52,9 @@ export class Turent extends Component {
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
 
-        if (this.towerType == TowerType.GunTower) {
-            this.enemyNames = [TurretType.Soldier, TurretType.Tank];
-        }
-        console.log('start');
+        // if (this.towerType == TowerType.GunTower) {
+        //     this.enemyNames = [TurretType.Soldier, TurretType.Tank];
+        // }
     }
 
     update(dt: number): void {
@@ -107,57 +102,61 @@ export class Turent extends Component {
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzleDouble.position.y);
 
-        const gunBarrelNumber = this.gunBarrelNumbers[this._levelTower];
-        const position = this._levelTower > 2
+        const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
+        const position = this._levelTurrent > 2
             ? this.node.position
             : this.node.position.subtract(normalize);
 
         if (gunBarrelNumber == 1) {
-            this.initAmmo(position);
+            this.setAmmo(position);
         } else {
-            this.initAmmo(position, -20);
-            this.initAmmo(position, 20);
+            this.setAmmo(position, -20);
+            this.setAmmo(position, 20);
         }
     }
 
-    initTower(levelTower: number, levelManager: Node) {
-        this._levelTower = levelTower;
-        this.levelManager = levelManager;
+    initTurrent(levelTurrent: number) {
+        this._levelTurrent = levelTurrent;
         this._avatar = this.node.getComponent(Sprite);
         this.onSetSprite();
     }
 
-    initAmmo(position: Vec3, offset: number = 0) {
+    setAmmo(position: Vec3, offset: number = 0) {
         const target = new Vec3(this._target.position.x + offset, this._target.position.y + offset);
         const ammo = instantiate(this.ammoPrefab);
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
-        ammo.parent = this.levelManager;
-        
-        // ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, 2);
+        ammo.parent = this._levelManager;
+
+        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        // ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, 2);
     }
 
     shooting() {
-        this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTower != 2;
-        this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTower == 2;
+        this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTurrent != 2;
+        this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTurrent == 2;
 
         if (this.towerType == TowerType.RocketTower) {
-            this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTower];
+            this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTurrent];
         }
 
         setTimeout(() => {
             this.muzzleDouble.active = false;
             this.muzzleSingle.active = false;
             if (this.towerType == TowerType.RocketTower) {
-                this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
+                this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
             }
         }, 100);
     }
 
     onSetSprite() {
-        this._avatar.spriteFrame = this.avatarSprites[this._levelTower];
-        this._isActive = this._levelTower > 0;
+        this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
+        this._isActive = this._levelTurrent > 0;
+    }
+
+    onSetLevelTurrent(levelTurrent: number) {
+        this._levelTurrent = levelTurrent;
+        this.onSetSprite();
     }
 }
 
