@@ -11,3 +11,17 @@ export enum TowerType {
     RocketTower,
     // BigRocket,
 }
+
+export enum TurretType {
+    Soldier,
+    Tank,
+    Plane,
+    GunTower,
+}
+
+// export const TurretType  ={
+//     Soldier:"Soldier",
+//     Tank:"Tank",
+//     Plane:"Plane",
+//     GunTower:"GunTower",
+// }

@@ -1,12 +1,11 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { TowerType } from "./Enums";
+import { TowerType, TurretType } from "./Enums";
+import { LevelManager } from "./LevelManager";
 const { ccclass, property } = _decorator;
 
 @ccclass('Turent')
 export class Turent extends Component {
-    @property(Node)
-    private headTower: Node;
     @property(Node)
     private muzzleDouble: Node;
     @property(Node)
@@ -25,26 +24,29 @@ export class Turent extends Component {
     private damage: number = 3;
     @property
     private speed: number = 1;
+    @property
+    private reloadTime: number = 0.8;
+    @property({ type: [Enum(TurretType)] })
+    private enemyNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
+    @property(Node)
+    private levelManager: Node;
 
-    private _levelManager: Node;
-    private _reloadTime: number = 0.8;
     private _target: Node;
     private _avatar: Sprite;
-    private _isActive: boolean = false;
+    private _isActive: boolean = true;
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
-    private _enemyNames: string[] = ['Soldier', 'Tank', 'Plane'];
     private _angleShoot: number;
     private _levelTower: number = 0;
     private _diffTowerToTarget: Vec3;
 
-    public set levelManager(value: Node) {
-        this._levelManager = value;
-    }
+    // public set levelManager(value: Node) {
+    //     this.levelManager = value;
+    // }
 
-    public set levelTower(value: number) {
-        this._levelTower = value;
-    }
+    // public set levelTower(value: number) {
+    //     this._levelTower = value;
+    // }
 
     start(): void {
         let collider = this.getComponent(Collider2D);
@@ -55,8 +57,9 @@ export class Turent extends Component {
         }
 
         if (this.towerType == TowerType.GunTower) {
-            this._enemyNames = ['Soldier', 'Tank'];
+            this.enemyNames = [TurretType.Soldier, TurretType.Tank];
         }
+        console.log('start');
     }
 
     update(dt: number): void {
@@ -70,9 +73,9 @@ export class Turent extends Component {
         Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
 
-        this.headTower.angle = this._angleShoot;
+        this.node.angle = this._angleShoot;
 
-        if (this._countdown > this._reloadTime && this._listEnemy.length > 0 && this._isActive) {
+        if (this._countdown > this.reloadTime && this._listEnemy.length > 0 && this._isActive) {
             this._countdown = 0;
             this.attackEnemy();
         }
@@ -81,14 +84,14 @@ export class Turent extends Component {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
 
-        if (this._enemyNames.find(name => name == enemy.name)) {
+        if (this.enemyNames.find(name => TurretType[name] == enemy.name)) {
             this._listEnemy.push(enemy)
         }
     }
 
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const enemy = otherCollider.node;
-        if (this._enemyNames.find(name => name == enemy.name)) {
+        if (this.enemyNames.find(name => TurretType[name] == enemy.name)) {
             this._listEnemy = this._listEnemy.filter(e => e != enemy);
             this._target = null;
         }
@@ -119,8 +122,8 @@ export class Turent extends Component {
 
     initTower(levelTower: number, levelManager: Node) {
         this._levelTower = levelTower;
-        this._levelManager = levelManager;
-        this._avatar = this.headTower.getComponent(Sprite);
+        this.levelManager = levelManager;
+        this._avatar = this.node.getComponent(Sprite);
         this.onSetSprite();
     }
 
@@ -129,8 +132,10 @@ export class Turent extends Component {
         const ammo = instantiate(this.ammoPrefab);
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
-        ammo.parent = this._levelManager;
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
+        ammo.parent = this.levelManager;
+        
+        // ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
+        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, 2);
     }
 
     shooting() {
