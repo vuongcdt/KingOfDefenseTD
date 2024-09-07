@@ -69,15 +69,13 @@ export class TowerPlacement extends Component {
 
     onBuyGun() {
         this._levelTower++;
-        // this.initTurrent(this.turrentPrefab);
-        this.initTower(this.gunTowerPrefab);
+        this.setTurrent(this.gunTowerPrefab);
         this.onSetSprite();
     }
 
     onBuyRocket() {
         this._levelTower++;
-        // this.initTurrent(this.turrentPrefab);
-        this.initTower(this.rocketTowerPrefab);
+        this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
     }
 
@@ -90,10 +88,9 @@ export class TowerPlacement extends Component {
         this._tower.initTower(this._levelTower, this._levelManager);
     }
 
-    initTurrent(prefab: Prefab) {
+    setTurrent(prefab: Prefab) {
         const turrent = instantiate(prefab);
         turrent.parent = this._levelManager;
-        // turrent.position = new Vec3(this.node.position.x - 50, this.node.position.y - 50);
         turrent.position = this.node.position;
 
         this._turrent = turrent.getComponent(Turent);
@@ -107,9 +104,7 @@ export class TowerPlacement extends Component {
 
     onSetSprite() {
         this._background.spriteFrame = this.backgrounds[this._levelTower];
-        this._tower.levelTower = this._levelTower;
-        this._tower.onSetSprite();
-        // this._turrent.onSetLevelTurrent(this._levelTower);
+        this._turrent.onSetLevelTurrent(this._levelTower);
         this.onHideAction();
     }
 

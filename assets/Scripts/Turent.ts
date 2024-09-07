@@ -51,10 +51,6 @@ export class Turent extends Component {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
-
-        // if (this.towerType == TowerType.GunTower) {
-        //     this.enemyNames = [TurretType.Soldier, TurretType.Tank];
-        // }
     }
 
     update(dt: number): void {
@@ -129,7 +125,6 @@ export class Turent extends Component {
         ammo.parent = this._levelManager;
 
         ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
-        // ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, 2);
     }
 
     shooting() {
@@ -155,6 +150,7 @@ export class Turent extends Component {
     }
 
     onSetLevelTurrent(levelTurrent: number) {
+
         this._levelTurrent = levelTurrent;
         this.onSetSprite();
     }
