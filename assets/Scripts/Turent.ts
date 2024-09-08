@@ -77,8 +77,8 @@ export class Turent extends Component {
         // console.log(this.node.name,this._listEnemy[0].name,this.node.angle);//
 
         // if (this.node.name == "HeadTank" && this._count % 60 == 0) {
-            // console.log(this.node.name, this._angleShoot, this._diffTowerToTarget, this.node.getParent().position);
-            // console.log(this._angleShoot);
+        // console.log(this.node.name, this._angleShoot, this._diffTowerToTarget, this.node.getParent().position);
+        // console.log(this._angleShoot);
         // }
 
 
@@ -112,13 +112,18 @@ export class Turent extends Component {
         this.shooting();
 
         var normalize = this._diffTowerToTarget.normalize();
-        normalize.multiplyScalar(this.muzzleDouble.position.y);
-
+        normalize.multiplyScalar(this.towerType == TowerType.Tank ? this.muzzleSingle.position.x : this.muzzleDouble.position.y);
+        let position;
         const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
-        // const position = this._levelTurrent > 2
-        //     ? this.node.position
-        //     : this.node.position.subtract(normalize);
-        const position = this.towerType == TowerType.Tank ?  this.node.getParent().position : this.node.position;
+
+        if (this.towerType == TowerType.Tank) {
+            position = this.node.getParent().position.subtract(normalize);
+        } else {
+            // position = this._levelTurrent > 2
+            //     ? this.node.position
+            //     : this.node.position.subtract(normalize);
+            position = this.node.position.subtract(normalize);
+        }
 
         if (gunBarrelNumber == 1) {
             this.setAmmo(position);
@@ -141,12 +146,16 @@ export class Turent extends Component {
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
 
-        ammo.getComponent(Ammo).init(target,this._target.name, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        ammo.getComponent(Ammo)
+            .init(target, this._target.name, this.speed, this.damage, this._angleShoot, this._levelTurrent);
     }
 
     shooting() {
         this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTurrent != 2;
         this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTurrent == 2;
+        if (this.towerType == TowerType.Tank) {
+            this.muzzleSingle.active = true;
+        }
 
         if (this.towerType == TowerType.RocketTower) {
             this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTurrent];
@@ -167,14 +176,13 @@ export class Turent extends Component {
     }
 
     onSetLevelTurrent(levelTurrent: number) {
-
         this._levelTurrent = levelTurrent;
         this.onSetSprite();
     }
 
-    setHP(damage: number){
+    setHP(damage: number) {
         console.log("HP");
-        
+
     }
 }
 

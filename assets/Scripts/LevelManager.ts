@@ -46,19 +46,19 @@ export class LevelManager extends Component {
         // }, 2000);
 
         this._time1 = setInterval(() => {
-            if (this._count >= 5) {
-                clearInterval(this._time1);
-            }
+            // if (this._count >= 5) {
+                // clearInterval(this._time1);
+            // }
             this._count++;
             this.spawnEnemy(this.tankPrefab, this.wayPath);
         }, 2000);
 
-        // this._time2 = setInterval(() => {
-        //     if (this._count >= 5) {
-        //         clearInterval(this._time2);
-        //     }
-        //     this.spawnEnemy(this.planePrefab, this.planePath);
-        // }, 5000);
+        this._time2 = setInterval(() => {
+            // if (this._count >= 5) {
+            //     clearInterval(this._time2);
+            // }
+            this.spawnEnemy(this.planePrefab, this.planePath);
+        }, 5000);
 
         this.spawnTowerPlacement();
     }

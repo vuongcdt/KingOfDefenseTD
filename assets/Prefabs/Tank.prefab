@@ -486,7 +486,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "HeadTank",
+    "_name": "Turent",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -571,16 +571,16 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 70,
+      "x": 126,
+      "y": 5,
       "z": 0
     },
     "_lrot": {
       "__type__": "cc.Quat",
       "x": 0,
       "y": 0,
-      "z": 0,
-      "w": 1
+      "z": -0.7071067811865475,
+      "w": 0.7071067811865476
     },
     "_lscale": {
       "__type__": "cc.Vec3",
@@ -594,7 +594,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": -90
     },
     "_id": ""
   },
@@ -662,8 +662,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 43,
-      "height": 62
+      "width": 34,
+      "height": 56
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -699,7 +699,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "aa9aca30-498b-48dd-9e7e-0a43803e958f@f9941",
+      "__uuid__": "64b1ff98-dabb-416b-8b2e-31e1d98d2b24@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -790,11 +790,11 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 128,
-      "height": 48
+      "height": 56
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0.25,
       "y": 0.5
     },
     "_id": ""
@@ -854,7 +854,7 @@
     },
     "towerType": 3,
     "damage": 3,
-    "speed": 1,
+    "speed": 0.3,
     "reloadTime": 0.8,
     "enemyNames": [
       4,
@@ -888,7 +888,10 @@
       "b": 255,
       "a": 255
     },
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "04e2e499-492f-4c55-abc8-0183be86250d@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
     "_type": 0,
     "_fillType": 0,
     "_sizeMode": 0,
@@ -965,7 +968,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 50,
+    "_radius": 30,
     "_id": ""
   },
   {
@@ -1036,7 +1039,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 50,
+    "_radius": 30,
     "_id": ""
   },
   {
