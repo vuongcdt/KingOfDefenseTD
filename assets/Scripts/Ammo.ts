@@ -39,14 +39,19 @@ export class Ammo extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-
-        const target = otherCollider.node.getComponent(Enemy);
-
+        let target = otherCollider.node.getComponent(Enemy);
+        
         if (!target) {
+            // target = otherCollider.node.getParent().getComponent(Enemy);
+            // console.log(target);
+            // if (!target) {
+            //     return;
+            // }
             return;
         }
         tween(this.node).removeSelf().start();
         target.setHP(this._damage);
+        game.pause();
 
         // if (this._targetName == TowerType[TowerType.Tank]) {
         //     const target = otherCollider.node.getComponent(Enemy);

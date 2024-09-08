@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab } from 'cc';
+import { _decorator, Component, EventTouch, game, instantiate, Node, Prefab } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -42,13 +42,20 @@ export class LevelManager extends Component {
         this.spawnEnemy(this.tankPrefab, this.wayPath);
 
         // setInterval(() => {
+        // if (game.isPaused()) {
+        //     return;
+        // }
         //     this.spawnEnemy(this.soldierPrefab,this.wayPath);
         // }, 2000);
 
         this._time1 = setInterval(() => {
             // if (this._count >= 5) {
-                // clearInterval(this._time1);
+            // clearInterval(this._time1);
             // }
+            
+            if (game.isPaused()) {
+                return;
+            }
             this._count++;
             this.spawnEnemy(this.tankPrefab, this.wayPath);
         }, 2000);
@@ -57,6 +64,9 @@ export class LevelManager extends Component {
             // if (this._count >= 5) {
             //     clearInterval(this._time2);
             // }
+            if (game.isPaused()) {
+                return;
+            }
             this.spawnEnemy(this.planePrefab, this.planePath);
         }, 5000);
 
