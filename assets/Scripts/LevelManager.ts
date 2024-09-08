@@ -29,11 +29,14 @@ export class LevelManager extends Component {
 
     private _towerPlacementList: TowerPlacement[] = [];
     private _store: Store;
+    private _count: number = 0;
+    private _time1: number;
+    private _time2: number;
 
     start() {
         this._store = Store.getInstance();
         this._store.setLevelManage(this.node);
-        
+
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.spawnEnemy(this.soldierPrefab, this.wayPath);
 
@@ -41,11 +44,18 @@ export class LevelManager extends Component {
         //     this.spawnEnemy(this.soldierPrefab,this.wayPath);
         // }, 2000);
 
-        setInterval(() => {
+        this._time1 = setInterval(() => {
+            if (this._count >= 5) {
+                clearInterval(this._time1);
+            }
+            this._count++;
             this.spawnEnemy(this.tankPrefab, this.wayPath);
         }, 2000);
 
-        setInterval(() => {
+        this._time2 = setInterval(() => {
+            if (this._count >= 5) {
+                clearInterval(this._time2);
+            }
             this.spawnEnemy(this.planePrefab, this.planePath);
         }, 5000);
 
