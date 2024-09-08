@@ -37,7 +37,7 @@ export class Turent extends Component {
     private _countdown: number = 0;
     private _listEnemy: Node[] = [];
     private _angleShoot: number;
-    private _levelTurrent: number = 0;
+    private _levelTurrent: number = 1;
     private _diffTowerToTarget: Vec3;
     private _store: Store;
 
@@ -52,7 +52,7 @@ export class Turent extends Component {
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
     }
-
+    private _count = 0;
     update(dt: number): void {
         this._countdown += dt;
 
@@ -60,11 +60,27 @@ export class Turent extends Component {
             return;
         }
 
+        this._count++;
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
-        this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
+        // Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
+
+        const positionSource = this.towerType == TowerType.Tank ? this.node.getParent().position : this.node.position;
+        Vec3.subtract(this._diffTowerToTarget, positionSource, this._listEnemy[0].position);
+
+        if (this.towerType == TowerType.Tank) {
+            this._angleShoot = -90 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
+        } else {
+            this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
+        }
 
         this.node.angle = this._angleShoot;
+        // console.log(this.node.name,this._listEnemy[0].name,this.node.angle);//
+
+        // if (this.node.name == "HeadTank" && this._count % 60 == 0) {
+            // console.log(this.node.name, this._angleShoot, this._diffTowerToTarget, this.node.getParent().position);
+            // console.log(this._angleShoot);
+        // }
+
 
         if (this._countdown > this.reloadTime && this._listEnemy.length > 0 && this._isActive) {
             this._countdown = 0;
@@ -99,9 +115,10 @@ export class Turent extends Component {
         normalize.multiplyScalar(this.muzzleDouble.position.y);
 
         const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
-        const position = this._levelTurrent > 2
-            ? this.node.position
-            : this.node.position.subtract(normalize);
+        // const position = this._levelTurrent > 2
+        //     ? this.node.position
+        //     : this.node.position.subtract(normalize);
+        const position = this.towerType == TowerType.Tank ?  this.node.getParent().position : this.node.position;
 
         if (gunBarrelNumber == 1) {
             this.setAmmo(position);
@@ -124,7 +141,7 @@ export class Turent extends Component {
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
 
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        ammo.getComponent(Ammo).init(target,this._target.name, this.speed, this.damage, this._angleShoot, this._levelTurrent);
     }
 
     shooting() {
@@ -153,6 +170,11 @@ export class Turent extends Component {
 
         this._levelTurrent = levelTurrent;
         this.onSetSprite();
+    }
+
+    setHP(damage: number){
+        console.log("HP");
+        
     }
 }
 

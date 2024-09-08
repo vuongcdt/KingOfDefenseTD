@@ -9,6 +9,7 @@ export enum TowerType {
     None,
     GunTower,
     RocketTower,
+    Tank,
     // BigRocket,
 }
 
@@ -17,7 +18,8 @@ export enum TurretType {
     Soldier,
     Tank,
     Plane,
-    GunTower,
+    GunTowerTurrent,
+    RocketTowerTurrent,
 }
 
 // export const TurretType  ={
