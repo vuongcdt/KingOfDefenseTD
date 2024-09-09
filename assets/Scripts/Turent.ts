@@ -1,45 +1,45 @@
-import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { TowerType, TurretType } from "./Enums";
-import { LevelManager } from "./LevelManager";
 import Store from "./Store";
 const { ccclass, property } = _decorator;
 
 @ccclass('Turent')
 export class Turent extends Component {
     @property(Node)
-    private muzzleDouble: Node;
+    protected muzzleDouble: Node;
     @property(Node)
-    private muzzleSingle: Node;
+    protected muzzleSingle: Node;
     @property([SpriteFrame])
-    private avatarSprites: SpriteFrame[] = [];
+    protected avatarSprites: SpriteFrame[] = [];
     @property([SpriteFrame])
-    private shootAvatarSprites: SpriteFrame[] = [];
+    protected shootAvatarSprites: SpriteFrame[] = [];
     @property([CCInteger])
-    private gunBarrelNumbers: number[] = [];
+    protected gunBarrelNumbers: number[] = [];
     @property(Prefab)
-    private ammoPrefab: Prefab;
+    protected ammoPrefab: Prefab;
     @property({ type: Enum(TowerType) })
-    private towerType: TowerType;
+    protected towerType: TowerType;
     @property
-    private damage: number = 3;
+    protected damage: number = 3;
     @property
-    private speed: number = 1;
+    protected speed: number = 1;
     @property
-    private reloadTime: number = 0.8;
+    protected reloadTime: number = 0.8;
     @property({ type: [Enum(TurretType)] })
-    private enemyNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
+    protected enemyNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
 
-    private _levelManager: Node;
-    private _target: Node;
-    private _avatar: Sprite;
-    private _isActive: boolean = true;
-    private _countdown: number = 0;
-    private _listEnemy: Node[] = [];
-    private _angleShoot: number;
-    private _levelTurrent: number = 1;
-    private _diffTowerToTarget: Vec3;
-    private _store: Store;
+    protected _levelManager: Node;
+    protected _target: Node;
+    protected _avatar: Sprite;
+    protected _isActive: boolean = true;
+    protected _countdown: number = 0;
+    protected _listEnemy: Node[] = [];
+    protected _angleShoot: number;
+    protected _levelTurrent: number = 1;
+    protected _diffTowerToTarget: Vec3;
+    protected _store: Store;
+    protected _count = 0;
 
     start(): void {
         this._store = Store.getInstance();
@@ -52,7 +52,7 @@ export class Turent extends Component {
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
     }
-    private _count = 0;
+
     update(dt: number): void {
         this._countdown += dt;
 
@@ -61,26 +61,9 @@ export class Turent extends Component {
         }
 
         this._count++;
-        this._diffTowerToTarget = new Vec3();
-        // Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
-
-        const positionSource = this.towerType == TowerType.Tank ? this.node.getParent().position : this.node.position;
-        Vec3.subtract(this._diffTowerToTarget, positionSource, this._listEnemy[0].position);
-
-        if (this.towerType == TowerType.Tank) {
-            this._angleShoot = -90 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
-        } else {
-            this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
-        }
-
+        
+        this.setAngleShoot();
         this.node.angle = this._angleShoot;
-        // console.log(this.node.name,this._listEnemy[0].name,this.node.angle);//
-
-        // if (this.node.name == "HeadTank" && this._count % 60 == 0) {
-        // console.log(this.node.name, this._angleShoot, this._diffTowerToTarget, this.node.getParent().position);
-        // console.log(this._angleShoot);
-        // }
-
 
         if (this._countdown > this.reloadTime && this._listEnemy.length > 0 && this._isActive) {
             this._countdown = 0;
@@ -104,6 +87,13 @@ export class Turent extends Component {
         }
     }
 
+    setAngleShoot() {
+        this._diffTowerToTarget = new Vec3();
+        Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
+
+        this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
+    }
+
     attackEnemy() {
         if (!this._target) {
             this._target = this._listEnemy[0];
@@ -112,18 +102,9 @@ export class Turent extends Component {
         this.shooting();
 
         var normalize = this._diffTowerToTarget.normalize();
-        normalize.multiplyScalar(this.towerType == TowerType.Tank ? this.muzzleSingle.position.x : this.muzzleDouble.position.y);
-        let position;
+        normalize.multiplyScalar(this.muzzleDouble.position.y);
         const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
-
-        if (this.towerType == TowerType.Tank) {
-            position = this.node.getParent().position.subtract(normalize);
-        } else {
-            // position = this._levelTurrent > 2
-            //     ? this.node.position
-            //     : this.node.position.subtract(normalize);
-            position = this.node.position.subtract(normalize);
-        }
+        const position = this.node.position.subtract(normalize);
 
         if (gunBarrelNumber == 1) {
             this.setAmmo(position);
@@ -153,9 +134,6 @@ export class Turent extends Component {
     shooting() {
         this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTurrent != 2;
         this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTurrent == 2;
-        if (this.towerType == TowerType.Tank) {
-            this.muzzleSingle.active = true;
-        }
 
         if (this.towerType == TowerType.RocketTower) {
             this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTurrent];
@@ -182,8 +160,19 @@ export class Turent extends Component {
 
     setHP(damage: number) {
         console.log("HP");
-
     }
+
+    // setHP(damage: number) {
+    //     this._currentHealth -= damage;
+
+    //     this.healthBar.active = true;
+    //     this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
+
+    //     if (this._currentHealth <= 0) {
+    //         tween(this.node).removeSelf().start();
+    //     }
+    // }
+
 }
 
 

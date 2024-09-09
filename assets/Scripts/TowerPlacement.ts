@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame } from 'cc';
 import { LevelManager } from './LevelManager';
 import { Tower } from './Tower';
 import Store from './Store';

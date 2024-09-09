@@ -1,7 +1,5 @@
-import { _decorator, Collider2D, Component, Contact2DType, game, Game, IPhysics2DContact, Node, PhysicsSystem2D, Quat, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType,IPhysics2DContact, Sprite, SpriteFrame, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
-import { TowerType } from './Enums';
-import { Turent } from './Turent';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')

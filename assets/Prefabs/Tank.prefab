@@ -31,9 +31,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 42
-      },
-      {
         "__id__": 44
       },
       {
@@ -41,10 +38,13 @@
       },
       {
         "__id__": 48
+      },
+      {
+        "__id__": 50
       }
     ],
     "_prefab": {
-      "__id__": 50
+      "__id__": 52
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -513,10 +513,13 @@
       },
       {
         "__id__": 39
+      },
+      {
+        "__id__": 41
       }
     ],
     "_prefab": {
-      "__id__": 41
+      "__id__": 43
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -811,7 +814,7 @@
     "node": {
       "__id__": 20
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": {
       "__id__": 34
     },
@@ -976,6 +979,52 @@
     "fileId": "b0n2OrZedLUJztKLrEutRS"
   },
   {
+    "__type__": "1bfcb/ssEJEtYeVMXxVHu0L",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 20
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 42
+    },
+    "muzzleSingle": {
+      "__id__": 21
+    },
+    "avatarSprites": [
+      null,
+      {
+        "__uuid__": "04e2e499-492f-4c55-abc8-0183be86250d@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
+        "__uuid__": "bfd86e4c-9e8d-4479-b63a-6462dc83ed33@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      }
+    ],
+    "shootAvatarSprites": [],
+    "gunBarrelNumbers": [],
+    "ammoPrefab": {
+      "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
+      "__expectedType__": "cc.Prefab"
+    },
+    "towerType": 3,
+    "damage": 3,
+    "speed": 0.3,
+    "reloadTime": 0.8,
+    "enemyNames": [
+      4,
+      5
+    ],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "7dt/PXMuNPDKOiOyfn/pt6"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -998,7 +1047,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 43
+      "__id__": 45
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -1026,7 +1075,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 45
+      "__id__": 47
     },
     "tag": 0,
     "_group": 1,
@@ -1039,7 +1088,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 30,
+    "_radius": 50,
     "_id": ""
   },
   {
@@ -1056,7 +1105,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 47
+      "__id__": 49
     },
     "enabledContactListener": false,
     "bullet": false,
@@ -1090,7 +1139,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 49
+      "__id__": 51
     },
     "healthBar": {
       "__id__": 8

@@ -1,4 +1,4 @@
-import { _decorator, Canvas, Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator,  Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
@@ -22,6 +22,13 @@ export class Enemy extends Component {
     private _health: number = 10;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
+    
+    start(): void {
+    }
+
+    update(dt: number): void {
+
+    }
 
     init(path: Vec3[], levelManage: LevelManager) {
         this._levelManage = levelManage;
@@ -97,14 +104,6 @@ export class Enemy extends Component {
             tween(this.node).removeSelf().start();
         }
     }
-
-    start(): void {
-    }
-
-    update(dt: number): void {
-
-    }
-
 }
 
 

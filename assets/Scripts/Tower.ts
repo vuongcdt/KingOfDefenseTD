@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, EventTouch, instantiate, IPhysics2DContact, Node, PhysicsSystem2D, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum,  instantiate, IPhysics2DContact, Node,  Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { TowerType } from "./Enums";
 const { ccclass, property } = _decorator;
@@ -134,7 +134,7 @@ export class Tower extends Component {
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
-        ammo.getComponent(Ammo).init(target, this.speed, this.damage, this._angleShoot, this._levelTower);
+        ammo.getComponent(Ammo).init(target, this._target.name, this.speed, this.damage, this._angleShoot, this._levelTower);
     }
 
     shooting() {
