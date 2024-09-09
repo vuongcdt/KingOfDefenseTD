@@ -51,7 +51,7 @@ export class Ammo extends Component {
         }
         tween(this.node).removeSelf().start();
         target.setHP(this._damage);
-        game.pause();
+        // game.pause();
 
         // if (this._targetName == TowerType[TowerType.Tank]) {
         //     const target = otherCollider.node.getComponent(Enemy);

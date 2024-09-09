@@ -10,8 +10,6 @@ export class TowerPlacement extends Component {
     @property(Prefab)
     private gunTowerPrefab: Prefab;
     @property(Prefab)
-    private turrentPrefab: Prefab;
-    @property(Prefab)
     private rocketTowerPrefab: Prefab;
     @property(Node)
     private action: Node;
