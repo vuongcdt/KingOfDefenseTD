@@ -1,6 +1,5 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame } from 'cc';
 import { LevelManager } from './LevelManager';
-import { Tower } from './Tower';
 import Store from './Store';
 import { Turent } from './Turent';
 const { ccclass, property } = _decorator;
@@ -27,7 +26,6 @@ export class TowerPlacement extends Component {
     private _levelManager: Node;
     private _background: Sprite;
     private _levelTower: number = 0;
-    private _tower: Tower;
     private _turrent: Turent;
     private _store: Store;
 
@@ -75,15 +73,6 @@ export class TowerPlacement extends Component {
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
-    }
-
-    initTower(prefab: Prefab) {
-        const tower = instantiate(prefab);
-        tower.parent = this._levelManager;
-        tower.position = this.node.position;
-
-        this._tower = tower.getComponent(Tower);
-        this._tower.initTower(this._levelTower, this._levelManager);
     }
 
     setTurrent(prefab: Prefab) {

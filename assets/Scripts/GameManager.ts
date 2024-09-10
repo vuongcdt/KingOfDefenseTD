@@ -1,4 +1,4 @@
-import { _decorator, Component, game, Node, Quat, Vec2, Vec3, } from 'cc';
+import { _decorator, Component, game, Node } from 'cc';
 import { GameState } from './Enums';
 const { ccclass, property } = _decorator;
 
