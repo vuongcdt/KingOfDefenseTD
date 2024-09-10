@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "ccc5d049-6d43-4905-95a9-9bdcae00769c",
+  "uuid": "01a430b8-983f-4507-a6ac-a31a049108da",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Turrent"
+    "syncNodeName": "AmmoTank"
   }
 }

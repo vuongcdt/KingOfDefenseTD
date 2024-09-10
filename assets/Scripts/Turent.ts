@@ -90,6 +90,7 @@ export class Turent extends Component {
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
         Vec3.subtract(this._diffTowerToTarget, this.node.position, this._listEnemy[0].position);
+        // Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listEnemy[0].position);
 
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
@@ -104,7 +105,9 @@ export class Turent extends Component {
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzleDouble.position.y);
         const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
+
         const position = this.node.position.subtract(normalize);
+        // const position = this.node.getParent().position.subtract(normalize);
 
         if (gunBarrelNumber == 1) {
             this.setAmmo(position);

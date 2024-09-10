@@ -5,12 +5,12 @@ const { ccclass, property } = _decorator;
 @ccclass('Ammo')
 export class Ammo extends Component {
     @property([SpriteFrame])
-    private bodySprites: SpriteFrame[] = [];
+    protected bodySprites: SpriteFrame[] = [];
     @property([SpriteFrame])
-    private rocketTailSprites: SpriteFrame[] = [];
+    protected rocketTailSprites: SpriteFrame[] = [];
 
-    private _damage: number;
-    private _targetName: string;
+    protected _damage: number;
+    protected _targetName: string;
 
     start() {
         let collider = this.getComponent(Collider2D);

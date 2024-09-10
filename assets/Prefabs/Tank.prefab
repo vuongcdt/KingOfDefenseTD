@@ -1007,7 +1007,7 @@
     "shootAvatarSprites": [],
     "gunBarrelNumbers": [],
     "ammoPrefab": {
-      "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
+      "__uuid__": "01a430b8-983f-4507-a6ac-a31a049108da",
       "__expectedType__": "cc.Prefab"
     },
     "towerType": 3,

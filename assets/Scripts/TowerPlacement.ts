@@ -22,6 +22,8 @@ export class TowerPlacement extends Component {
     private actionBuyGun: Node;
     @property([SpriteFrame])
     private backgrounds: SpriteFrame[] = [];
+    @property(Node)
+    private healthBar: Node;
 
     private _levelManager: Node;
     private _background: Sprite;
@@ -37,6 +39,7 @@ export class TowerPlacement extends Component {
         this._store = Store.getInstance();
         this._background = this.getComponent(Sprite);
         this.onHideAction();
+        this.healthBar.active = false;
 
         this.node.on(Node.EventType.TOUCH_START, this.onShowAction, this);
         this.actionBuyRocket.on(Node.EventType.TOUCH_START, this.onBuyRocket, this);
@@ -78,6 +81,7 @@ export class TowerPlacement extends Component {
     setTurrent(prefab: Prefab) {
         const turrent = instantiate(prefab);
         turrent.parent = this._levelManager;
+        // turrent.parent = this.node;
         turrent.position = this.node.position;
 
         this._turrent = turrent.getComponent(Turent);
