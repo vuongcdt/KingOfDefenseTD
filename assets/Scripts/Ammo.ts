@@ -48,7 +48,8 @@ export class Ammo extends Component {
             return;
         }
         tween(this.node).removeSelf().start();
-        target.setHP(this._damage);
+        // target.setHP(this._damage);
+        
         // game.pause();
 
         // if (this._targetName == TowerType[TowerType.Tank]) {

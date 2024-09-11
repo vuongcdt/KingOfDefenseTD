@@ -10,7 +10,7 @@ export class AmmoTank extends Ammo {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.node.getParent().getComponent(TowerPlacement);
         // tween(this.node).removeSelf().start();
-        console.log(target);
+        // console.log(target);
         
         // target.setHP(this._damage);
     }
