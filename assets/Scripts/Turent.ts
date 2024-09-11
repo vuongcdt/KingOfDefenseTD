@@ -27,14 +27,14 @@ export class Turent extends Component {
     @property
     protected reloadTime: number = 0.8;
     @property({ type: [Enum(TurretType)] })
-    protected enemyNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
+    protected targetNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
 
     protected _levelManager: Node;
     protected _target: Node;
     protected _avatar: Sprite;
     protected _isActive: boolean = true;
     protected _countdown: number = 0;
-    protected _listEnemy: Node[] = [];
+    protected _listTarget: Node[] = [];
     protected _angleShoot: number;
     protected _levelTurrent: number = 1;
     protected _diffTowerToTarget: Vec3;
@@ -56,48 +56,62 @@ export class Turent extends Component {
     update(dt: number): void {
         this._countdown += dt;
 
-        if (this._listEnemy.length == 0) {
+        // const towerHasTurrent = this._listTarget.find(tower => tower.getComponent(Turent));
+        // console.log('towerHasTurrent', towerHasTurrent);
+
+        // if (!towerHasTurrent) {
+        //     return;
+        // }
+
+        // if (!this._target) {
+        //     this._target = towerHasTurrent;
+        // }
+
+        if (this._listTarget.length == 0) {
             return;
         }
-
+        if (!this._target) {
+            this._target = this._listTarget[0];
+        }
         this._count++;
-        
+
         this.setAngleShoot();
         this.node.angle = this._angleShoot;
 
-        if (this._countdown > this.reloadTime && this._listEnemy.length > 0 && this._isActive) {
+        if (this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive) {
             this._countdown = 0;
             this.attackEnemy();
         }
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        const enemy = otherCollider.node;
+        const target = otherCollider.node;
+        const isTower = this.targetNames.find(name => TurretType[name] == target.name);
 
-        if (this.enemyNames.find(name => TurretType[name] == enemy.name)) {
-            this._listEnemy.push(enemy)
+        if (isTower) {
+            this._listTarget.push(target)
         }
     }
 
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        const enemy = otherCollider.node;
-        if (this.enemyNames.find(name => TurretType[name] == enemy.name)) {
-            this._listEnemy = this._listEnemy.filter(e => e != enemy);
+        const target = otherCollider.node;
+        if (this.targetNames.find(name => TurretType[name] == target.name)) {
+            this._listTarget = this._listTarget.filter(e => e != target);
             this._target = null;
         }
     }
 
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listEnemy[0].position);
+        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._target.position);
 
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
     attackEnemy() {
-        if (!this._target) {
-            this._target = this._listEnemy[0];
-        }
+        // if (!this._target) {
+        //     this._target = this._listEnemy[0];
+        // }
 
         this.shooting();
 

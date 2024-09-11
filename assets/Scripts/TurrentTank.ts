@@ -1,5 +1,5 @@
-import { _decorator, Vec3 } from "cc";
-import { TowerType } from "./Enums";
+import { _decorator, Collider2D, IPhysics2DContact, Vec3 } from "cc";
+import { TowerType, TurretType } from "./Enums";
 import { Turent } from "./Turent";
 const { ccclass } = _decorator;
 
@@ -8,14 +8,14 @@ export class TurrentTank extends Turent {
 
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listEnemy[0].getParent().position);
+        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listTarget[0].getParent().position);
 
         this._angleShoot = -90 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
     attackEnemy() {
         if (!this._target) {
-            this._target = this._listEnemy[0].getParent();
+            this._target = this._listTarget[0].getParent();
         }
 
         this.shooting();

@@ -13,7 +13,6 @@ export class AmmoTank extends Ammo {
 
         console.log(this._damage);
         
-        
         target.setHP(3);
         // target.setHP(this._damage);
     }
