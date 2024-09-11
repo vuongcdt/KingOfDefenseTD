@@ -8,21 +8,23 @@ export class TurrentTank extends Turent {
 
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listEnemy[0].position);
+        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listEnemy[0].getParent().position);
 
         this._angleShoot = -90 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
     attackEnemy() {
         if (!this._target) {
-            this._target = this._listEnemy[0];
+            this._target = this._listEnemy[0].getParent();
         }
 
         this.shooting();
 
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzleSingle.position.x);
-        const position = this.node.getParent().position.subtract(normalize);
+
+        const parentPos = this.node.getParent().position;
+        const position = new Vec3(parentPos.x, parentPos.y).subtract(normalize);
 
         this.setAmmo(position);
     }

@@ -81,8 +81,7 @@ export class TowerPlacement extends Component {
     setTurrent(prefab: Prefab) {
         const turrent = instantiate(prefab);
         turrent.parent = this._levelManager;
-        // turrent.parent = this.node;
-        turrent.position = this.node.position;
+        turrent.parent = this.node;
 
         this._turrent = turrent.getComponent(Turent);
         this._turrent.initTurrent(this._levelTower);
