@@ -31,6 +31,9 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 42
+      },
+      {
         "__id__": 44
       },
       {
@@ -38,13 +41,10 @@
       },
       {
         "__id__": 48
-      },
-      {
-        "__id__": 50
       }
     ],
     "_prefab": {
-      "__id__": 52
+      "__id__": 50
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -513,13 +513,10 @@
       },
       {
         "__id__": 39
-      },
-      {
-        "__id__": 41
       }
     ],
     "_prefab": {
-      "__id__": 43
+      "__id__": 41
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -807,19 +804,16 @@
     "fileId": "305NDGXtdE44HROtvUJBA2"
   },
   {
-    "__type__": "a6567xHBDpM04il2Im26kuz",
+    "__type__": "1bfcb/ssEJEtYeVMXxVHu0L",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
       "__id__": 20
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": {
       "__id__": 34
-    },
-    "muzzleDouble": {
-      "__id__": 21
     },
     "muzzleSingle": {
       "__id__": 21
@@ -835,24 +829,10 @@
         "__expectedType__": "cc.SpriteFrame"
       }
     ],
-    "shootAvatarSprites": [
-      null,
-      {
-        "__uuid__": "04e2e499-492f-4c55-abc8-0183be86250d@f9941",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "bfd86e4c-9e8d-4479-b63a-6462dc83ed33@f9941",
-        "__expectedType__": "cc.SpriteFrame"
-      }
-    ],
-    "gunBarrelNumbers": [
-      1,
-      1,
-      1
-    ],
+    "shootAvatarSprites": [],
+    "gunBarrelNumbers": [],
     "ammoPrefab": {
-      "__uuid__": "952e02c7-e7bc-422f-8d26-999905188ecf",
+      "__uuid__": "01a430b8-983f-4507-a6ac-a31a049108da",
       "__expectedType__": "cc.Prefab"
     },
     "towerType": 3,
@@ -867,7 +847,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "68i8WLnv5IJadnRjBh7RsN"
+    "fileId": "7dt/PXMuNPDKOiOyfn/pt6"
   },
   {
     "__type__": "cc.Sprite",
@@ -979,52 +959,6 @@
     "fileId": "b0n2OrZedLUJztKLrEutRS"
   },
   {
-    "__type__": "1bfcb/ssEJEtYeVMXxVHu0L",
-    "_name": "",
-    "_objFlags": 0,
-    "__editorExtras__": {},
-    "node": {
-      "__id__": 20
-    },
-    "_enabled": true,
-    "__prefab": {
-      "__id__": 42
-    },
-    "muzzleSingle": {
-      "__id__": 21
-    },
-    "avatarSprites": [
-      null,
-      {
-        "__uuid__": "04e2e499-492f-4c55-abc8-0183be86250d@f9941",
-        "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "bfd86e4c-9e8d-4479-b63a-6462dc83ed33@f9941",
-        "__expectedType__": "cc.SpriteFrame"
-      }
-    ],
-    "shootAvatarSprites": [],
-    "gunBarrelNumbers": [],
-    "ammoPrefab": {
-      "__uuid__": "01a430b8-983f-4507-a6ac-a31a049108da",
-      "__expectedType__": "cc.Prefab"
-    },
-    "towerType": 3,
-    "damage": 3,
-    "speed": 0.3,
-    "reloadTime": 0.8,
-    "enemyNames": [
-      4,
-      5
-    ],
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CompPrefabInfo",
-    "fileId": "7dt/PXMuNPDKOiOyfn/pt6"
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -1047,7 +981,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 45
+      "__id__": 43
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -1075,7 +1009,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 47
+      "__id__": 45
     },
     "tag": 0,
     "_group": 1,
@@ -1105,7 +1039,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 49
+      "__id__": 47
     },
     "enabledContactListener": false,
     "bullet": false,
@@ -1139,7 +1073,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 51
+      "__id__": 49
     },
     "healthBar": {
       "__id__": 8

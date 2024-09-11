@@ -14,12 +14,12 @@ export class Enemy extends Component {
     @property(SpriteFrame)
     private avatarSprites: SpriteFrame;
 
-    private _currentHealth: number;
     private _damage: number;
     private _paths: Vec3[] = [];
     private tweenMove: Tween<Node>[] = [];
     private tweenRotation: Tween<Node>[] = [];
     private _health: number = 10;
+    private _currentHealth: number;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
     

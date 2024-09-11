@@ -30,6 +30,8 @@ export class TowerPlacement extends Component {
     private _levelTower: number = 0;
     private _turrent: Turent;
     private _store: Store;
+    private _health: number = 10;
+    private _currentHealth: number;
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -46,6 +48,7 @@ export class TowerPlacement extends Component {
         this.actionBuyGun.on(Node.EventType.TOUCH_START, this.onBuyGun, this);
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
+
     }
 
     update(dt: number): void {
@@ -85,6 +88,8 @@ export class TowerPlacement extends Component {
 
         this._turrent = turrent.getComponent(Turent);
         this._turrent.initTurrent(this._levelTower);
+
+        this._currentHealth = this._health;
     }
 
     onSell() {
@@ -100,6 +105,21 @@ export class TowerPlacement extends Component {
 
     onHideAction() {
         this.action.setParent(null);
+    }
+
+    setHP(damage: number) {
+        this._currentHealth -= damage;
+
+        this.healthBar.active = true;
+        this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
+
+        if (this._currentHealth <= 0) {
+            this._levelTower = 0;
+
+            this.onSetSprite();
+            // this._turrent.node.setParent(null);
+            this._turrent.node.active = false;
+        }
     }
 }
 
