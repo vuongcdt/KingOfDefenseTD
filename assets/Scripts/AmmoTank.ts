@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, IPhysics2DContact, Node, tween } from 'cc';
+import { _decorator, Collider2D, Component, game, IPhysics2DContact, Node, tween } from 'cc';
 import { Ammo } from './Ammo';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
@@ -9,11 +9,12 @@ const { ccclass, property } = _decorator;
 export class AmmoTank extends Ammo {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.node.getParent().getComponent(TowerPlacement);
-        tween(this.node).removeSelf().start();
 
         if (target) {
+            // tween(this.node).removeSelf().start();
             target.setHP(3);
             // target.setHP(this._damage);
+            // game.pause();
         }
     }
 }

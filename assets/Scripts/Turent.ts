@@ -103,23 +103,19 @@ export class Turent extends Component {
 
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._target.position);
+        Vec3.subtract(this._diffTowerToTarget, this.node.parent.position, this._target.position);
 
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
     attackEnemy() {
-        // if (!this._target) {
-        //     this._target = this._listEnemy[0];
-        // }
-
         this.shooting();
 
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzleDouble.position.y);
         const gunBarrelNumber = this.gunBarrelNumbers[this._levelTurrent];
 
-        const parentPos = this.node.getParent().position;
+        const parentPos = this.node.parent.position;
         const position = new Vec3(parentPos.x, parentPos.y).subtract(normalize);
 
         if (gunBarrelNumber == 1) {
@@ -131,8 +127,6 @@ export class Turent extends Component {
     }
 
     initTurrent(levelTurrent: number) {
-        console.log('initTurrent');
-        
         this._levelTurrent = levelTurrent;
         this._avatar = this.node.getComponent(Sprite);
         this.onSetSprite();

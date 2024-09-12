@@ -40,34 +40,11 @@ export class Ammo extends Component {
         let target = otherCollider.node.getComponent(Enemy);
         
         if (!target) {
-            // target = otherCollider.node.getParent().getComponent(Enemy);
-            // console.log(target);
-            // if (!target) {
-            //     return;
-            // }
             return;
         }
+        
         tween(this.node).removeSelf().start();
         target.setHP(this._damage);
-
-        // game.pause();
-
-        // if (this._targetName == TowerType[TowerType.Tank]) {
-        //     const target = otherCollider.node.getComponent(Enemy);
-
-        //     if (!target) {
-        //         return;
-        //     }
-        //     tween(this.node).removeSelf().start();
-        //     target.setHP(this._damage);
-        // } else {
-        //     // const target = otherCollider.node.getComponent(Turent);
-        //     // if (target) {
-        //     //     tween(this.node).removeSelf().start();
-        //     //     target.setHP(this._damage);
-        //     // }
-        // }
-
     }
 }
 

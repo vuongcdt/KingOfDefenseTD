@@ -1,6 +1,7 @@
-import { _decorator, Collider2D, IPhysics2DContact, Vec3 } from "cc";
+import { _decorator, Collider2D, instantiate, IPhysics2DContact, Vec3 } from "cc";
 import { TowerType, TurretType } from "./Enums";
 import { Turent } from "./Turent";
+import { Ammo } from "./Ammo";
 const { ccclass } = _decorator;
 
 @ccclass('TurrentTank')
@@ -8,14 +9,14 @@ export class TurrentTank extends Turent {
 
     setAngleShoot() {
         this._diffTowerToTarget = new Vec3();
-        Vec3.subtract(this._diffTowerToTarget, this.node.getParent().position, this._listTarget[0].getParent().position);
+        Vec3.subtract(this._diffTowerToTarget, this.node.parent.position, this._target.parent.position);
 
         this._angleShoot = -90 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
     attackEnemy() {
         if (!this._target) {
-            this._target = this._listTarget[0].getParent();
+            this._target = this._listTarget[0].parent;
         }
 
         this.shooting();
@@ -23,7 +24,7 @@ export class TurrentTank extends Turent {
         var normalize = this._diffTowerToTarget.normalize();
         normalize.multiplyScalar(this.muzzleSingle.position.x);
 
-        const parentPos = this.node.getParent().position;
+        const parentPos = this.node.parent.position;
         const position = new Vec3(parentPos.x, parentPos.y).subtract(normalize);
 
         this.setAmmo(position);
@@ -38,6 +39,17 @@ export class TurrentTank extends Turent {
                 this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
             }
         }, 100);
+    }
+
+    setAmmo(position: Vec3, offset: number = 0) {
+        const target = new Vec3(this._target.parent.position.x + offset, this._target.parent.position.y + offset);
+        const ammo = instantiate(this.ammoPrefab);
+
+        ammo.position = new Vec3(position.x + offset, position.y + offset);
+        ammo.parent = this._levelManager;
+
+        ammo.getComponent(Ammo)
+            .init(target, this._target.name, this.speed, this.damage, this._angleShoot, this._levelTurrent);
     }
 }
 

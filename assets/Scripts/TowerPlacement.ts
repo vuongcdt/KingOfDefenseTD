@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Label, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
@@ -6,10 +6,6 @@ const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')
 export class TowerPlacement extends Component {
-    @property(Node)
-    private gunTurrent: Node;
-    @property(Node)
-    private rocketTurrent: Node;
     @property(Prefab)
     private gunTowerPrefab: Prefab;
     @property(Prefab)
@@ -21,6 +17,8 @@ export class TowerPlacement extends Component {
     @property(Node)
     private actionUpgrade: Node;
     @property(Node)
+    private actionRepair: Node;
+    @property(Node)
     private actionSell: Node;
     @property(Node)
     private actionBuyGun: Node;
@@ -28,13 +26,17 @@ export class TowerPlacement extends Component {
     private backgrounds: SpriteFrame[] = [];
     @property(Node)
     private healthBar: Node;
+    @property(Label)
+    private healthText: Label;
+    @property(Node)
+    private fire: Node;
 
     private _levelManager: Node;
     private _background: Sprite;
     private _levelTower: number = 0;
     private _turrent: Turent;
     private _store: Store;
-    private _health: number = 10;
+    private _health: number = 40;
     private _currentHealth: number;
 
     public set levelManager(value: Node) {
@@ -46,14 +48,14 @@ export class TowerPlacement extends Component {
         this._background = this.getComponent(Sprite);
         this.onHideAction();
         this.healthBar.active = false;
+        this.fire.active = false;
 
         this.node.on(Node.EventType.TOUCH_START, this.onShowAction, this);
         this.actionBuyRocket.on(Node.EventType.TOUCH_START, this.onBuyRocket, this);
         this.actionBuyGun.on(Node.EventType.TOUCH_START, this.onBuyGun, this);
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
-        this.gunTurrent.active = false;
-        this.rocketTurrent.active = false;
+        this.actionRepair.on(Node.EventType.TOUCH_START, this.onRepair, this);
     }
 
     update(dt: number): void {
@@ -67,6 +69,7 @@ export class TowerPlacement extends Component {
         this.actionUpgrade.active = this._levelTower != 0 && this._levelTower != this.backgrounds.length - 1;
         this.actionBuyGun.active = this._levelTower == 0;
         this.actionBuyRocket.active = this._levelTower == 0;
+        this.actionRepair.active = this._currentHealth < this._health && this._levelTower > 0;
     }
 
     onUpgrade() {
@@ -77,22 +80,18 @@ export class TowerPlacement extends Component {
     onBuyGun() {
         this._levelTower++;
         this.setTurrent(this.gunTowerPrefab);
-        // this.gunTurrent.active = true;
-        // this._turrent = this.gunTurrent.getComponent(Turent);
         this.onSetSprite();
     }
 
     onBuyRocket() {
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
-        // this.rocketTurrent.active = true;
-        // this._turrent = this.rocketTurrent.getComponent(Turent);
         this.onSetSprite();
     }
 
     setTurrent(prefab: Prefab) {
+        this.fire.active = false;
         const turrent = instantiate(prefab);
-        // turrent.parent = this._levelManager;
         turrent.parent = this.node;
 
         this._turrent = turrent.getComponent(Turent);
@@ -104,6 +103,23 @@ export class TowerPlacement extends Component {
     onSell() {
         this._levelTower = 0;
         this.onSetSprite();
+        tween(this._turrent.node).destroySelf().start();
+        this.healthBar.active = false;
+    }
+
+    onRepair() {
+        this._currentHealth = this._health;
+        this.healthText.string = this._currentHealth.toString();
+        this.healthBar.getComponentInChildren(Sprite).fillRange = 1;
+        this.fire.active = false;
+        this.onHideAction();
+
+        setTimeout(() => {
+            if (this.healthBar.active) {
+                this.healthBar.active = false;
+
+            }
+        }, 200);
     }
 
     onSetSprite() {
@@ -120,18 +136,20 @@ export class TowerPlacement extends Component {
 
     setHP(damage: number) {
         this._currentHealth -= damage;
+        this.healthText.string = this._currentHealth.toString();
 
         this.healthBar.active = true;
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
 
         if (this._currentHealth <= 0) {
-            // this.onSell();
             this._levelTower = 0;
-            // this._currentHealth = this._health;
             this._background.spriteFrame = this.backgrounds[this._levelTower];
-            // tween(this.gunTurrent).destroySelf().start();
             tween(this._turrent.node).destroySelf().start();
-            // tween(this.gunTurrent).hide().start();
+            this.healthBar.active = false;
+        }
+
+        if(this._currentHealth < this._health/2){
+            this.fire.active = true;
         }
     }
 }
