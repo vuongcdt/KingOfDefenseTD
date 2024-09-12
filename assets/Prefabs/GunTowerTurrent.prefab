@@ -760,7 +760,7 @@
     "damage": 3,
     "speed": 0.3,
     "reloadTime": 0.8,
-    "enemyNames": [
+    "targetNames": [
       1,
       2
     ],

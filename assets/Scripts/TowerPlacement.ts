@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
@@ -10,6 +10,10 @@ export class TowerPlacement extends Component {
     private gunTurrent: Node;
     @property(Node)
     private rocketTurrent: Node;
+    @property(Prefab)
+    private gunTowerPrefab: Prefab;
+    @property(Prefab)
+    private rocketTowerPrefab: Prefab;
     @property(Node)
     private action: Node;
     @property(Node)
@@ -72,17 +76,17 @@ export class TowerPlacement extends Component {
 
     onBuyGun() {
         this._levelTower++;
-        // this.setTurrent(this.gunTowerPrefab);
-        this.gunTurrent.active = true;
-        this._turrent = this.gunTurrent.getComponent(Turent);
+        this.setTurrent(this.gunTowerPrefab);
+        // this.gunTurrent.active = true;
+        // this._turrent = this.gunTurrent.getComponent(Turent);
         this.onSetSprite();
     }
 
     onBuyRocket() {
         this._levelTower++;
-        // this.setTurrent(this.rocketTowerPrefab);
-        this.rocketTurrent.active = true;
-        this._turrent = this.rocketTurrent.getComponent(Turent);
+        this.setTurrent(this.rocketTowerPrefab);
+        // this.rocketTurrent.active = true;
+        // this._turrent = this.rocketTurrent.getComponent(Turent);
         this.onSetSprite();
     }
 
@@ -100,8 +104,6 @@ export class TowerPlacement extends Component {
     onSell() {
         this._levelTower = 0;
         this.onSetSprite();
-        // this.gunTurrent.active = false;
-        // this.rocketTurrent.active = false;
     }
 
     onSetSprite() {
@@ -123,7 +125,13 @@ export class TowerPlacement extends Component {
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
 
         if (this._currentHealth <= 0) {
-            this.onSell();
+            // this.onSell();
+            this._levelTower = 0;
+            // this._currentHealth = this._health;
+            this._background.spriteFrame = this.backgrounds[this._levelTower];
+            // tween(this.gunTurrent).destroySelf().start();
+            tween(this._turrent.node).destroySelf().start();
+            // tween(this.gunTurrent).hide().start();
         }
     }
 }

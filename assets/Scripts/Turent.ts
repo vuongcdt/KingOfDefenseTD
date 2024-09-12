@@ -131,6 +131,8 @@ export class Turent extends Component {
     }
 
     initTurrent(levelTurrent: number) {
+        console.log('initTurrent');
+        
         this._levelTurrent = levelTurrent;
         this._avatar = this.node.getComponent(Sprite);
         this.onSetSprite();
@@ -156,6 +158,9 @@ export class Turent extends Component {
         }
 
         setTimeout(() => {
+            if(!this.node){
+                return
+            }
             this.muzzleDouble.active = false;
             this.muzzleSingle.active = false;
             if (this.towerType == TowerType.RocketTower) {

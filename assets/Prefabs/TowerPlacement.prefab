@@ -1238,6 +1238,14 @@
     "rocketTurrent": {
       "__id__": 50
     },
+    "gunTowerPrefab": {
+      "__uuid__": "8e0359b2-6f2d-4776-bf77-8d28fd4704e9",
+      "__expectedType__": "cc.Prefab"
+    },
+    "rocketTowerPrefab": {
+      "__uuid__": "8d41bf33-50ea-4e72-a91d-1ac764c8566f",
+      "__expectedType__": "cc.Prefab"
+    },
     "action": {
       "__id__": 2
     },

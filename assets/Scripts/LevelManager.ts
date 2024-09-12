@@ -58,7 +58,7 @@ export class LevelManager extends Component {
             }
             this._count++;
             this.spawnEnemy(this.tankPrefab, this.wayPath);
-        }, 2000);
+        }, 5000);
 
         this._time2 = setInterval(() => {
             // if (this._count >= 5) {
