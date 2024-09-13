@@ -38,8 +38,8 @@ export class LevelManager extends Component {
         this._store.setLevelManage(this.node);
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        // this.spawnEnemy(this.soldierPrefab, this.wayPath);
-        this.spawnEnemy(this.tankPrefab, this.wayPath);
+        this.spawnEnemy(this.soldierPrefab, this.wayPath);
+        // this.spawnEnemy(this.tankPrefab, this.wayPath);
 
         // setInterval(() => {
         // if (game.isPaused()) {

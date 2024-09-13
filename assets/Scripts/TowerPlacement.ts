@@ -141,6 +141,10 @@ export class TowerPlacement extends Component {
         this.healthBar.active = true;
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
 
+        if (this.action.active) {
+            this.actionRepair.active = true;
+        }
+
         if (this._currentHealth <= 0) {
             this._levelTower = 0;
             this._background.spriteFrame = this.backgrounds[this._levelTower];
@@ -148,7 +152,7 @@ export class TowerPlacement extends Component {
             this.healthBar.active = false;
         }
 
-        if(this._currentHealth < this._health/2){
+        if (this._currentHealth < this._health / 2) {
             this.fire.active = true;
         }
     }
