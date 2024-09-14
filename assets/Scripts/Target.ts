@@ -19,9 +19,9 @@ export class Target extends Component {
             return;
         }
         this._countEnemy--;
-        console.log('countEnemy',this._countEnemy);
+        // console.log('countEnemy',this._countEnemy);
         
-        if (this._countEnemy <= 0) {
+        if (this._countEnemy == 0) {
             console.log("GAME OVER");
             // game.pause();
         }

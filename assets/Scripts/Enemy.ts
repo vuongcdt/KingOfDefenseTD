@@ -1,4 +1,4 @@
-import { _decorator, Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, Component, find, Node, randomRange, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
@@ -40,12 +40,15 @@ export class Enemy extends Component {
         this._currentPos = this.node.position;
         this.avatar.angle = 180;
 
+        const random = randomRange(-50, 50);
+
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
+            const pos = new Vec3(point.x - random, point.y - random);
 
-            const nodeTween = tween(this.node).to(timeMove, { position: point });
+            const nodeTween = tween(this.node).to(timeMove, { position: pos });
             const avatarTween = tween(this.avatar)
-                .to(1,{ angle: this.getAngleAvatar(this._currentPos, point) })
+                .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })
                 .delay(timeMove - 1);
 
             // if (index == this._paths.length - 1) {

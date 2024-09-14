@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, random, randomRange, v3, Vec2, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -39,6 +39,7 @@ export class LevelManager extends Component {
     private _count: number = 0;
     private _time1: number;
     private _time2: number;
+    private _coefficient = 1;
 
     start() {
         this._store = Store.getInstance();
@@ -52,15 +53,18 @@ export class LevelManager extends Component {
 
         this.generateWay();
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+
+        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);
 
-        // setInterval(() => {
-        // if (game.isPaused()) {
-        //     return;
-        // }
-        //     this.spawnEnemy(this.soldierPrefab,this._wayPaths);
-        // }, 2000);
+        setInterval(() => {
+        if (game.isPaused()) {
+            return;
+        }
+            this.spawnEnemy(this.soldierPrefab,this._wayPaths);
+            this.spawnEnemy(this.soldierPrefab,this._wayPaths);
+        }, 2000 * this._coefficient);
 
         this._time1 = setInterval(() => {
             // if (this._count >= 5) {
@@ -72,7 +76,8 @@ export class LevelManager extends Component {
             }
             this._count++;
             this.spawnEnemy(this.tankPrefab, this._wayPaths);
-        }, 5000);
+            this.spawnEnemy(this.tankPrefab, this._wayPaths);
+        }, 5000 * this._coefficient);
 
         this._time2 = setInterval(() => {
             // if (this._count >= 5) {
@@ -82,7 +87,8 @@ export class LevelManager extends Component {
                 return;
             }
             this.spawnEnemy(this.planePrefab, this._planePaths);
-        }, 5000);
+            this.spawnEnemy(this.planePrefab, this._planePaths);
+        }, 5000 * this._coefficient);
 
         this.spawnTowerPlacement();
     }
@@ -132,7 +138,7 @@ export class LevelManager extends Component {
     spawnTowerPlacement() {
         this._towerPlacements.forEach(point => {
             const towerPlacement = instantiate(this.towerPlacementPrefab);
-            towerPlacement.parent = this.node;
+            towerPlacement.parent = this.towerPlacementBlock;
             towerPlacement.position = point;
             towerPlacement.getComponent(TowerPlacement).levelManager = this.node;
 
