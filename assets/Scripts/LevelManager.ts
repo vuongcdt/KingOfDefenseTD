@@ -66,12 +66,17 @@ export class LevelManager extends Component {
 
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);
 
         setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
+            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
             this.spawnEnemy(this.soldierPrefab, this._wayPaths);
             this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         }, 2000 * this._coefficient);
@@ -96,6 +101,8 @@ export class LevelManager extends Component {
             if (game.isPaused()) {
                 return;
             }
+            this.spawnEnemy(this.planePrefab, this._planePaths);
+            this.spawnEnemy(this.planePrefab, this._planePaths);
             this.spawnEnemy(this.planePrefab, this._planePaths);
             this.spawnEnemy(this.planePrefab, this._planePaths);
         }, 5000 * this._coefficient);
@@ -152,11 +159,25 @@ export class LevelManager extends Component {
         stonePos.forEach((pos, index) => {
             this._treeNodes[index].position = pos;
             // this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[index % this.stoneSprites.length];
-            this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[randomRangeInt(0,this.stoneSprites.length)];
+            this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[randomRangeInt(0, this.stoneSprites.length)];
         })
     }
 
     generateWay() {
+        function transformArray(arr: number[]): number[] {
+            return arr.map((num, index) => {
+                return index % 2 === 0 ? num : -num;
+            });
+        }
+        
+        // Ví dụ sử dụng:
+        const originalArray = [0, 1, 2, 3, 4];
+        const transformedArray = transformArray(originalArray);
+        
+        console.log(transformedArray); // Kết quả: [0, 1, -1, 2, -2]
+
+
+        
         let graphics = this.getComponent(Graphics);
 
         graphics.strokeColor = new Color().fromHEX("#dc7633");
@@ -168,13 +189,17 @@ export class LevelManager extends Component {
 
     drawBezierCurve(graphics: Graphics, points: Vec3[]) {
         graphics.moveTo(points[0].x, points[0].y);
-
+        // const offsetX = 20;
+        // const offsetY = 20;
+        const offsetX = 0;
+        const offsetY = 0;
+   
         for (let i = 1; i < points.length; i += 3) {
             let p0 = points[i - 1];
             let p1 = points[i];
             let p2 = points[i + 1];
 
-            graphics.bezierCurveTo(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
+            graphics.bezierCurveTo(p0.x + offsetX, p0.y + offsetY, p1.x + offsetX, p1.y + offsetY, p2.x + offsetX, p2.y + offsetY);
         }
     }
 

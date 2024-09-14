@@ -22,6 +22,8 @@ export class Enemy extends Component {
     private _currentHealth: number;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
+    protected _offset: number = 40;
+    protected _number: number = 2;
 
     start(): void {
     }
@@ -39,12 +41,12 @@ export class Enemy extends Component {
         this._currentPos = this.node.position;
         this.avatar.angle = 180;
 
-        const random = randomRangeInt(-3, 3);
+        const random = randomRangeInt(-this._number, this._number) + 0.5;
 
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
-            const pos = new Vec3(point.x - random * 30, point.y - random * 30);
+            const pos = new Vec3(point.x - random * this._offset, point.y - random * this._offset);
 
             const nodeTween = tween(this.node)
                 .to(timeMove, { position: pos })
@@ -53,10 +55,6 @@ export class Enemy extends Component {
             const avatarTween = tween(this.avatar)
                 .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })
                 .delay(timeMove - 1);
-
-            // if (index == this._paths.length - 1) {
-            //     t1.call(()=>this.checkGameOver());
-            // }
 
             this.tweenMove.push(nodeTween);
             this.tweenRotation.push(avatarTween);
