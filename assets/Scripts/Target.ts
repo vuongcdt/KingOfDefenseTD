@@ -23,7 +23,7 @@ export class Target extends Component {
         
         if (this._countEnemy <= 0) {
             console.log("GAME OVER");
-            game.pause();
+            // game.pause();
         }
 
     }

@@ -1,4 +1,4 @@
-import { _decorator,  Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, Component, find, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
@@ -22,7 +22,7 @@ export class Enemy extends Component {
     private _currentHealth: number;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
-    
+
     start(): void {
     }
 
@@ -43,17 +43,17 @@ export class Enemy extends Component {
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
 
-            const t1 = tween(this.node).to(timeMove, { position: point });
-            const t2 = tween(this.avatar)
-                .to(0.2 * timeMove, { angle: this.getAngleAvatar(this._currentPos, point) })
-                .delay(0.8 * timeMove);
+            const nodeTween = tween(this.node).to(timeMove, { position: point });
+            const avatarTween = tween(this.avatar)
+                .to(1,{ angle: this.getAngleAvatar(this._currentPos, point) })
+                .delay(timeMove - 1);
 
             // if (index == this._paths.length - 1) {
             //     t1.call(()=>this.checkGameOver());
             // }
 
-            this.tweenMove.push(t1);
-            this.tweenRotation.push(t2);
+            this.tweenMove.push(nodeTween);
+            this.tweenRotation.push(avatarTween);
         });
 
 
