@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, random, randomRange, v3, Vec2, Vec3 } from 'cc';
+import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -28,7 +28,12 @@ export class LevelManager extends Component {
     private towerPlacementBlock: Node;
     @property(Prefab)
     private towerPlacementPrefab: Prefab;
+    @property([SpriteFrame])
+    private stoneSprites: SpriteFrame[] = [];
+    @property(Node)
+    private background: Node;
 
+    private _treeNodes: Node[] = [];
     private _wayPaths: Vec3[] = [];
     private _planePaths: Vec3[] = [];
     private _towerPlacements: Vec3[] = [];
@@ -39,7 +44,7 @@ export class LevelManager extends Component {
     private _count: number = 0;
     private _time1: number;
     private _time2: number;
-    private _coefficient = 1;
+    private _coefficient = 2;
 
     start() {
         this._store = Store.getInstance();
@@ -47,11 +52,16 @@ export class LevelManager extends Component {
 
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
+        this._treeNodes = this.background.children;
         this._wayPaths = this.wayPathBlock.children.map(node => node.position);
+        this._wayPaths.unshift(this._startPos);
+        this._wayPaths.push(this._endPos);
         this._planePaths = this.planePathBlock.children.map(node => node.position);
         this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
 
         this.generateWay();
+        this.generateStoneAndTree();
+
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
@@ -59,11 +69,11 @@ export class LevelManager extends Component {
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);
 
         setInterval(() => {
-        if (game.isPaused()) {
-            return;
-        }
-            this.spawnEnemy(this.soldierPrefab,this._wayPaths);
-            this.spawnEnemy(this.soldierPrefab,this._wayPaths);
+            if (game.isPaused()) {
+                return;
+            }
+            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         }, 2000 * this._coefficient);
 
         this._time1 = setInterval(() => {
@@ -93,28 +103,70 @@ export class LevelManager extends Component {
         this.spawnTowerPlacement();
     }
 
+    generateStoneAndTree() {
+        const distance = 120;
+        const stonePos = [];
+        while (true) {
+            if (stonePos.length > this._treeNodes.length - 1) {
+                break;
+            }
+            const randomX = randomRange(-960, 960);
+            const randomY = randomRange(-540, 540);
+            let isPass = true;
+
+            for (let index = 0; index < this._wayPaths.length - 1; index++) {
+                const point1 = this._wayPaths[index];
+                const point2 = this._wayPaths[index + 1];
+
+                const maxX = Math.max(point1.x, point2.x);
+                const minX = Math.min(point1.x, point2.x);
+
+                const maxY = Math.max(point1.y, point2.y);
+                const minY = Math.min(point1.y, point2.y);
+                if (randomX < maxX + distance && randomX > minX - distance && randomY < maxY + distance && randomY > minY - distance) {
+                    isPass = false;
+                    break;
+                }
+            }
+
+            for (let index = 0; index < this._towerPlacements.length - 1; index++) {
+                const point1 = this._towerPlacements[index];
+                const point2 = this._towerPlacements[index + 1];
+
+                const maxX = Math.max(point1.x, point2.x);
+                const minX = Math.min(point1.x, point2.x);
+
+                const maxY = Math.max(point1.y, point2.y);
+                const minY = Math.min(point1.y, point2.y);
+                if (randomX < maxX + distance && randomX > minX - distance && randomY < maxY + distance && randomY > minY - distance) {
+                    isPass = false;
+                    break;
+                }
+            }
+
+            if (isPass) {
+                stonePos.push(new Vec3(randomX, randomY));
+            }
+        }
+
+        stonePos.forEach((pos, index) => {
+            this._treeNodes[index].position = pos;
+            // this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[index % this.stoneSprites.length];
+            this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[randomRangeInt(0,this.stoneSprites.length)];
+        })
+    }
+
     generateWay() {
         let graphics = this.getComponent(Graphics);
 
         graphics.strokeColor = new Color().fromHEX("#dc7633");
         graphics.lineWidth = 200;
 
-        let points = [
-            this._startPos,
-            ...this._wayPaths,
-            this._endPos,
-        ];
-
-        this.drawBezierCurve(graphics, points);
+        this.drawBezierCurve(graphics, this._wayPaths);
         graphics.stroke();
     }
 
     drawBezierCurve(graphics: Graphics, points: Vec3[]) {
-        if (points.length < 4) {
-            console.error("Cần ít nhất 4 điểm để vẽ một đoạn Bezier.");
-            return;
-        }
-
         graphics.moveTo(points[0].x, points[0].y);
 
         for (let i = 1; i < points.length; i += 3) {

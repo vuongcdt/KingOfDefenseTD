@@ -36,7 +36,7 @@ export class TowerPlacement extends Component {
     private _levelTower: number = 0;
     private _turrent: Turent;
     private _store: Store;
-    private _health: number = 40;
+    private _health: number = 1000;
     private _currentHealth: number;
 
     public set levelManager(value: Node) {
