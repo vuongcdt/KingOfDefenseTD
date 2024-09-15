@@ -13,7 +13,7 @@ export enum TowerType {
     // BigRocket,
 }
 
-export enum TurretType {
+export enum CharacterType {
     None,
     Soldier,
     Tank,

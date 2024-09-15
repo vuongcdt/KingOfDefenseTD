@@ -10,8 +10,8 @@ export class Tank extends Enemy {
     @property(SpriteFrame)
     private headSprites: SpriteFrame;
 
-    protected _offset: number = 0;
-    protected _number: number = 0;
+    protected _offset: number = 70;
+    // protected _number: number = 0;
 
     start() {
         this.headTank.getComponent(Sprite).spriteFrame = this.headSprites;

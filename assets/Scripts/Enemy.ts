@@ -22,7 +22,7 @@ export class Enemy extends Component {
     private _currentHealth: number;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
-    protected _offset: number = 50;
+    protected _offset: number = 40;
 
     start(): void {
     }
@@ -42,12 +42,14 @@ export class Enemy extends Component {
 
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
-            let pos= Vec3.ZERO;
-            if (Math.abs(this._currentPos.x - point.x) <= Math.abs(this._currentPos.y - point.y)) {
-                pos = new Vec3(point.x - indexPos * this._offset, point.y);
-            } else {
-                pos = new Vec3(point.x, point.y - indexPos * this._offset);
-            }
+            let pos = Vec3.ZERO;
+            // if (Math.abs(this._currentPos.x - point.x) <= Math.abs(this._currentPos.y - point.y)) {
+            //     pos = new Vec3(point.x - indexPos * this._offset, point.y);
+            // } else {
+            //     pos = new Vec3(point.x, point.y - indexPos * this._offset);
+            // }
+
+            pos = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
 
             const nodeTween = tween(this.node)
                 .to(timeMove, { position: pos });

@@ -2,6 +2,8 @@ import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, 
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
+import { enemyData } from './EnemyData';
+import { CharacterType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -14,6 +16,8 @@ export class LevelManager extends Component {
     private startPoint: Node = null;
     @property(Node)
     private endPoint: Node = null;
+    @property([Prefab])
+    private prefabEnemies: Prefab[] = [];
     @property(Prefab)
     private soldierPrefab: Prefab = null;
     @property(Prefab)
@@ -45,6 +49,7 @@ export class LevelManager extends Component {
     private _coefficient = 2;
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
+    private _time = 0;
 
 
     start() {
@@ -55,8 +60,10 @@ export class LevelManager extends Component {
         this._endPos = this.endPoint.position;
         this._treeNodes = this.background.children;
         this._wayPaths = this.wayPathBlock.children.map(node => node.position);
+
         this._wayPaths.unshift(this._startPos);
         this._wayPaths.push(this._endPos);
+        
         this._planePaths = this.planePathBlock.children.map(node => node.position);
         this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
 
@@ -65,43 +72,24 @@ export class LevelManager extends Component {
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-
-        // this.spawnEnemy(this.tankPrefab, this._wayPaths);
-
-        setInterval(() => {
-            if (game.isPaused()) {
-                return;
-            }
-            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        }, 2000 * this._coefficient);
-
-        setInterval(() => {
-            if (game.isPaused()) {
-                return;
-            }
-            this._count++;
-            this.spawnEnemy(this.tankPrefab, this._wayPaths);
-        }, 5000 * this._coefficient);
-
-        setInterval(() => {
-            if (game.isPaused()) {
-                return;
-            }
-            this.spawnEnemy(this.planePrefab, this._planePaths);
-            this.spawnEnemy(this.planePrefab, this._planePaths);
-            this.spawnEnemy(this.planePrefab, this._planePaths);
-        }, 5000 * this._coefficient);
-
+        this.spawnEnemyData();
         this.spawnTowerPlacement();
     }
 
+    spawnEnemyData() {
+        enemyData.forEach(data => {
+            const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
+            this._time += data.time;
+            setTimeout(() => {
+                for (const _ of Array(data.total)) {
+                    this.spawnEnemy(this.prefabEnemies[data.type - 1], path);
+                }
+            }, this._time * 1000);
+        })
+    }
+
     generateStoneAndTree() {
-        const distance = 120;
+        const offset = 150;
         const stonePos = [];
         while (true) {
             if (stonePos.length > this._treeNodes.length - 1) {
@@ -120,7 +108,7 @@ export class LevelManager extends Component {
 
                 const maxY = Math.max(point1.y, point2.y);
                 const minY = Math.min(point1.y, point2.y);
-                if (randomX < maxX + distance && randomX > minX - distance && randomY < maxY + distance && randomY > minY - distance) {
+                if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
                     isPass = false;
                     break;
                 }
@@ -135,7 +123,7 @@ export class LevelManager extends Component {
 
                 const maxY = Math.max(point1.y, point2.y);
                 const minY = Math.min(point1.y, point2.y);
-                if (randomX < maxX + distance && randomX > minX - distance && randomY < maxY + distance && randomY > minY - distance) {
+                if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
                     isPass = false;
                     break;
                 }
@@ -167,7 +155,7 @@ export class LevelManager extends Component {
     drawBezierCurve(graphics: Graphics, points: Vec3[]) {
         graphics.moveTo(points[0].x, points[0].y);
 
-        for (let i = 1; i < points.length; i += 3) {
+        for (let i = 1; i < points.length - 1; i += 3) {
             let p0 = points[i - 1];
             let p1 = points[i];
             let p2 = points[i + 1];

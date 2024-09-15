@@ -1,6 +1,6 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { TowerType, TurretType } from "./Enums";
+import { TowerType, CharacterType } from "./Enums";
 import Store from "./Store";
 const { ccclass, property } = _decorator;
 
@@ -26,8 +26,8 @@ export class Turent extends Component {
     protected speed: number = 1;
     @property
     protected reloadTime: number = 0.8;
-    @property({ type: [Enum(TurretType)] })
-    protected targetNames: number[] = [TurretType.Soldier, TurretType.Tank, TurretType.Plane];
+    @property({ type: [Enum(CharacterType)] })
+    protected targetNames: number[] = [CharacterType.Soldier, CharacterType.Tank, CharacterType.Plane];
 
     protected _levelManager: Node;
     protected _target: Node;
@@ -86,7 +86,7 @@ export class Turent extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const target = otherCollider.node;
-        const isTower = this.targetNames.find(name => TurretType[name] == target.name);
+        const isTower = this.targetNames.find(name => CharacterType[name] == target.name);
 
         if (isTower) {
             this._listTarget.push(target)
@@ -95,7 +95,7 @@ export class Turent extends Component {
 
     onEndContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const target = otherCollider.node;
-        if (this.targetNames.find(name => TurretType[name] == target.name)) {
+        if (this.targetNames.find(name => CharacterType[name] == target.name)) {
             this._listTarget = this._listTarget.filter(e => e != target);
             this._target = null;
         }

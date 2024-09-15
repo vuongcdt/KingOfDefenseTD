@@ -1,5 +1,5 @@
 import { _decorator, Collider2D, instantiate, IPhysics2DContact, Vec3 } from "cc";
-import { TowerType, TurretType } from "./Enums";
+import { TowerType, CharacterType } from "./Enums";
 import { Turent } from "./Turent";
 import { Ammo } from "./Ammo";
 const { ccclass } = _decorator;
