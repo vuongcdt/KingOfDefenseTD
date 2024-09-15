@@ -2,7 +2,7 @@ import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, 
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
-import { enemyData } from './EnemyData';
+import { enemiesData, EnemySpawn } from './EnemyData';
 import { CharacterType } from './Enums';
 const { ccclass, property } = _decorator;
 
@@ -36,6 +36,8 @@ export class LevelManager extends Component {
     private stoneSprites: SpriteFrame[] = [];
     @property(Node)
     private background: Node;
+    @property({type:[EnemySpawn]})
+    private enemiesData: EnemySpawn[] = [];
 
     private _treeNodes: Node[] = [];
     private _wayPaths: Vec3[] = [];
@@ -53,6 +55,7 @@ export class LevelManager extends Component {
 
 
     start() {
+        this.enemiesData = enemiesData;
         this._store = Store.getInstance();
         this._store.setLevelManage(this.node);
 
@@ -63,7 +66,7 @@ export class LevelManager extends Component {
 
         this._wayPaths.unshift(this._startPos);
         this._wayPaths.push(this._endPos);
-        
+
         this._planePaths = this.planePathBlock.children.map(node => node.position);
         this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
 
@@ -77,7 +80,7 @@ export class LevelManager extends Component {
     }
 
     spawnEnemyData() {
-        enemyData.forEach(data => {
+        enemiesData.forEach(data => {
             const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
             this._time += data.time;
             setTimeout(() => {
