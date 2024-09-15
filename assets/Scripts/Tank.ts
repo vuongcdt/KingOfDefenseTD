@@ -10,8 +10,8 @@ export class Tank extends Enemy {
     @property(SpriteFrame)
     private headSprites: SpriteFrame;
 
-    protected _offset: number = 80;
-    protected _number: number = 1;
+    protected _offset: number = 0;
+    protected _number: number = 0;
 
     start() {
         this.headTank.getComponent(Sprite).spriteFrame = this.headSprites;
@@ -20,9 +20,9 @@ export class Tank extends Enemy {
 
     update(deltaTime: number) {
     }
-    
-    init(path: Vec3[], levelManage: LevelManager) {
-        super.init(path,levelManage);
+
+    init(path: Vec3[], levelManage: LevelManager, indexPos: number) {
+        super.init(path, levelManage, indexPos);
     }
 }
 

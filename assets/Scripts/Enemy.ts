@@ -22,8 +22,7 @@ export class Enemy extends Component {
     private _currentHealth: number;
     private _currentPos: Vec3;
     private _levelManage: LevelManager;
-    protected _offset: number = 40;
-    protected _number: number = 2;
+    protected _offset: number = 50;
 
     start(): void {
     }
@@ -31,7 +30,7 @@ export class Enemy extends Component {
     update(dt: number): void {
     }
 
-    init(path: Vec3[], levelManage: LevelManager) {
+    init(path: Vec3[], levelManage: LevelManager, indexPos: number) {
         this._levelManage = levelManage;
         this.healthBar.active = false;
         this._paths = [];
@@ -41,16 +40,17 @@ export class Enemy extends Component {
         this._currentPos = this.node.position;
         this.avatar.angle = 180;
 
-        const random = randomRangeInt(-this._number, this._number) + 0.5;
-
         this._paths.forEach((point, index) => {
             const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
-
-            const pos = new Vec3(point.x - random * this._offset, point.y - random * this._offset);
+            let pos= Vec3.ZERO;
+            if (Math.abs(this._currentPos.x - point.x) <= Math.abs(this._currentPos.y - point.y)) {
+                pos = new Vec3(point.x - indexPos * this._offset, point.y);
+            } else {
+                pos = new Vec3(point.x, point.y - indexPos * this._offset);
+            }
 
             const nodeTween = tween(this.node)
-                .to(timeMove, { position: pos })
-                .call(() => this.node.setSiblingIndex(Math.abs(this.node.position.x)));
+                .to(timeMove, { position: pos });
 
             const avatarTween = tween(this.avatar)
                 .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })

@@ -42,9 +42,10 @@ export class LevelManager extends Component {
     private _towerPlacementList: TowerPlacement[] = [];
     private _store: Store;
     private _count: number = 0;
-    private _time1: number;
-    private _time2: number;
     private _coefficient = 2;
+    private _indexSpawn: number = 0;
+    private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
+
 
     start() {
         this._store = Store.getInstance();
@@ -67,7 +68,6 @@ export class LevelManager extends Component {
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
 
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);
 
@@ -78,30 +78,20 @@ export class LevelManager extends Component {
             this.spawnEnemy(this.soldierPrefab, this._wayPaths);
             this.spawnEnemy(this.soldierPrefab, this._wayPaths);
             this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         }, 2000 * this._coefficient);
 
-        this._time1 = setInterval(() => {
-            // if (this._count >= 5) {
-            // clearInterval(this._time1);
-            // }
-
+        setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
             this._count++;
             this.spawnEnemy(this.tankPrefab, this._wayPaths);
-            this.spawnEnemy(this.tankPrefab, this._wayPaths);
         }, 5000 * this._coefficient);
 
-        this._time2 = setInterval(() => {
-            // if (this._count >= 5) {
-            //     clearInterval(this._time2);
-            // }
+        setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
-            this.spawnEnemy(this.planePrefab, this._planePaths);
             this.spawnEnemy(this.planePrefab, this._planePaths);
             this.spawnEnemy(this.planePrefab, this._planePaths);
             this.spawnEnemy(this.planePrefab, this._planePaths);
@@ -164,23 +154,10 @@ export class LevelManager extends Component {
     }
 
     generateWay() {
-        function transformArray(arr: number[]): number[] {
-            return arr.map((num, index) => {
-                return index % 2 === 0 ? num : -num;
-            });
-        }
-        
-        // Ví dụ sử dụng:
-        const originalArray = [0, 1, 2, 3, 4];
-        const transformedArray = transformArray(originalArray);
-        
-        console.log(transformedArray); // Kết quả: [0, 1, -1, 2, -2]
-
-
-        
         let graphics = this.getComponent(Graphics);
 
-        graphics.strokeColor = new Color().fromHEX("#dc7633");
+        // graphics.strokeColor = new Color().fromHEX("#dc7633");//FC9451
+        graphics.strokeColor = new Color().fromHEX("#47565A");
         graphics.lineWidth = 200;
 
         this.drawBezierCurve(graphics, this._wayPaths);
@@ -189,17 +166,13 @@ export class LevelManager extends Component {
 
     drawBezierCurve(graphics: Graphics, points: Vec3[]) {
         graphics.moveTo(points[0].x, points[0].y);
-        // const offsetX = 20;
-        // const offsetY = 20;
-        const offsetX = 0;
-        const offsetY = 0;
-   
+
         for (let i = 1; i < points.length; i += 3) {
             let p0 = points[i - 1];
             let p1 = points[i];
             let p2 = points[i + 1];
 
-            graphics.bezierCurveTo(p0.x + offsetX, p0.y + offsetY, p1.x + offsetX, p1.y + offsetY, p2.x + offsetX, p2.y + offsetY);
+            graphics.bezierCurveTo(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
         }
     }
 
@@ -208,8 +181,15 @@ export class LevelManager extends Component {
         newEnemy.parent = this.enemyLayer;
         newEnemy.position = this._startPos;
 
+        const index = this._arrIndex[this._indexSpawn];
+
         const enemy = newEnemy.getComponent(Enemy);
-        enemy.init(path, this)
+        enemy.init(path, this, index)
+
+        this._indexSpawn++;
+        if (this._indexSpawn > 2) {
+            this._indexSpawn = 0;
+        }
     }
 
     spawnTowerPlacement() {
