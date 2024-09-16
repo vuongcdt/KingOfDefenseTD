@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Color, Component, Contact2DType, game, IPhysics2DContact, Node, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Component, Contact2DType, game, IPhysics2DContact, math, Node, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import Store from './Store';
 const { ccclass, property } = _decorator;
@@ -11,8 +11,8 @@ export class Ammo extends Component {
     protected rocketTailSprites: SpriteFrame[] = [];
 
     protected _damage: number;
-    protected tweenMove: Tween<Node>[] = [];
-    protected currentPos: Vec3 = Vec3.ZERO;
+    protected _tweenMove: Tween<Node>[] = [];
+    protected _currentPos: Vec3 = Vec3.ZERO;
     protected _collider: Collider2D;
 
     start() {
@@ -48,40 +48,77 @@ export class Ammo extends Component {
         const p0 = this.node.position;
         const p2 = target.position;
 
-        // const p1 = Math.abs(p2.x - p0.x) < Math.abs(p2.y - p0.y)
-        //     ? v3((p0.x + p2.x) * 0.5, (p2.y - p0.y) * 3)
-        //     : v3((p2.x - p0.x) * 3, (p2.y + p0.y) * 0.5);
+        let diff = p2.clone().subtract(p0);
+        diff = diff.normalize();
 
-        const p1 = Math.abs(p2.x - p0.x) < Math.abs(p2.y - p0.y)
-            ? v3(p0.x - 200, (p2.y - p0.y) * 3)
-            : v3((p2.x - p0.x) * 3, p2.y - 200);
+        const point = p0.clone().add(diff.clone().multiplyScalar(400));
+        let anglePoint = diff.clone().multiplyScalar(100);
 
-        this.drawCurve(p0, p1, p2);
-        const points = this.getBezierPoints(10, p0, p1, p2);
-        this.currentPos = p0;
+        this._currentPos = p0;
 
-        points
-            .slice(1, 10)
-            .forEach((point, index) => {
-                const nodeTween = tween(this.node)
-                    .to(speed * 0.5, { position: point, angle: this.getAngleRocket(point) })
-                    .call(() => {
-                        if (index == 7) this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                    });
-                this.tweenMove.push(nodeTween);
-            })
-        // game.pause();
+        const points = [];
+
+        const nodeTweenStart = tween(this.node).to(speed * 1, { position: point.clone() });
+        this._tweenMove.push(nodeTweenStart);
+
+        points.push(p0.clone())
+        points.push(point.clone());
+
+        for (let index = 0; index < 6; index++) {
+            const addPoint = this.rotateVector(anglePoint, 30 * (index + 1));
+            point.add(addPoint);
+
+            const nodeTween = tween(this.node).to(speed * 0.3, { position: point.clone(), angle: this.getAngleRocket(point.clone()) });
+            this._tweenMove.push(nodeTween);
+            points.push(point.clone());
+        }
+
+        const nodeTweenEnd = tween(this.node)
+            .call(() => this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this))
+            .to(speed * 1, { position: p2.clone(), angle: this.getAngleRocket(p2.clone()) });
+
+        this._tweenMove.push(nodeTweenEnd);
+        points.push(p2);
+
+        // this.drawLineFromPoints(points);
 
         tween(this.node)
-            .sequence(...this.tweenMove)
+            .sequence(...this._tweenMove)
+            .removeSelf()
             .start();
     }
 
-    getAngleRocket(newPoint: Vec3) {
-        let diff = new Vec3();
-        Vec3.subtract(diff, newPoint, this.currentPos);
+    drawLineFromPoints(points: Vec3[]) {
+        const store = Store.getInstance();
+        const g = store.getGraphics();
+        g.strokeColor = Color.RED;
+        g.lineWidth = 5;
 
-        this.currentPos = new Vec3(newPoint.x, newPoint.y);
+        g.moveTo(points[0].x, points[0].y);
+
+        for (let i = 1; i < points.length; i++) {
+            g.lineTo(points[i].x, points[i].y);
+        }
+
+        g.stroke();
+    }
+
+    rotateVector(originalVector: Vec3, angleInDegrees: number): Vec3 {
+        const angleInRadians = math.toRadian(angleInDegrees);
+
+        const x = originalVector.x;
+        const y = originalVector.y;
+
+        const newX = x * Math.cos(angleInRadians) - y * Math.sin(angleInRadians);
+        const newY = x * Math.sin(angleInRadians) + y * Math.cos(angleInRadians);
+
+        return new Vec3(newX, newY);
+    }
+
+    getAngleRocket(newPoint: Vec3) {
+        let diff = newPoint.clone().subtract(this._currentPos);
+
+        this._currentPos = newPoint.clone();
         const angle = 270 + Math.atan2(diff.y, diff.x) * (180 / Math.PI)
 
         return angle;
@@ -95,7 +132,7 @@ export class Ammo extends Component {
         }
 
         tween(this.node).removeSelf().start();
-        // target.setHP(this._damage);
+        target.setHP(this._damage);
     }
 
     drawCurve(p0: Vec3, p1: Vec3, p2: Vec3) {
@@ -110,17 +147,15 @@ export class Ammo extends Component {
         graphics.stroke();
     }
 
-
-    // Hàm tính toán các điểm trên đường cong Bezier
     getBezierPoints(numPoints: number, P0: Vec3, P1: Vec3, P2: Vec3): Vec3[] {
         const points: Vec3[] = [];
-        const step = 1 / (numPoints - 1); // Bước chia thời gian từ 0 đến 1
+        const step = 1 / (numPoints - 1);
 
         for (let i = 0; i < numPoints; i++) {
             const t = step * i;
             const x = Math.pow(1 - t, 2) * P0.x + 2 * (1 - t) * t * P1.x + Math.pow(t, 2) * P2.x;
             const y = Math.pow(1 - t, 2) * P0.y + 2 * (1 - t) * t * P1.y + Math.pow(t, 2) * P2.y;
-            points.push(new Vec3(x, y, 0)); // Tạo một điểm Vec3 mới và thêm vào danh sách
+            points.push(new Vec3(x, y, 0));
         }
 
         return points;
