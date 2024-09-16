@@ -684,8 +684,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 76,
-      "height": 92
+      "width": 60,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -760,7 +760,7 @@
     "damage": 3,
     "speed": 0.3,
     "reloadTime": 0.8,
-    "enemyNames": [
+    "targetNames": [
       1,
       2,
       3
@@ -793,13 +793,10 @@
       "b": 255,
       "a": 255
     },
-    "_spriteFrame": {
-      "__uuid__": "a8c82f74-4540-44a6-8b9e-95cc0e68d8a9@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -873,7 +870,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 300.5,
+    "_radius": 400,
     "_id": ""
   },
   {

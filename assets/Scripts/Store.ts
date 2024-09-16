@@ -1,4 +1,4 @@
-import { _decorator, Node } from "cc";
+import { _decorator, Graphics, Node } from "cc";
 const { ccclass } = _decorator;
 
 @ccclass
@@ -7,7 +7,8 @@ export default class Store {
 
     private state: any = {};
     private observers: Array<(state: any) => void> = [];
-    private _levelManage: Node ;
+    private _levelManage: Node;
+    private _graphics: Graphics;
 
     private constructor() { }
 
@@ -16,6 +17,13 @@ export default class Store {
             Store.instance = new Store();
         }
         return Store.instance;
+    }
+
+    public getGraphics(): Graphics {
+        return this._graphics;
+    }
+    public setGraphics(value: Graphics) {
+        this._graphics = value;
     }
 
     public getLevelManage(): any {

@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, CCInteger, CircleCollider2D, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { TowerType, CharacterType } from "./Enums";
 import Store from "./Store";
@@ -56,17 +56,6 @@ export class Turent extends Component {
     update(dt: number): void {
         this._countdown += dt;
 
-        // const towerHasTurrent = this._listTarget.find(tower => tower.getComponent(Turent));
-        // console.log('towerHasTurrent', towerHasTurrent);
-
-        // if (!towerHasTurrent) {
-        //     return;
-        // }
-
-        // if (!this._target) {
-        //     this._target = towerHasTurrent;
-        // }
-
         if (this._listTarget.length == 0) {
             return;
         }
@@ -121,8 +110,8 @@ export class Turent extends Component {
         if (gunBarrelNumber == 1) {
             this.setAmmo(position);
         } else {
-            this.setAmmo(position, -20);
-            this.setAmmo(position, 20);
+            this.setAmmo(position, -10);
+            this.setAmmo(position, 10);
         }
     }
 
@@ -139,8 +128,14 @@ export class Turent extends Component {
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
 
-        ammo.getComponent(Ammo)
-            .init(target, this._target.name, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        if (this.towerType == TowerType.RocketTower) {
+            ammo.getComponent(Ammo)
+                .initWithRocket(this._target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        }
+        else {
+            ammo.getComponent(Ammo)
+                .init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        }
     }
 
     shooting() {
@@ -152,7 +147,7 @@ export class Turent extends Component {
         }
 
         setTimeout(() => {
-            if(!this.node){
+            if (!this.node) {
                 return
             }
             this.muzzleDouble.active = false;

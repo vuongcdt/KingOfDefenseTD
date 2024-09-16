@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Camera, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -8,6 +8,8 @@ const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
 export class LevelManager extends Component {
+    @property(Camera)
+    private camera: Camera = null;
     @property(Node)
     private maskLayer: Node = null;
     @property(Node)
@@ -55,9 +57,12 @@ export class LevelManager extends Component {
 
 
     start() {
+        // this.camera.orthoHeight +=100;
+        const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;
         this._store = Store.getInstance();
         this._store.setLevelManage(this.node);
+        this._store.setGraphics(graphics);
 
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
@@ -75,13 +80,16 @@ export class LevelManager extends Component {
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        this.spawnEnemyData();
+        // this.spawnEnemyData();
+        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
-            this.spawnEnemyData();
-        }, 20 * 1000);
+            // this.spawnEnemyData();
+            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+        }, 5 * 1000);
+
         this.spawnTowerPlacement();
     }
 
@@ -155,7 +163,7 @@ export class LevelManager extends Component {
 
         // graphics.strokeColor = new Color().fromHEX("#dc7633");//FC9451
         graphics.strokeColor = new Color().fromHEX("#47565A");
-        graphics.lineWidth = 200;
+        graphics.lineWidth = 150;
 
         this.drawBezierCurve(graphics, this._wayPaths);
         graphics.stroke();
