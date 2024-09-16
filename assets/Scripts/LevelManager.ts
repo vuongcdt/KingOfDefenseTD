@@ -36,7 +36,7 @@ export class LevelManager extends Component {
     private stoneSprites: SpriteFrame[] = [];
     @property(Node)
     private background: Node;
-    @property({type:[EnemySpawn]})
+    @property({ type: [EnemySpawn] })
     private enemiesData: EnemySpawn[] = [];
 
     private _treeNodes: Node[] = [];
@@ -76,6 +76,12 @@ export class LevelManager extends Component {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         this.spawnEnemyData();
+        setInterval(() => {
+            if (game.isPaused()) {
+                return;
+            }
+            this.spawnEnemyData();
+        }, 20 * 1000);
         this.spawnTowerPlacement();
     }
 

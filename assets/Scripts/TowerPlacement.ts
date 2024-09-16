@@ -26,8 +26,7 @@ export class TowerPlacement extends Component {
     private backgrounds: SpriteFrame[] = [];
     @property(Node)
     private healthBar: Node;
-    @property(Label)
-    private healthText: Label;
+
     @property(Node)
     private fire: Node;
 
@@ -64,7 +63,8 @@ export class TowerPlacement extends Component {
 
     onShowAction(event: EventTouch) {
         this._levelManager.getComponent(LevelManager).onHideActionTower(this);
-        this.action.setParent(this.node);
+        // this.action.setParent(this.node);
+        this.action.active = true;
         this.actionSell.active = this._levelTower != 0;
         this.actionUpgrade.active = this._levelTower != 0 && this._levelTower != this.backgrounds.length - 1;
         this.actionBuyGun.active = this._levelTower == 0;
@@ -109,7 +109,6 @@ export class TowerPlacement extends Component {
 
     onRepair() {
         this._currentHealth = this._health;
-        this.healthText.string = this._currentHealth.toString();
         this.healthBar.getComponentInChildren(Sprite).fillRange = 1;
         this.fire.active = false;
         this.onHideAction();
@@ -117,7 +116,6 @@ export class TowerPlacement extends Component {
         setTimeout(() => {
             if (this.healthBar.active) {
                 this.healthBar.active = false;
-
             }
         }, 200);
     }
@@ -131,12 +129,12 @@ export class TowerPlacement extends Component {
     }
 
     onHideAction() {
-        this.action.setParent(null);
+        // this.action.setParent(null);
+        this.action.active = false;
     }
 
     setHP(damage: number) {
         this._currentHealth -= damage;
-        this.healthText.string = this._currentHealth.toString();
 
         this.healthBar.active = true;
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
