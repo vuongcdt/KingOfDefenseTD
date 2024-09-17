@@ -130,7 +130,7 @@ export class Turent extends Component {
 
         if (this.towerType == TowerType.RocketTower) {
             ammo.getComponent(Ammo)
-                .initWithRocket(this._target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+                .initWithRocket(this._target, this.speed *1.5, this.damage, this._angleShoot, this._levelTurrent);
         }
         else {
             ammo.getComponent(Ammo)

@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Color, Component, Contact2DType, game, IPhysics2DContact, math, Node, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Component, Contact2DType, game, IPhysics2DContact, math, Node, random, randomRangeInt, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import Store from './Store';
 const { ccclass, property } = _decorator;
@@ -51,34 +51,41 @@ export class Ammo extends Component {
         let diff = p2.clone().subtract(p0);
         diff = diff.normalize();
 
-        const point = p0.clone().add(diff.clone().multiplyScalar(400));
-        let anglePoint = diff.clone().multiplyScalar(100);
+        const randomNum = randomRangeInt(8, 14);
+
+        const point = p0.clone().add(diff.clone().multiplyScalar(randomNum * 50));
+        let anglePoint = diff.clone().multiplyScalar(randomNum * 10);
 
         this._currentPos = p0;
+        const points = [p0.clone(), point.clone()];
+        const direction = randomNum % 2 == 0 ? 1 : -1;
 
-        const points = [];
-
-        const nodeTweenStart = tween(this.node).to(speed * 1, { position: point.clone() });
-        this._tweenMove.push(nodeTweenStart);
-
-        points.push(p0.clone())
-        points.push(point.clone());
-
-        for (let index = 0; index < 6; index++) {
-            const addPoint = this.rotateVector(anglePoint, 30 * (index + 1));
+        for (let index = 0; index < 5; index++) {
+            const addPoint = this.rotateVector(anglePoint, 45 * direction * (index + 1));
             point.add(addPoint);
-
-            const nodeTween = tween(this.node).to(speed * 0.3, { position: point.clone(), angle: this.getAngleRocket(point.clone()) });
-            this._tweenMove.push(nodeTween);
             points.push(point.clone());
         }
 
-        const nodeTweenEnd = tween(this.node)
-            .call(() => this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this))
-            .to(speed * 1, { position: p2.clone(), angle: this.getAngleRocket(p2.clone()) });
-
-        this._tweenMove.push(nodeTweenEnd);
         points.push(p2);
+        let angle = 360;
+
+        for (let index = 1; index < points.length; index++) {
+            const point = points[index];
+
+            let newAngle = this.getAngleRocket(point);
+            if (newAngle > angle) {
+                newAngle %= 360;
+                newAngle -= 360;
+            }
+
+            angle = newAngle;
+            const ducation = index == 1 ? speed : speed * 0.1;
+
+            const nodeTween = tween(this.node)
+                .call(() => index == points.length - 1 && this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this))
+                .to(ducation, { position: point, angle: newAngle });
+            this._tweenMove.push(nodeTween);
+        }
 
         // this.drawLineFromPoints(points);
 
@@ -119,9 +126,9 @@ export class Ammo extends Component {
         let diff = newPoint.clone().subtract(this._currentPos);
 
         this._currentPos = newPoint.clone();
-        const angle = 270 + Math.atan2(diff.y, diff.x) * (180 / Math.PI)
-
-        return angle;
+        const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);
+        const result = angle > 90 ? angle - 90 : 270 + angle
+        return result;
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
