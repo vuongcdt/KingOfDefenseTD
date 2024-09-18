@@ -68,6 +68,18 @@ export class Enemy extends Component {
             .start();
 
         this._currentHealth = this._health;
+
+        // const vectorA = new Vec3(1, 3);
+        // const vectorB = new Vec3(3, 1);
+
+        // // Hiệu hai vector
+        // const difference = new Vec3();
+        // Vec3.add(difference, vectorA, vectorB);
+
+        // // Tìm trung điểm của hiệu
+        // const midpoint = difference.multiplyScalar(0.3);
+
+        // console.log("Trung điểm của hiệu hai vector:", vectorA, vectorB, midpoint);
     }
 
     getAngleAvatar(currentPos: Vec3, newPos: Vec3) {

@@ -278,6 +278,9 @@
         "__expectedType__": "cc.SpriteFrame"
       }
     ],
+    "rocketTail": {
+      "__id__": 2
+    },
     "_id": ""
   },
   {
@@ -338,13 +341,13 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.1,
-      "y": -0.1
+      "x": 1.4,
+      "y": 27.7
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 99.4,
-      "height": 9.4
+      "width": 102,
+      "height": -46.3
     },
     "_id": ""
   },
@@ -406,7 +409,6 @@
       "__id__": 0
     },
     "fileId": "7dDi9J2/xGnKd/XgzdPrB4",
-    "instance": null,
-    "targetOverrides": null
+    "instance": null
   }
 ]

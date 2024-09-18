@@ -9,11 +9,16 @@ export class Ammo extends Component {
     protected bodySprites: SpriteFrame[] = [];
     @property([SpriteFrame])
     protected rocketTailSprites: SpriteFrame[] = [];
+    @property(Node)
+    protected rocketTail: Node = null;
 
     protected _damage: number;
     protected _tweenMove: Tween<Node>[] = [];
     protected _currentPos: Vec3 = Vec3.ZERO;
     protected _collider: Collider2D;
+    protected _target: Node;
+    protected _angleEnd: number = 0;
+    protected _timeInterval: number = 0;
 
     start() {
         this._collider = this.getComponent(Collider2D);
@@ -23,6 +28,10 @@ export class Ammo extends Component {
     }
 
     update(deltaTime: number) {
+        this.setAngleEnd();
+    }
+
+    setAngleEnd() {
 
     }
 
@@ -45,49 +54,76 @@ export class Ammo extends Component {
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
         this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[levelTower];
 
+        if (this.rocketTail != null) {
+            this._timeInterval = setInterval(() => {
+                if (!this.rocketTail.activeInHierarchy) {
+                    clearInterval(this._timeInterval);
+                    return;
+                }
+                this.rocketTail.active = !this.rocketTail.active;
+            }, 150);
+        }
         const p0 = this.node.position;
         const p2 = target.position;
 
         let diff = p2.clone().subtract(p0);
         diff = diff.normalize();
 
-        const randomNum = randomRangeInt(8, 14);
+        const randomNum = randomRangeInt(10, 14);
+        const angleAxis = -30;
 
-        const point = p0.clone().add(diff.clone().multiplyScalar(randomNum * 50));
-        let anglePoint = diff.clone().multiplyScalar(randomNum * 10);
+        diff = this.rotateVector(diff, 15);
+        this.node.angle += 15;
+
+        let point = p0.clone().add(diff.clone().multiplyScalar(randomNum * 50));
+
+        let anglePoint = diff.clone().multiplyScalar(120);
 
         this._currentPos = p0;
         const points = [p0.clone(), point.clone()];
-        const direction = randomNum % 2 == 0 ? 1 : -1;
 
-        for (let index = 0; index < 5; index++) {
-            const addPoint = this.rotateVector(anglePoint, 45 * direction * (index + 1));
+
+        for (let index = 0; index < 6; index++) {
+            anglePoint.multiplyScalar(0.9);
+            const addPoint = this.rotateVector(anglePoint, angleAxis * (index + 1));
             point.add(addPoint);
             points.push(point.clone());
         }
 
         points.push(p2);
-        let angle = 360;
+
+        let angle = angleShoot;
+        let speedFly = speed * 0.1;
 
         for (let index = 1; index < points.length; index++) {
-            const point = points[index];
+            const position = points[index];
+            speedFly *= 0.9;
+            let ducation = index == 1 ? speed * 0.5 : speedFly;
 
-            let newAngle = this.getAngleRocket(point);
-            if (newAngle > angle) {
-                newAngle %= 360;
-                newAngle -= 360;
+            if (index == points.length - 1) {
+                ducation = speedFly * 3;
             }
 
-            angle = newAngle;
-            const ducation = index == 1 ? speed : speed * 0.1;
+            angle = (index == 1 || index == points.length - 1) ? angle : (angle + angleAxis) % 360;
 
             const nodeTween = tween(this.node)
-                .call(() => index == points.length - 1 && this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this))
-                .to(ducation, { position: point, angle: newAngle });
+                .call(() => {
+                    if (index == points.length - 1) {
+                        this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+                        if (!target.activeInHierarchy) {
+                            console.log('die');
+                        }
+                        this.setAngleEnd = () => {
+                            this.node.angle = this.getAngleRocket(target.position);
+                            this.setAngleEnd = () => { };
+                        }
+                    }
+                })
+                .to(ducation, index == points.length - 1 ? { position } : { position, angle });
             this._tweenMove.push(nodeTween);
         }
 
-        // this.drawLineFromPoints(points);
+        // this.drawLineFromPoints(points.slice(0, points.length - 1));
 
         tween(this.node)
             .sequence(...this._tweenMove)
@@ -127,7 +163,7 @@ export class Ammo extends Component {
 
         this._currentPos = newPoint.clone();
         const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);
-        const result = angle > 90 ? angle - 90 : 270 + angle
+        const result = angle > 90 ? angle - 90 : 270 + angle;
         return result;
     }
 
