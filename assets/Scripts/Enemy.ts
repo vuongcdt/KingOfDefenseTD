@@ -1,27 +1,26 @@
-import { _decorator, Component, find, Node, randomRange, randomRangeInt, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, Component,  Node,  Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
-import { GameManager } from "./GameManager";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
 export class Enemy extends Component {
     @property(Node)
-    private healthBar: Node;
+    protected healthBar: Node;
     @property
-    private speed: number = 1;
+    protected speed: number = 1;
     @property(Node)
-    private avatar: Node;
+    protected avatar: Node;
     @property(SpriteFrame)
-    private avatarSprites: SpriteFrame;
+    protected avatarSprites: SpriteFrame;
 
-    private _damage: number;
-    private _paths: Vec3[] = [];
-    private tweenMove: Tween<Node>[] = [];
-    private tweenRotation: Tween<Node>[] = [];
-    private _health: number = 10;
-    private _currentHealth: number;
-    private _currentPos: Vec3;
-    private _levelManage: LevelManager;
+    protected _damage: number;
+    protected _paths: Vec3[] = [];
+    protected tweenMove: Tween<Node>[] = [];
+    protected tweenRotation: Tween<Node>[] = [];
+    protected _health: number = 10;
+    protected _currentHealth: number;
+    protected _currentPos: Vec3;
+    protected _levelManage: LevelManager;
     protected _offset: number = 40;
 
     start(): void {

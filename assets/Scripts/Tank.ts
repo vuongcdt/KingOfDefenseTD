@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Component, EPhysics2DDrawFlags, Node, PhysicsSystem2D, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { LevelManager } from './LevelManager';
 const { ccclass, property } = _decorator;
@@ -10,6 +10,7 @@ export class Tank extends Enemy {
     @property(SpriteFrame)
     private headSprites: SpriteFrame;
 
+    protected _health: number = 20;
     protected _offset: number = 70;
     // protected _number: number = 0;
 

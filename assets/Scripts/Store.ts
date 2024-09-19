@@ -26,7 +26,7 @@ export default class Store {
         this._graphics = value;
     }
 
-    public getLevelManage(): any {
+    public getLevelManage(): Node {
         return this._levelManage;
     }
 

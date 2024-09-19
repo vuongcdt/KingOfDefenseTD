@@ -1,4 +1,4 @@
-import { _decorator, Camera, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Camera, Color, Component, EPhysics2DDrawFlags, EventTouch, game, Graphics, instantiate, Node, PhysicsSystem2D, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -57,7 +57,14 @@ export class LevelManager extends Component {
 
 
     start() {
-        // this.camera.orthoHeight +=100;
+
+        PhysicsSystem2D.instance.debugDrawFlags = EPhysics2DDrawFlags.Aabb
+            | EPhysics2DDrawFlags.Pair
+            | EPhysics2DDrawFlags.CenterOfMass
+            | EPhysics2DDrawFlags.Joint
+            // | EPhysics2DDrawFlags.Shape
+            ;
+
         const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;
         this._store = Store.getInstance();
@@ -81,14 +88,17 @@ export class LevelManager extends Component {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
         // this.spawnEnemyData();
-        this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+        // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+        this.spawnEnemy(this.tankPrefab, this._wayPaths);
+
         setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
             // this.spawnEnemyData();
-            this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        }, 5 * 1000);
+            // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
+            this.spawnEnemy(this.tankPrefab, this._wayPaths);
+        }, 10 * 1000);
 
         this.spawnTowerPlacement();
     }

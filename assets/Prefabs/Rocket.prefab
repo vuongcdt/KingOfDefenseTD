@@ -278,9 +278,6 @@
         "__expectedType__": "cc.SpriteFrame"
       }
     ],
-    "rocketTail": {
-      "__id__": 2
-    },
     "_id": ""
   },
   {
@@ -409,6 +406,7 @@
       "__id__": 0
     },
     "fileId": "7dDi9J2/xGnKd/XgzdPrB4",
-    "instance": null
+    "instance": null,
+    "targetOverrides": null
   }
 ]

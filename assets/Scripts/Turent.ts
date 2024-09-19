@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, CircleCollider2D, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
+import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
 import { TowerType, CharacterType } from "./Enums";
 import Store from "./Store";
@@ -69,7 +69,7 @@ export class Turent extends Component {
 
         if (this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive) {
             this._countdown = 0;
-            this.attackEnemy();
+            this.attackTarget();
         }
     }
 
@@ -97,7 +97,7 @@ export class Turent extends Component {
         this._angleShoot = 180 - Math.atan2(this._diffTowerToTarget.x, this._diffTowerToTarget.y) * (180 / Math.PI);
     }
 
-    attackEnemy() {
+    attackTarget() {
         this.shooting();
 
         var normalize = this._diffTowerToTarget.normalize();
@@ -138,7 +138,7 @@ export class Turent extends Component {
         }
     }
 
-    shooting() {
+    shooting() {        
         this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTurrent != 2;
         this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTurrent == 2;
 

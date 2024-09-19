@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Color, Component, Contact2DType, game, IPhysics2DContact, math, Node, random, randomRangeInt, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Component, Contact2DType, EPhysics2DDrawFlags, game, IPhysics2DContact, math, Node, PhysicsSystem2D, random, randomRangeInt, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import Store from './Store';
 const { ccclass, property } = _decorator;
@@ -9,8 +9,6 @@ export class Ammo extends Component {
     protected bodySprites: SpriteFrame[] = [];
     @property([SpriteFrame])
     protected rocketTailSprites: SpriteFrame[] = [];
-    @property(Node)
-    protected rocketTail: Node = null;
 
     protected _damage: number;
     protected _tweenMove: Tween<Node>[] = [];
@@ -21,9 +19,9 @@ export class Ammo extends Component {
     protected _timeInterval: number = 0;
 
     start() {
-        this._collider = this.getComponent(Collider2D);
-        // if (collider) {
-        //     collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+        // this._collider = this.getComponent(Collider2D);
+        // if (this._collider) {
+        //     this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         // }
     }
 
@@ -32,16 +30,16 @@ export class Ammo extends Component {
     }
 
     setAngleEnd() {
-
     }
 
     init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
         this._damage = damage;
         this.node.angle = angleShoot;
+        this._collider = this.getComponent(Collider2D);
+        this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
 
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
         this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[levelTower];
-
         tween(this.node).to(speed, { position: target })
             .removeSelf()
             .start();
@@ -50,26 +48,19 @@ export class Ammo extends Component {
     initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {
         this._damage = damage;
         this.node.angle = angleShoot;
+        this._collider = this.getComponent(Collider2D);
+        // this._collider.on(Contact2DType.BEGIN_CONTACT, ()=>{}, this);
 
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
         this.getComponentInChildren(Sprite).spriteFrame = this.rocketTailSprites[levelTower];
 
-        if (this.rocketTail != null) {
-            this._timeInterval = setInterval(() => {
-                if (!this.rocketTail.activeInHierarchy) {
-                    clearInterval(this._timeInterval);
-                    return;
-                }
-                this.rocketTail.active = !this.rocketTail.active;
-            }, 150);
-        }
         const p0 = this.node.position;
         const p2 = target.position;
 
         let diff = p2.clone().subtract(p0);
         diff = diff.normalize();
 
-        const randomNum = randomRangeInt(10, 14);
+        const randomNum = randomRangeInt(8, 12);
         const angleAxis = -30;
 
         diff = this.rotateVector(diff, 15);
@@ -81,7 +72,6 @@ export class Ammo extends Component {
 
         this._currentPos = p0;
         const points = [p0.clone(), point.clone()];
-
 
         for (let index = 0; index < 6; index++) {
             anglePoint.multiplyScalar(0.9);
@@ -98,28 +88,31 @@ export class Ammo extends Component {
         for (let index = 1; index < points.length; index++) {
             const position = points[index];
             speedFly *= 0.9;
-            let ducation = index == 1 ? speed * 0.5 : speedFly;
+            let ducation = index == 1 ? speed * 0.4 : speedFly;
 
             if (index == points.length - 1) {
                 ducation = speedFly * 3;
             }
 
             angle = (index == 1 || index == points.length - 1) ? angle : (angle + angleAxis) % 360;
+            let nodeTween;
 
-            const nodeTween = tween(this.node)
-                .call(() => {
-                    if (index == points.length - 1) {
+            if (index == points.length - 1) {
+                nodeTween = tween(this.node)
+                    .call(() => {
+
                         this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-                        if (!target.activeInHierarchy) {
-                            console.log('die');
-                        }
+
                         this.setAngleEnd = () => {
                             this.node.angle = this.getAngleRocket(target.position);
                             this.setAngleEnd = () => { };
                         }
-                    }
-                })
-                .to(ducation, index == points.length - 1 ? { position } : { position, angle });
+                    })
+                    .to(ducation, { position });
+            } else {
+                nodeTween = tween(this.node).to(ducation, { position, angle });
+            }
+
             this._tweenMove.push(nodeTween);
         }
 
@@ -127,6 +120,7 @@ export class Ammo extends Component {
 
         tween(this.node)
             .sequence(...this._tweenMove)
+            .call(()=>game.pause())
             .removeSelf()
             .start();
     }
@@ -167,22 +161,10 @@ export class Ammo extends Component {
         return result;
     }
 
-    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let target = otherCollider.node.getComponent(Enemy);
-
-        if (!target) {
-            return;
-        }
-
-        tween(this.node).removeSelf().start();
-        target.setHP(this._damage);
-    }
-
     drawCurve(p0: Vec3, p1: Vec3, p2: Vec3) {
         const store = Store.getInstance();
 
         const graphics = store.getGraphics();
-        // const graphics = this.getComponent(Graphics);
         graphics.strokeColor = Color.RED;
         graphics.lineWidth = 5;
         graphics.moveTo(p0.x, p0.y);
@@ -202,6 +184,18 @@ export class Ammo extends Component {
         }
 
         return points;
+    }
+
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        let target = otherCollider.node.getComponent(Enemy);
+
+        if (!target) {
+            return;
+        }
+
+        tween(this.node).removeSelf().start();
+
+        target.setHP(this._damage);
     }
 }
 

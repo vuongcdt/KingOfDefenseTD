@@ -18,8 +18,8 @@ export enum CharacterType {
     Soldier,
     Tank,
     Plane,
-    GunTowerTurrent,
-    RocketTowerTurrent,
+    GunTower,
+    RocketTower,
 }
 
 // export const TurretType  ={
