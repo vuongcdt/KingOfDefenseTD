@@ -758,7 +758,7 @@
     },
     "towerType": 2,
     "damage": 3,
-    "speed": 1.5,
+    "speed": 1,
     "reloadTime": 3,
     "targetNames": [
       1,

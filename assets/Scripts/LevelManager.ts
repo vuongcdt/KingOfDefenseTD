@@ -88,17 +88,17 @@ export class LevelManager extends Component {
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        // this.spawnEnemyData();
+        this.spawnEnemyData();
         // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        this.spawnEnemy(this.tankPrefab, this._wayPaths);
+        // this.spawnEnemy(this.tankPrefab, this._wayPaths);
 
         setInterval(() => {
             if (game.isPaused()) {
                 return;
             }
-            // this.spawnEnemyData();
+            this.spawnEnemyData();
             // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-            this.spawnEnemy(this.tankPrefab, this._wayPaths);
+            // this.spawnEnemy(this.tankPrefab, this._wayPaths);
         }, 10 * 1000);
 
         this.spawnTowerPlacement();

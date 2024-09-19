@@ -4,7 +4,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('Target')
 export class Target extends Component {
-    private _countEnemy: number = 10;
+    private _countEnemy: number = 20;
 
     protected start(): void {
         const collider = this.getComponent(Collider2D);
@@ -18,12 +18,11 @@ export class Target extends Component {
         if (!enemy) {
             return;
         }
+        
         this._countEnemy--;
-        // console.log('countEnemy',this._countEnemy);
         
         if (this._countEnemy == 0) {
             console.log("GAME OVER");
-            // game.pause();
         }
 
     }
