@@ -58,12 +58,13 @@ export class LevelManager extends Component {
 
     start() {
 
-        PhysicsSystem2D.instance.debugDrawFlags = EPhysics2DDrawFlags.Aabb
-            | EPhysics2DDrawFlags.Pair
-            | EPhysics2DDrawFlags.CenterOfMass
-            | EPhysics2DDrawFlags.Joint
-            // | EPhysics2DDrawFlags.Shape
-            ;
+        // PhysicsSystem2D.instance.debugDrawFlags = 
+        // EPhysics2DDrawFlags.Aabb
+        //     | EPhysics2DDrawFlags.Pair
+        //     | EPhysics2DDrawFlags.CenterOfMass
+        //     | EPhysics2DDrawFlags.Joint
+        //     | EPhysics2DDrawFlags.Shape
+        //     ;
 
         const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;

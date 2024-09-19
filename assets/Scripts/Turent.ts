@@ -128,14 +128,8 @@ export class Turent extends Component {
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
 
-        if (this.towerType == TowerType.RocketTower) {
-            ammo.getComponent(Ammo)
-                .initWithRocket(this._target, this.speed * 1, this.damage, this._angleShoot, this._levelTurrent);
-        }
-        else {
-            ammo.getComponent(Ammo)
-                .init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
-        }
+        ammo.getComponent(Ammo)
+        .init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
     }
 
     shooting() {        
