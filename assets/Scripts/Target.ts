@@ -1,5 +1,6 @@
 import { _decorator, Collider2D, Component, Contact2DType, game, IPhysics2DContact } from "cc";
 import { Enemy } from "./Enemy";
+import Store from "./Store";
 const { ccclass, property } = _decorator;
 
 @ccclass('Target')
@@ -18,9 +19,10 @@ export class Target extends Component {
         if (!enemy) {
             return;
         }
-        
+
         this._countEnemy--;
-        
+        Store.getInstance().getGameManager().setHeartText();
+
         if (this._countEnemy == 0) {
             console.log("GAME OVER");
         }

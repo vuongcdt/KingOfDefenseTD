@@ -1,4 +1,5 @@
 import { _decorator, Graphics, Node } from "cc";
+import { GameManager } from "./GameManager";
 const { ccclass } = _decorator;
 
 @ccclass
@@ -7,8 +8,9 @@ export default class Store {
 
     private state: any = {};
     private observers: Array<(state: any) => void> = [];
-    private _levelManage: Node;
+    private _levelManager: Node;
     private _graphics: Graphics;
+    private _gameManager: GameManager;
 
     private constructor() { }
 
@@ -19,6 +21,13 @@ export default class Store {
         return Store.instance;
     }
 
+    public getGameManager(): GameManager {
+        return this._gameManager;
+    }
+    public setGameManager(value: GameManager) {
+        this._gameManager = value;
+    }
+
     public getGraphics(): Graphics {
         return this._graphics;
     }
@@ -27,11 +36,11 @@ export default class Store {
     }
 
     public getLevelManage(): Node {
-        return this._levelManage;
+        return this._levelManager;
     }
 
     public setLevelManage(levelManage: Node): void {
-        this._levelManage = levelManage;
+        this._levelManager = levelManage;
         this.notifyObservers();
     }
 

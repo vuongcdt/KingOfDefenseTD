@@ -6,13 +6,12 @@ const { ccclass, property } = _decorator;
 export class Enemy extends Component {
     @property(Node)
     protected healthBar: Node;
-    @property
-    protected speed: number = 1;
     @property(Node)
     protected avatar: Node;
     @property(SpriteFrame)
     protected avatarSprites: SpriteFrame;
-
+    
+    protected _speed: number = 1;
     protected _damage: number;
     protected _paths: Vec3[] = [];
     protected tweenMove: Tween<Node>[] = [];
@@ -90,7 +89,7 @@ export class Enemy extends Component {
     // }
 
     getTimeMove(start: Vec3, end: Vec3) {
-        return Vec3.distance(start, end) / 100 * this.speed;
+        return Vec3.distance(start, end) / 100 * this._speed;
     }
 
     setHP(damage: number) {

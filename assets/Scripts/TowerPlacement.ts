@@ -2,6 +2,7 @@ import { _decorator, Component, EventTouch, instantiate, Label, Node, Prefab, Sp
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')
@@ -35,7 +36,10 @@ export class TowerPlacement extends Component {
     private _levelTower: number = 0;
     private _turrent: Turent;
     private _store: Store;
+    private _gameManager: GameManager;
     private _health: number = 1000;
+    private _costGun: number = 150;
+    private _costRocket: number = 300;
     private _currentHealth: number;
 
     public set levelManager(value: Node) {
@@ -44,6 +48,7 @@ export class TowerPlacement extends Component {
 
     start(): void {
         this._store = Store.getInstance();
+        this._gameManager = this._store.getGameManager();
         this._background = this.getComponent(Sprite);
         this.onHideAction();
         this.healthBar.active = false;
@@ -78,15 +83,18 @@ export class TowerPlacement extends Component {
     }
 
     onBuyGun() {
+        // if(this._gameManager.)
         this._levelTower++;
         this.setTurrent(this.gunTowerPrefab);
         this.onSetSprite();
+        this._gameManager.setCoinText(this._costGun);
     }
 
     onBuyRocket() {
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
+        this._gameManager.setCoinText(this._costRocket);
     }
 
     setTurrent(prefab: Prefab) {
@@ -105,6 +113,7 @@ export class TowerPlacement extends Component {
         this.onSetSprite();
         tween(this._turrent.node).destroySelf().start();
         this.healthBar.active = false;
+        this._gameManager.setCoinText(-this._costRocket);
     }
 
     onRepair() {
@@ -112,7 +121,7 @@ export class TowerPlacement extends Component {
         this.healthBar.getComponentInChildren(Sprite).fillRange = 1;
         this.fire.active = false;
         this.onHideAction();
-
+        this._gameManager.setCoinText(this._costGun);
         setTimeout(() => {
             if (this.healthBar.active) {
                 this.healthBar.active = false;
