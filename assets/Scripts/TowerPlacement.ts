@@ -68,8 +68,8 @@ export class TowerPlacement extends Component {
 
     onShowAction(event: EventTouch) {
         this._levelManager.getComponent(LevelManager).onHideActionTower(this);
-        // this.action.setParent(this.node);
-        this.action.active = true;
+        this.action.setParent(this.node);
+        // this.action.active = true;
         this.actionSell.active = this._levelTower != 0;
         this.actionUpgrade.active = this._levelTower != 0 && this._levelTower != this.backgrounds.length - 1;
         this.actionBuyGun.active = this._levelTower == 0;
@@ -130,16 +130,16 @@ export class TowerPlacement extends Component {
     }
 
     onSetSprite() {
+        this.onHideAction();
         this._turrent.initTurrent(this._levelTower);
         this._currentHealth = this._health;
         this._background.spriteFrame = this.backgrounds[this._levelTower];
         this._turrent.onSetLevelTurrent(this._levelTower);
-        this.onHideAction();
     }
 
     onHideAction() {
-        // this.action.setParent(null);
-        this.action.active = false;
+        this.action.setParent(null);
+        // this.action.active = false;
     }
 
     setHP(damage: number) {
