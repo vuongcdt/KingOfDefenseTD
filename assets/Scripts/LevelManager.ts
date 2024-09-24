@@ -87,7 +87,13 @@ export class LevelManager extends Component {
         this.generateStoneAndTree();
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        
+        this.onStartClick();
 
+        this.spawnTowerPlacement();
+    }
+
+    onStartClick(){
         this.spawnEnemyData();
         // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);
@@ -100,8 +106,6 @@ export class LevelManager extends Component {
             // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
             // this.spawnEnemy(this.tankPrefab, this._wayPaths);
         }, 10 * 1000);
-
-        this.spawnTowerPlacement();
     }
 
     spawnEnemyData() {
