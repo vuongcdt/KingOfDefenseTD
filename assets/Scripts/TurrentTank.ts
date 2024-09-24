@@ -1,5 +1,5 @@
 import { _decorator , instantiate, Vec3 } from "cc";
-import { TowerType } from "./Enums";
+import { TurrentType } from "./Enums";
 import { Turent } from "./Turent";
 import { Ammo } from "./Ammo";
 const { ccclass } = _decorator;
@@ -35,7 +35,7 @@ export class TurrentTank extends Turent {
 
         setTimeout(() => {
             this.muzzleSingle.active = false;
-            if (this.towerType == TowerType.RocketTower) {
+            if (this.towerType == TurrentType.RocketTower) {
                 this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
             }
         }, 100);

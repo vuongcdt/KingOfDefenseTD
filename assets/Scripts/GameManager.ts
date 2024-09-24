@@ -15,10 +15,12 @@ export class GameManager extends Component {
     private heartText: RichText;
     @property(RichText)
     private levelText: RichText;
+    @property(Node)
+    private settingPopup: Node;
 
     private _gameState: GameState = GameState.PlayGame;
     private _heart: number = 20;
-    private _coinTotal: number =1000;
+    private _coinTotal: number = 1000;
     private _waves: number =9;
     private _level: number =1;
 
@@ -28,6 +30,16 @@ export class GameManager extends Component {
 
     public set gameState(value: number) {
         this._gameState = value;
+    }
+
+    public get coinTotal(): number {
+        this.setCoinText();
+        return this._coinTotal;
+    }
+
+    public set coinTotal(value: number) {
+        this.setCoinText();
+        this._coinTotal = value;
     }
 
     checkGameOver() {
@@ -44,9 +56,7 @@ export class GameManager extends Component {
         this.gameoverPopup.active = false;
     }
 
-    setCoinText(value: number) {
-        console.log(value);
-        
+    setCoinText(value: number = 0) {        
         this._coinTotal -= value;
         this.coinText.string = this._coinTotal.toString();
     }
@@ -62,6 +72,14 @@ export class GameManager extends Component {
     setLevelText(value: number) {
         this._level = value;
         this.levelText.string = this._level.toString();
+    }
+
+    onSettingClicked(){
+        this.settingPopup.active = true;
+    }
+    
+    onSpeedClicked(){
+        
     }
 
     start() {

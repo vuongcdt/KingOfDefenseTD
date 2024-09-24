@@ -3,6 +3,7 @@ import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
 import { GameManager } from './GameManager';
+import { TurrentType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')
@@ -41,6 +42,7 @@ export class TowerPlacement extends Component {
     private _costGun: number = 150;
     private _costRocket: number = 300;
     private _currentHealth: number;
+    private _turrentType: TurrentType
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -78,23 +80,39 @@ export class TowerPlacement extends Component {
     }
 
     onUpgrade() {
+        const cost = this._turrentType == TurrentType.GunTower
+        ? this._costGun * this._levelTower
+        : this._costRocket * this._levelTower;
+
+        if(this._gameManager.coinTotal < cost){
+            return;
+        }
         this._levelTower++;
         this.onSetSprite();
+  
+        this._gameManager.setCoinText(cost);
     }
 
     onBuyGun() {
-        // if(this._gameManager.)
+        if(this._gameManager.coinTotal < this._costGun){
+            return;
+        }
         this._levelTower++;
         this.setTurrent(this.gunTowerPrefab);
         this.onSetSprite();
         this._gameManager.setCoinText(this._costGun);
+        this._turrentType = TurrentType.GunTower;
     }
 
     onBuyRocket() {
+        if(this._gameManager.coinTotal < this._costRocket){
+            return;
+        }
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
         this._gameManager.setCoinText(this._costRocket);
+        this._turrentType = TurrentType.RocketTower;
     }
 
     setTurrent(prefab: Prefab) {
@@ -104,16 +122,21 @@ export class TowerPlacement extends Component {
 
         this._turrent = turrent.getComponent(Turent);
         this._turrent.initTurrent(this._levelTower);
-
         this._currentHealth = this._health;
     }
 
     onSell() {
-        this._levelTower = 0;
         this.onSetSprite();
         tween(this._turrent.node).destroySelf().start();
         this.healthBar.active = false;
-        this._gameManager.setCoinText(-this._costRocket);
+
+        const cost = this._turrentType == TurrentType.GunTower
+            ? this._costGun * 0.5 * this._levelTower
+            : this._costRocket * 0.5 * this._levelTower;
+
+        this._gameManager.setCoinText(-cost);
+        this._levelTower = 0;
+        this._turrentType = TurrentType.None;
     }
 
     onRepair() {

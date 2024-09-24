@@ -1,5 +1,7 @@
-import { _decorator, Component,  Node,  Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, Component, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
+import { GameManager } from "./GameManager";
+import Store from "./Store";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
@@ -10,7 +12,7 @@ export class Enemy extends Component {
     protected avatar: Node;
     @property(SpriteFrame)
     protected avatarSprites: SpriteFrame;
-    
+
     protected _speed: number = 1;
     protected _damage: number;
     protected _paths: Vec3[] = [];
@@ -77,17 +79,6 @@ export class Enemy extends Component {
         return angle;
     }
 
-    // checkGameOver() {
-    //     console.log('checkGameOver');
-    //     return;
-
-    //     const canvas = find("Canvas");
-
-    //     const gameManager = canvas.getComponentInChildren(GameManager);
-
-    //     gameManager.checkGameOver();
-    // }
-
     getTimeMove(start: Vec3, end: Vec3) {
         return Vec3.distance(start, end) / 100 * this._speed;
     }
@@ -100,6 +91,9 @@ export class Enemy extends Component {
 
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();
+            console.log('value', 100);
+
+            Store.getInstance().getGameManager().coinTotal += 100;
         }
     }
 }

@@ -1,6 +1,6 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { TowerType, CharacterType } from "./Enums";
+import { TurrentType, CharacterType } from "./Enums";
 import Store from "./Store";
 const { ccclass, property } = _decorator;
 
@@ -18,8 +18,8 @@ export class Turent extends Component {
     protected gunBarrelNumbers: number[] = [];
     @property(Prefab)
     protected ammoPrefab: Prefab;
-    @property({ type: Enum(TowerType) })
-    protected towerType: TowerType;
+    @property({ type: Enum(TurrentType) })
+    protected towerType: TurrentType;
     @property
     protected damage: number = 3;
     @property
@@ -127,16 +127,18 @@ export class Turent extends Component {
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._levelManager;
+        
+        const damage = this.damage * this._levelTurrent;
 
         ammo.getComponent(Ammo)
-        .init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);
+        .init(target, this.speed, damage, this._angleShoot, this._levelTurrent);
     }
 
     shooting() {        
-        this.muzzleDouble.active = this.towerType == TowerType.GunTower && this._levelTurrent != 2;
-        this.muzzleSingle.active = this.towerType == TowerType.GunTower && this._levelTurrent == 2;
+        this.muzzleDouble.active = this.towerType == TurrentType.GunTower && this._levelTurrent != 2;
+        this.muzzleSingle.active = this.towerType == TurrentType.GunTower && this._levelTurrent == 2;
 
-        if (this.towerType == TowerType.RocketTower) {
+        if (this.towerType == TurrentType.RocketTower) {
             this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTurrent];
         }
 
@@ -146,7 +148,7 @@ export class Turent extends Component {
             }
             this.muzzleDouble.active = false;
             this.muzzleSingle.active = false;
-            if (this.towerType == TowerType.RocketTower) {
+            if (this.towerType == TurrentType.RocketTower) {
                 this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
             }
         }, 100);
