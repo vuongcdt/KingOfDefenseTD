@@ -2,8 +2,9 @@ import { _decorator, Component, EventTouch, instantiate, Label, Node, Prefab, Sp
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
-import { GameManager } from './GameManager';
 import { TurrentType } from './Enums';
+import { eventTarget } from './Events';
+import { SUB_COINT, ADD_COINT } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')
@@ -37,12 +38,11 @@ export class TowerPlacement extends Component {
     private _levelTower: number = 0;
     private _turrent: Turent;
     private _store: Store;
-    private _gameManager: GameManager;
     private _health: number = 1000;
     private _costGun: number = 150;
     private _costRocket: number = 300;
     private _currentHealth: number;
-    private _turrentType: TurrentType
+    private _turrentType: TurrentType;
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -50,7 +50,6 @@ export class TowerPlacement extends Component {
 
     start(): void {
         this._store = Store.getInstance();
-        this._gameManager = this._store.getGameManager();
         this._background = this.getComponent(Sprite);
         this.onHideAction();
         this.healthBar.active = false;
@@ -81,38 +80,40 @@ export class TowerPlacement extends Component {
 
     onUpgrade() {
         const cost = this._turrentType == TurrentType.GunTower
-        ? this._costGun * this._levelTower
-        : this._costRocket * this._levelTower;
+            ? this._costGun * this._levelTower
+            : this._costRocket * this._levelTower;
 
-        if(this._gameManager.coinTotal < cost){
+        if (this._store.coinTotal < cost) {
             return;
         }
         this._levelTower++;
         this.onSetSprite();
-  
-        this._gameManager.setCoinText(cost);
+
+        eventTarget.emit(SUB_COINT, cost);
     }
 
     onBuyGun() {
-        if(this._gameManager.coinTotal < this._costGun){
+        if (this._store.coinTotal < this._costGun) {
             return;
         }
         this._levelTower++;
         this.setTurrent(this.gunTowerPrefab);
         this.onSetSprite();
-        this._gameManager.setCoinText(this._costGun);
         this._turrentType = TurrentType.GunTower;
+
+        eventTarget.emit(SUB_COINT, this._costGun);
     }
 
     onBuyRocket() {
-        if(this._gameManager.coinTotal < this._costRocket){
+        if (this._store.coinTotal < this._costRocket) {
             return;
         }
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
-        this._gameManager.setCoinText(this._costRocket);
         this._turrentType = TurrentType.RocketTower;
+
+        eventTarget.emit(SUB_COINT, this._costRocket);
     }
 
     setTurrent(prefab: Prefab) {
@@ -134,17 +135,24 @@ export class TowerPlacement extends Component {
             ? this._costGun * 0.5 * this._levelTower
             : this._costRocket * 0.5 * this._levelTower;
 
-        this._gameManager.setCoinText(-cost);
+        eventTarget.emit(ADD_COINT, cost);
+
         this._levelTower = 0;
         this._turrentType = TurrentType.None;
     }
 
     onRepair() {
+        const cost = this._turrentType == TurrentType.GunTower
+            ? this._costGun * 0.5 * this._levelTower
+            : this._costRocket * 0.5 * this._levelTower;
+
         this._currentHealth = this._health;
         this.healthBar.getComponentInChildren(Sprite).fillRange = 1;
         this.fire.active = false;
         this.onHideAction();
-        this._gameManager.setCoinText(this._costGun);
+
+        eventTarget.emit(SUB_COINT, cost);
+
         setTimeout(() => {
             if (this.healthBar.active) {
                 this.healthBar.active = false;

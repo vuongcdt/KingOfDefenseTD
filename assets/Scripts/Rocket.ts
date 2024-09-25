@@ -90,7 +90,7 @@ export class Rocket extends Ammo {
 
     drawLineFromPoints(points: Vec3[]) {
         const store = Store.getInstance();
-        const g = store.getGraphics();
+        const g = store.graphics();
         g.strokeColor = Color.RED;
         g.lineWidth = 5;
 
@@ -127,7 +127,7 @@ export class Rocket extends Ammo {
     drawCurve(p0: Vec3, p1: Vec3, p2: Vec3) {
         const store = Store.getInstance();
 
-        const graphics = store.getGraphics();
+        const graphics = store.graphics();
         graphics.strokeColor = Color.RED;
         graphics.lineWidth = 5;
         graphics.moveTo(p0.x, p0.y);

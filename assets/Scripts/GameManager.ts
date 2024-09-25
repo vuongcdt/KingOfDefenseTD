@@ -1,6 +1,8 @@
-import { _decorator, Component, game, Node, RichText } from 'cc';
+import { _decorator, Button, Component, game, Node, RichText } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
+import { eventTarget } from './Events';
+import { SUB_COINT, ADD_COINT, SET_HEART } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -17,36 +19,41 @@ export class GameManager extends Component {
     private levelText: RichText;
     @property(Node)
     private settingPopup: Node;
+    @property(Node)
+    private homeScreen: Node;
 
-    private _gameState: GameState = GameState.PlayGame;
-    private _heart: number = 20;
-    private _coinTotal: number = 1000;
-    private _waves: number =9;
-    private _level: number =1;
+    private _store: Store;
 
-    public get gameState(): number {
-        return this._gameState;
+    onLoad() {
+        eventTarget.on(SUB_COINT, this.subCoint, this);
+        eventTarget.on(ADD_COINT, this.addCoint, this);
+        eventTarget.on(SET_HEART, this.setHeart, this);
     }
 
-    public set gameState(value: number) {
-        this._gameState = value;
+    start() {
+        this._store = Store.getInstance();
+        this.setHeartText();
     }
 
-    public get coinTotal(): number {
+    update(deltaTime: number) {
+
+    }
+
+    addCoint(cost: number) {
+        this._store.coinTotal += cost;
         this.setCoinText();
-        return this._coinTotal;
     }
 
-    public set coinTotal(value: number) {
+    subCoint(cost: number) {
+        this._store.coinTotal -= cost;
         this.setCoinText();
-        this._coinTotal = value;
     }
 
     checkGameOver() {
-        this._heart--;
-        if (this._heart <= 0) {
+        this._store.heart--;
+        if (this._store.heart <= 0) {
             game.pause();
-            this._gameState = GameState.OverGame;
+            this._store.gameState = GameState.OverGame;
             this.gameoverPopup.active = true;
         }
     }
@@ -56,39 +63,40 @@ export class GameManager extends Component {
         this.gameoverPopup.active = false;
     }
 
-    setCoinText(value: number = 0) {        
-        this._coinTotal -= value;
-        this.coinText.string = this._coinTotal.toString();
+    setCoinText() {
+        this.coinText.string = this._store.coinTotal.toString();
     }
 
     setWavesText(value: string) {
         this.wavesText.string = value;
     }
 
+    setHeart() {
+        --this._store.heart;
+        this.setHeartText();
+    }
+
     setHeartText() {
-        this.heartText.string = (--this._heart).toString();
+        this.heartText.string = this._store.heart.toString();
     }
 
     setLevelText(value: number) {
-        this._level = value;
-        this.levelText.string = this._level.toString();
+        this._store.level = value;
+        this.levelText.string = this._store.level.toString();
     }
 
-    onSettingClicked(){
+    onLevelClicked(e: Event, customEventData: string) {
+        this.homeScreen.active = false;
+    }
+
+    onSettingClicked() {
         this.settingPopup.active = true;
     }
-    
-    onSpeedClicked(){
-        
-    }
 
-    start() {
-        Store.getInstance().setGameManager(this);
-    }
-
-    update(deltaTime: number) {
+    onSpeedClicked() {
 
     }
+
 }
 
 

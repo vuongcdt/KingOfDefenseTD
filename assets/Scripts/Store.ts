@@ -1,5 +1,6 @@
 import { _decorator, Graphics, Node } from "cc";
 import { GameManager } from "./GameManager";
+import { GameState } from "./Enums";
 const { ccclass } = _decorator;
 
 @ccclass
@@ -8,9 +9,14 @@ export default class Store {
 
     private state: any = {};
     private observers: Array<(state: any) => void> = [];
-    private _levelManager: Node;
-    private _graphics: Graphics;
-    private _gameManager: GameManager;
+    
+    public levelManager: Node;
+    public graphics: Graphics;
+    public gameState: GameState = GameState.PlayGame;
+    public heart: number = 20;
+    public coinTotal: number = 1000;
+    public waves: number = 9;
+    public level: number = 1;
 
     private constructor() { }
 
@@ -21,28 +27,10 @@ export default class Store {
         return Store.instance;
     }
 
-    public getGameManager(): GameManager {
-        return this._gameManager;
-    }
-    public setGameManager(value: GameManager) {
-        this._gameManager = value;
-    }
-
-    public getGraphics(): Graphics {
-        return this._graphics;
-    }
-    public setGraphics(value: Graphics) {
-        this._graphics = value;
-    }
-
-    public getLevelManage(): Node {
-        return this._levelManager;
-    }
-
-    public setLevelManage(levelManage: Node): void {
-        this._levelManager = levelManage;
-        this.notifyObservers();
-    }
+    // public set levelManage(levelManage: Node) {
+    //     this._levelManager = levelManage;
+    //     this.notifyObservers();
+    // }
 
     public getState(): any {
         return this.state;

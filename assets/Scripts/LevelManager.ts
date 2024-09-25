@@ -69,8 +69,8 @@ export class LevelManager extends Component {
         const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;
         this._store = Store.getInstance();
-        this._store.setLevelManage(this.node);
-        this._store.setGraphics(graphics);
+        this._store.levelManager = this.node;
+        this._store.graphics = graphics;
 
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
@@ -87,13 +87,13 @@ export class LevelManager extends Component {
         this.generateStoneAndTree();
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        
+
         this.onStartClick();
 
         this.spawnTowerPlacement();
     }
 
-    onStartClick(){
+    onStartClick() {
         this.spawnEnemyData();
         // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
         // this.spawnEnemy(this.tankPrefab, this._wayPaths);

@@ -43,7 +43,7 @@ export class Turent extends Component {
 
     start(): void {
         this._store = Store.getInstance();
-        this._levelManager = this._store.getLevelManage();
+        this._levelManager = this._store.levelManager;
 
         let collider = this.getComponent(Collider2D);
 

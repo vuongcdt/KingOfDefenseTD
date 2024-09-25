@@ -9,9 +9,8 @@ export class AmmoTank extends Ammo {
         let target = otherCollider.node.getParent().getComponent(TowerPlacement);
 
         if (target) {
+            target.setHP(this._damage);
             // tween(this.node).removeSelf().start();
-            target.setHP(3);
-            // target.setHP(this._damage);
         }
     }
 }
