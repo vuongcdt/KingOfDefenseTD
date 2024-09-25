@@ -9,13 +9,13 @@ export default class Store {
 
     private state: any = {};
     private observers: Array<(state: any) => void> = [];
-    
+
     public levelManager: Node;
     public graphics: Graphics;
     public gameState: GameState = GameState.PlayGame;
-    public heart: number = 20;
+    public heart: number = 3;
     public coinTotal: number = 1000;
-    public waves: number = 9;
+    public waves: number = 2;
     public level: number = 1;
 
     private constructor() { }

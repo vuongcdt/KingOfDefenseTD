@@ -49,8 +49,6 @@ export class LevelManager extends Component {
     private _endPos: Vec3;
     private _towerPlacementList: TowerPlacement[] = [];
     private _store: Store;
-    private _count: number = 0;
-    private _coefficient = 2;
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
     private _time = 0;

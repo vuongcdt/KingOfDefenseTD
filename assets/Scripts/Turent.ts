@@ -163,22 +163,6 @@ export class Turent extends Component {
         this._levelTurrent = levelTurrent;
         this.onSetSprite();
     }
-
-    setHP(damage: number) {
-        console.log("HP");
-    }
-
-    // setHP(damage: number) {
-    //     this._currentHealth -= damage;
-
-    //     this.healthBar.active = true;
-    //     this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
-
-    //     if (this._currentHealth <= 0) {
-    //         tween(this.node).removeSelf().start();
-    //     }
-    // }
-
 }
 
 
