@@ -11,6 +11,7 @@ export default class Store {
 
     public levelManager: Node;
     public ammoLayer: Node;
+    public towerLayer: Node;
     public graphics: Graphics;
     public gameState: GameState = GameState.PlayGame;
     public heart: number = 3;

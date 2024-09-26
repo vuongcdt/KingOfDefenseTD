@@ -19,6 +19,8 @@ export class LevelManager extends Component {
     @property(Node)
     private ammoLayer: Node = null;
     @property(Node)
+    private towerLayer: Node = null;
+    @property(Node)
     private startPoint: Node = null;
     @property(Node)
     private endPoint: Node = null;
@@ -76,6 +78,7 @@ export class LevelManager extends Component {
         this._store.levelManager = this.node;
         this._store.graphics = graphics;
         this._store.ammoLayer = this.ammoLayer;
+        this._store.towerLayer = this.towerLayer;
 
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
@@ -95,7 +98,7 @@ export class LevelManager extends Component {
 
         this.startGame();
 
-        this.spawnTowerPlacement();
+        this.generateTowerPlacement();
     }
 
     update(deltaTime: number) {
@@ -223,10 +226,11 @@ export class LevelManager extends Component {
         }
     }
 
-    spawnTowerPlacement() {
+    generateTowerPlacement() {
         this._towerPlacements.forEach(point => {
             const towerPlacement = instantiate(this.towerPlacementPrefab);
-            towerPlacement.parent = this.towerPlacementBlock;
+            // towerPlacement.parent = this.towerPlacementBlock;
+            towerPlacement.parent = this.towerLayer;
             towerPlacement.position = point;
             towerPlacement.getComponent(TowerPlacement).levelManager = this.node;
 
@@ -255,8 +259,13 @@ export class LevelManager extends Component {
         console.log('resetGame');
         this.enemyLayer.removeAllChildren();
         this.ammoLayer.removeAllChildren();
+        this.towerLayer.removeAllChildren();
+    
         this._store.gameState = GameState.PlayGame;
+
         this.startGame();
+        this.generateTowerPlacement();
+
     }
 }
 

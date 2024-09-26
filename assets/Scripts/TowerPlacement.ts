@@ -33,11 +33,11 @@ export class TowerPlacement extends Component {
     @property(Node)
     private fire: Node;
 
+    private _store: Store;
     private _levelManager: Node;
     private _background: Sprite;
     private _levelTower: number = 0;
     private _turrent: Turent;
-    private _store: Store;
     private _health: number = 1000;
     private _costGun: number = 150;
     private _costRocket: number = 300;

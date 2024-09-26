@@ -9,6 +9,7 @@ export const SET_COINT_TEXT = 'SET_COINT_TEXT';
 export const SET_HEART_TEXT = 'SET_HEART_TEXT';
 export const SET_WAVES_TEXT = 'SET_WAVES_TEXT';
 export const SET_LEVEL_TEXT = 'SET_LEVEL_TEXT';
+export const RESET_GAMELAY_UI = 'RESET_GAMELAY_UI';
 
 export const SHOW_HOME_SCREEN = 'SHOW_HOME_SCREEN';
 export const SHOW_SETTING_POPUP = 'SHOW_SETTING_POPUP';

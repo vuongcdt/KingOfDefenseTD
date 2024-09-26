@@ -1,6 +1,6 @@
 import { _decorator, Button, Label, Node } from 'cc';
 import { eventTarget } from '../Events';
-import { SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP } from '../CONSTANTS';
+import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP } from '../CONSTANTS';
 import { BaseUIComponent } from './BaseUIComponent';
 const { ccclass, property } = _decorator;
 
@@ -28,6 +28,7 @@ export class GamePlayScreen extends BaseUIComponent {
         eventTarget.on(SET_HEART_TEXT, this.setHeartText, this);
         eventTarget.on(SET_LEVEL_TEXT, this.setLevelText, this);
         eventTarget.on(SET_WAVES_TEXT, this.setWavesText, this);
+        eventTarget.on(RESET_GAMELAY_UI, this.resetGamePlayUI, this);
     }
 
 
@@ -36,14 +37,19 @@ export class GamePlayScreen extends BaseUIComponent {
 
         this.settingBtn.on(Button.EventType.CLICK, this.showSettingPopup, this);
         this.speedBtn.on(Button.EventType.CLICK, this.onSpeedClick, this);
-        this.setCoinText();
-        this.setHeartText();
-        this.setLevelText();
-        this.setWavesText();
+
+        this.resetGamePlayUI();
     }
 
     update(deltaTime: number) {
 
+    }
+
+    resetGamePlayUI(){
+        this.setCoinText();
+        this.setHeartText();
+        this.setLevelText();
+        this.setWavesText();
     }
 
     setCoinText() {
