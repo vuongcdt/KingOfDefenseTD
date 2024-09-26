@@ -8022,6 +8022,9 @@
     "enemyLayer": {
       "__id__": 202
     },
+    "ammoLayer": {
+      "__id__": 204
+    },
     "startPoint": {
       "__id__": 115
     },
