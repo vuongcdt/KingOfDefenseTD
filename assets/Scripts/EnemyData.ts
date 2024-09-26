@@ -1,6 +1,7 @@
 import { _decorator } from "cc";
 const { ccclass, property } = _decorator;
 import { CharacterType } from "./Enums";
+
 export class EnemySpawn {
     @property({ type: CharacterType, displayName: "type" })
     public type: CharacterType;

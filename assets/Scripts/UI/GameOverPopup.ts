@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, game, Tween } from 'cc';
+import { _decorator, Button} from 'cc';
 import { BaseUIComponent } from './BaseUIComponent';
 import { eventTarget } from '../Events';
 import { RESET_GAME, SHOW_GAMEOVER_POPUP } from '../CONSTANTS';

@@ -1,5 +1,4 @@
 import { _decorator, Graphics, Node } from "cc";
-import { GameManager } from "./GameManager";
 import { GameState } from "./Enums";
 const { ccclass } = _decorator;
 

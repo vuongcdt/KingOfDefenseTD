@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Color, Component, Contact2DType, math, Node, randomRangeInt, Sprite, tween, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Contact2DType, math, randomRangeInt, Sprite, tween, Vec3 } from 'cc';
 import { Ammo } from './Ammo';
 import Store from './Store';
 const { ccclass, property } = _decorator;
@@ -17,7 +17,7 @@ export class Rocket extends Ammo {
         this.node.angle = angleShoot;
         this._collider = this.getComponent(Collider2D);
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
-        
+
         const p0 = this.node.position;
         const p2 = target;
 
@@ -90,7 +90,7 @@ export class Rocket extends Ammo {
 
     drawLineFromPoints(points: Vec3[]) {
         const store = Store.getInstance();
-        const g = store.graphics();
+        const g = store.graphics;
         g.strokeColor = Color.RED;
         g.lineWidth = 5;
 
@@ -127,7 +127,7 @@ export class Rocket extends Ammo {
     drawCurve(p0: Vec3, p1: Vec3, p2: Vec3) {
         const store = Store.getInstance();
 
-        const graphics = store.graphics();
+        const graphics = store.graphics;
         graphics.strokeColor = Color.RED;
         graphics.lineWidth = 5;
         graphics.moveTo(p0.x, p0.y);

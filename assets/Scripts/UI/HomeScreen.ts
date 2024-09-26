@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, Label, Layout, Node } from 'cc';
+import { _decorator, Button, Component, Label, Layout } from 'cc';
 import { eventTarget } from '../Events';
 import { SHOW_HOME_SCREEN } from '../CONSTANTS';
 const { ccclass, property } = _decorator;

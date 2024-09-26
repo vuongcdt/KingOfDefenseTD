@@ -1,4 +1,4 @@
-import { _decorator, Component, EPhysics2DDrawFlags, Node, PhysicsSystem2D, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Node, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { LevelManager } from './LevelManager';
 const { ccclass, property } = _decorator;

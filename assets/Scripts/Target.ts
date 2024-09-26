@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, Contact2DType, game, IPhysics2DContact } from "cc";
+import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact } from "cc";
 import { Enemy } from "./Enemy";
 import { eventTarget } from "./Events";
 import { SET_HEART } from "./CONSTANTS";

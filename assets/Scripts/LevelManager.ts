@@ -1,4 +1,4 @@
-import { _decorator, Camera, Color, Component, EPhysics2DDrawFlags, EventTouch, game, Graphics, instantiate, Node, PhysicsSystem2D, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Camera, Color, Component, EventTouch, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
@@ -93,7 +93,7 @@ export class LevelManager extends Component {
 
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        this.onStartClick();
+        this.startGame();
 
         this.spawnTowerPlacement();
     }
@@ -102,14 +102,14 @@ export class LevelManager extends Component {
 
     }
 
-    onStartClick() {
+    startGame() {
         this.spawnEnemyData();
 
         this._time = setInterval(() => {
             if (this._store.gameState != GameState.PlayGame) {
                 clearInterval(this._time);
                 return;
-            } 
+            }
 
             this.spawnEnemyData();
         }, 5 * 1000);
@@ -256,6 +256,7 @@ export class LevelManager extends Component {
         this.enemyLayer.removeAllChildren();
         this.ammoLayer.removeAllChildren();
         this._store.gameState = GameState.PlayGame;
+        this.startGame();
     }
 }
 

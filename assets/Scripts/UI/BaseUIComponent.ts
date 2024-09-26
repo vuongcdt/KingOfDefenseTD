@@ -1,4 +1,4 @@
-import { _decorator, Color, Component, Node, Sprite } from 'cc';
+import { _decorator, Color, Sprite } from 'cc';
 import Store from '../Store';
 import { BaseComponent } from '../BaseComponent';
 const { ccclass, property } = _decorator;

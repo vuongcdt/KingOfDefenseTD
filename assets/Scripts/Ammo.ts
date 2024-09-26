@@ -1,6 +1,5 @@
-import { _decorator, Collider2D, Color, Component, Contact2DType, EPhysics2DDrawFlags, game, IPhysics2DContact, math, Node, PhysicsSystem2D, random, randomRangeInt, Sprite, SpriteFrame, Tween, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
-import Store from './Store';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')

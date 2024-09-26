@@ -13,6 +13,8 @@ export const SET_LEVEL_TEXT = 'SET_LEVEL_TEXT';
 export const SHOW_HOME_SCREEN = 'SHOW_HOME_SCREEN';
 export const SHOW_SETTING_POPUP = 'SHOW_SETTING_POPUP';
 export const SHOW_GAMEOVER_POPUP = 'SHOW_GAMEOVER_POPUP';
+
 export const RESET_GAME = 'RESET_GAME';
+export const START_GAME = 'START_GAME';
 
 

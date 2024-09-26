@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, game, IPhysics2DContact, Node, tween } from 'cc';
+import { _decorator, Collider2D, IPhysics2DContact } from 'cc';
 import { Ammo } from './Ammo';
 import { TowerPlacement } from './TowerPlacement';
 const { ccclass, property } = _decorator;

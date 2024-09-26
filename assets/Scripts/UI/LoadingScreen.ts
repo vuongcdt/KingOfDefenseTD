@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Sprite } from 'cc';
+import { _decorator, Component, Sprite } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingScreen')

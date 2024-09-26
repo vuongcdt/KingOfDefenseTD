@@ -1,8 +1,8 @@
-import { _decorator, Button, Component, game, Node, RichText, Tween } from 'cc';
+import { _decorator, Component, Node, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
 import { eventTarget } from './Events';
-import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAME } from './CONSTANTS';
+import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')

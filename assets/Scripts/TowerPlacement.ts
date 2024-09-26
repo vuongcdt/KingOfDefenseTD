@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Label, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';

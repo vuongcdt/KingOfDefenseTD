@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, Node } from 'cc';
+import { _decorator, Button, Node } from 'cc';
 import { SHOW_HOME_SCREEN, SHOW_SETTING_POPUP } from '../CONSTANTS';
 import { eventTarget } from '../Events';
 import { BaseUIComponent } from './BaseUIComponent';
