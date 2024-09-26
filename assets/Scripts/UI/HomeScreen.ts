@@ -16,8 +16,6 @@ export class HomeScreen extends Component {
     }
     
     showHomeScreen() {
-        console.log('show');
-        
         this.node.active = true;
     }
 
@@ -27,8 +25,6 @@ export class HomeScreen extends Component {
 
 
     onLevelClicked(value: number) {
-        console.log('level', value);
-
         this.node.active = false;
     }
 }

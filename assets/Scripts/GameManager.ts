@@ -2,7 +2,7 @@ import { _decorator, Button, Component, game, Node, RichText, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
 import { eventTarget } from './Events';
-import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT } from './CONSTANTS';
+import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAME } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -45,21 +45,13 @@ export class GameManager extends Component {
         if (this._store.heart <= 0) {
             Tween.stopAll();
             this._store.gameState = GameState.OverGame;
-            this.gameoverPopup.active = true;
+            eventTarget.emit(SHOW_GAMEOVER_POPUP);
         }
     }
 
     setLevel(value: number) {
         this._store.level = value;
         eventTarget.emit(SET_LEVEL_TEXT);
-    }
-
-    onSettingClicked() {
-        this.settingPopup.active = true;
-    }
-
-    onSpeedClicked() {
-
     }
 
 }

@@ -18,27 +18,9 @@ export class EnemySpawn {
 
 export const enemiesData: EnemySpawn[] = [
     new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    new EnemySpawn(CharacterType.Tank, 3, 10),
-    // new EnemySpawn(CharacterType.Soldier, 3, 2),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    new EnemySpawn(CharacterType.Plane, 3, 10),
+    new EnemySpawn(CharacterType.Tank, 3, 2),
+    new EnemySpawn(CharacterType.Plane, 3, 2),
 
-    // new EnemySpawn(CharacterType.Tank, 3, 10),
-    // new EnemySpawn(CharacterType.Soldier, 3, 2),
-    // // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Plane, 3, 1),
-    // // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // // new EnemySpawn(CharacterType.Soldier, 3, 1),
-    // new EnemySpawn(CharacterType.Soldier, 3, 1),
 ]
 
 // let level = {

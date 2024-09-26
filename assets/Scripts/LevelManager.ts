@@ -3,7 +3,9 @@ import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
 import { enemiesData, EnemySpawn } from './EnemyData';
-import { CharacterType } from './Enums';
+import { CharacterType, GameState } from './Enums';
+import { eventTarget } from './Events';
+import { RESET_GAME } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -41,6 +43,7 @@ export class LevelManager extends Component {
     @property({ type: [EnemySpawn] })
     private enemiesData: EnemySpawn[] = [];
 
+    private _store: Store;
     private _treeNodes: Node[] = [];
     private _wayPaths: Vec3[] = [];
     private _planePaths: Vec3[] = [];
@@ -48,10 +51,10 @@ export class LevelManager extends Component {
     private _startPos: Vec3;
     private _endPos: Vec3;
     private _towerPlacementList: TowerPlacement[] = [];
-    private _store: Store;
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
-    private _time = 0;
+    private _countTime: number = 0;
+    private _time: number = 0;
 
 
     start() {
@@ -63,6 +66,7 @@ export class LevelManager extends Component {
         //     | EPhysics2DDrawFlags.Joint
         //     | EPhysics2DDrawFlags.Shape
         //     ;
+        eventTarget.on(RESET_GAME, this.resetGame, this);
 
         const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;
@@ -91,30 +95,34 @@ export class LevelManager extends Component {
         this.spawnTowerPlacement();
     }
 
-    onStartClick() {
-        this.spawnEnemyData();
-        // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-        // this.spawnEnemy(this.tankPrefab, this._wayPaths);
+    update(deltaTime: number) {
 
-        setInterval(() => {
-            if (game.isPaused()) {
+    }
+
+    onStartClick() {
+        this._time = setInterval(() => {
+            if (this._store.gameState != GameState.PlayGame) {
+                clearInterval(this._time);
                 return;
             }
             this.spawnEnemyData();
-            // this.spawnEnemy(this.soldierPrefab, this._wayPaths);
-            // this.spawnEnemy(this.tankPrefab, this._wayPaths);
+
         }, 10 * 1000);
     }
 
     spawnEnemyData() {
+        this._countTime = 0;
         enemiesData.forEach(data => {
             const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
-            this._time += data.time;
+            this._countTime += data.time;
             setTimeout(() => {
+                if (this._store.gameState != GameState.PlayGame) {
+                    return;
+                }
                 for (const _ of Array(data.total)) {
                     this.spawnEnemy(this.prefabEnemies[data.type - 1], path);
                 }
-            }, this._time * 1000);
+            }, this._countTime * 1000);
         })
     }
 
@@ -238,10 +246,11 @@ export class LevelManager extends Component {
             })
     }
 
-    update(deltaTime: number) {
-
+    resetGame() {
+        console.log('resetGame');
+        this.enemyLayer.removeAllChildren();
+        this._store.gameState = GameState.PlayGame;
     }
-
 }
 
 

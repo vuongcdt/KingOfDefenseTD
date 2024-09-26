@@ -1,11 +1,11 @@
-import { _decorator, Component, Label, Node } from 'cc';
-import Store from '../Store';
+import { _decorator, Button, Component, Label, Node } from 'cc';
 import { eventTarget } from '../Events';
-import { SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT } from '../CONSTANTS';
+import { SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP } from '../CONSTANTS';
+import { BaseUIComponent } from './BaseUIComponent';
 const { ccclass, property } = _decorator;
 
-@ccclass('UIManager')
-export class UIManager extends Component {
+@ccclass('GamePlayScreen')
+export class GamePlayScreen extends BaseUIComponent {
     @property(Node)
     private gameoverPopup: Node;
     @property(Label)
@@ -17,11 +17,11 @@ export class UIManager extends Component {
     @property(Label)
     private levelText: Label;
     @property(Node)
-    private settingPopup: Node;
+    private settingBtn: Node;
+    @property(Node)
+    private speedBtn: Node;
     @property(Node)
     private homeScreen: Node;
-
-    private _store: Store;
 
     protected onLoad(): void {
         eventTarget.on(SET_COINT_TEXT, this.setCoinText, this);
@@ -32,7 +32,10 @@ export class UIManager extends Component {
 
 
     start() {
-        this._store = Store.getInstance();
+        super.start();
+
+        this.settingBtn.on(Button.EventType.CLICK, this.showSettingPopup, this);
+        this.speedBtn.on(Button.EventType.CLICK, this.onSpeedClick, this);
         this.setCoinText();
         this.setHeartText();
         this.setLevelText();
@@ -57,6 +60,13 @@ export class UIManager extends Component {
 
     setLevelText() {
         this.levelText.string = this._store.level.toString();
+    }
+
+    showSettingPopup() {
+        eventTarget.emit(SHOW_SETTING_POPUP);
+    }
+
+    onSpeedClick() {
     }
 }
 
