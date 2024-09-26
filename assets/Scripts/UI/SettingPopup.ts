@@ -13,24 +13,16 @@ export class SettingPopup extends BaseUIComponent {
 
     start() {
         super.start();
-        this.deActiveNode();
+        this.hideNode();
 
-        eventTarget.on(SHOW_SETTING_POPUP, this.show, this);
+        eventTarget.on(SHOW_SETTING_POPUP, this.showNode, this);
         this.homeBtn.on(Button.EventType.CLICK, this.onHomeClicked, this);
-        this.closeBtn.on(Button.EventType.CLICK, this.onCloseClicked, this);
+        this.closeBtn.on(Button.EventType.CLICK, this.hideNode, this);
     }
 
     onHomeClicked() {
-        this.deActiveNode();
+        this.hideNode();
         eventTarget.emit(SHOW_HOME_SCREEN);
-    }
-
-    onCloseClicked() {
-        this.deActiveNode();
-    }
-
-    show() {
-        this.activeNode();
     }
 }
 

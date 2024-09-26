@@ -11,6 +11,8 @@ export class GameManager extends Component {
     private gameoverPopup: Node;
     @property(Node)
     private settingPopup: Node;
+    @property(Node)
+    private canvas: Node;
 
     private _store: Store;
 
@@ -23,6 +25,7 @@ export class GameManager extends Component {
 
     start() {
         this._store = Store.getInstance();
+        this._store.canvas = this.canvas;
     }
 
     update(deltaTime: number) {
@@ -55,7 +58,7 @@ export class GameManager extends Component {
         eventTarget.emit(SET_LEVEL_TEXT);
     }
 
-    resetGame(){
+    resetGame() {
         this._store.coinTotal = 1000;
         this._store.heart = 3;
         this._store.waves = 1;

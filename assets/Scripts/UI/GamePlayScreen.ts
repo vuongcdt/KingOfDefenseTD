@@ -1,11 +1,11 @@
 import { _decorator, Button, Label, Node } from 'cc';
 import { eventTarget } from '../Events';
 import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP } from '../CONSTANTS';
-import { BaseUIComponent } from './BaseUIComponent';
+import { BaseComponent } from '../BaseComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('GamePlayScreen')
-export class GamePlayScreen extends BaseUIComponent {
+export class GamePlayScreen extends BaseComponent {
     @property(Node)
     private gameoverPopup: Node;
     @property(Label)
@@ -45,7 +45,7 @@ export class GamePlayScreen extends BaseUIComponent {
 
     }
 
-    resetGamePlayUI(){
+    resetGamePlayUI() {
         this.setCoinText();
         this.setHeartText();
         this.setLevelText();

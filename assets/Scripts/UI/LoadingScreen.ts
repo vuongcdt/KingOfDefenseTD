@@ -1,8 +1,9 @@
 import { _decorator, Component, Sprite } from 'cc';
+import { BaseUIComponent } from './BaseUIComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingScreen')
-export class LoadingScreen extends Component {
+export class LoadingScreen extends BaseUIComponent {
     @property(Sprite)
     private fill: Sprite;
 
@@ -11,11 +12,13 @@ export class LoadingScreen extends Component {
 
 
     start() {
+        super.start();
+
         this.fill.fillRange = 0;
         this._time = setInterval(() => {
             if (this._count > 100) {
                 clearInterval(this._time);
-                this.node.active = false;
+                this.hideNode();
                 return;
             }
             this._count++;
