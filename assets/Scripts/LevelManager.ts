@@ -17,6 +17,8 @@ export class LevelManager extends Component {
     @property(Node)
     private enemyLayer: Node = null;
     @property(Node)
+    private ammoLayer: Node = null;
+    @property(Node)
     private startPoint: Node = null;
     @property(Node)
     private endPoint: Node = null;
@@ -73,6 +75,7 @@ export class LevelManager extends Component {
         this._store = Store.getInstance();
         this._store.levelManager = this.node;
         this._store.graphics = graphics;
+        this._store.ammoLayer = this.ammoLayer;
 
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
@@ -100,14 +103,16 @@ export class LevelManager extends Component {
     }
 
     onStartClick() {
+        this.spawnEnemyData();
+
         this._time = setInterval(() => {
             if (this._store.gameState != GameState.PlayGame) {
                 clearInterval(this._time);
                 return;
-            }
-            this.spawnEnemyData();
+            } 
 
-        }, 10 * 1000);
+            this.spawnEnemyData();
+        }, 5 * 1000);
     }
 
     spawnEnemyData() {
@@ -249,6 +254,7 @@ export class LevelManager extends Component {
     resetGame() {
         console.log('resetGame');
         this.enemyLayer.removeAllChildren();
+        this.ammoLayer.removeAllChildren();
         this._store.gameState = GameState.PlayGame;
     }
 }

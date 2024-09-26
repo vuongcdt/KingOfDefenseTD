@@ -46,7 +46,7 @@ export class TurrentTank extends Turent {
         const ammo = instantiate(this.ammoPrefab);
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
-        ammo.parent = this._levelManager;
+        ammo.parent = this._store.ammoLayer;
 
         ammo.getComponent(Ammo)
             .init(target, this.speed, this.damage, this._angleShoot, this._levelTurrent);

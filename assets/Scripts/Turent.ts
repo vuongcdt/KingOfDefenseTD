@@ -1,6 +1,6 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { TurrentType, CharacterType } from "./Enums";
+import { TurrentType, CharacterType, GameState } from "./Enums";
 import Store from "./Store";
 const { ccclass, property } = _decorator;
 
@@ -21,13 +21,13 @@ export class Turent extends Component {
     @property({ type: Enum(TurrentType) })
     protected towerType: TurrentType;
     @property
+    @property({ type: [Enum(CharacterType)] })
+    protected targetNames: number[] = [CharacterType.Soldier, CharacterType.Tank, CharacterType.Plane];
     protected damage: number = 3;
     @property
     protected speed: number = 1;
     @property
     protected reloadTime: number = 0.8;
-    @property({ type: [Enum(CharacterType)] })
-    protected targetNames: number[] = [CharacterType.Soldier, CharacterType.Tank, CharacterType.Plane];
 
     protected _levelManager: Node;
     protected _target: Node;
@@ -67,7 +67,7 @@ export class Turent extends Component {
         this.setAngleShoot();
         this.node.angle = this._angleShoot;
 
-        if (this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive) {
+        if (this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive && this._store.gameState == GameState.PlayGame) {
             this._countdown = 0;
             this.attackTarget();
         }
@@ -126,12 +126,11 @@ export class Turent extends Component {
         const ammo = instantiate(this.ammoPrefab);
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
-        ammo.parent = this._levelManager;
+        ammo.parent = this._store.ammoLayer;
         
         const damage = this.damage * this._levelTurrent;
 
-        ammo.getComponent(Ammo)
-        .init(target, this.speed, damage, this._angleShoot, this._levelTurrent);
+        ammo.getComponent(Ammo).init(target, this.speed, damage, this._angleShoot, this._levelTurrent);
     }
 
     shooting() {        

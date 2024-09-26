@@ -11,6 +11,7 @@ export default class Store {
     private observers: Array<(state: any) => void> = [];
 
     public levelManager: Node;
+    public ammoLayer: Node;
     public graphics: Graphics;
     public gameState: GameState = GameState.PlayGame;
     public heart: number = 3;
