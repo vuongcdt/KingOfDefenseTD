@@ -6639,9 +6639,6 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "camera": {
-      "__id__": 9
-    },
     "maskLayer": {
       "__id__": 6
     },

@@ -31,6 +31,7 @@ export class GameOverPopup extends BaseUIComponent {
     }
 
     onHomeBtnClick() {
+        eventTarget.emit(RESET_GAME);
         eventTarget.emit(SHOW_HOME_SCREEN);
     }
 }

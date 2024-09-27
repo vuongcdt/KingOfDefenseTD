@@ -114,8 +114,6 @@ export class LevelManager extends Component {
     }
 
     spawnEnemyData() {
-        console.log('spawnEnemyData');
-
         this._countTime = 0;
 
         enemiesData.forEach(data => {
@@ -254,8 +252,6 @@ export class LevelManager extends Component {
     }
 
     resetGame() {
-        console.log('removeAllChildren');
-        
         this.enemyLayer.removeAllChildren();
         this.ammoLayer.removeAllChildren();
         this.towerLayer.removeAllChildren();

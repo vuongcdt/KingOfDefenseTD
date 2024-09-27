@@ -33,11 +33,7 @@ export class HomeScreen extends BaseUIComponent {
     }
 
     showHomeScreen() {
-        console.log(GameState[this._store.gameState]);
-        
-        if(this._store.gameState == GameState.OverGame){
-            console.log('OverGame');
-            
+        if(this._store.gameState != GameState.PlayGame){
             eventTarget.emit(RESET_GAME);
         }
         this.showNode();
