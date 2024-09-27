@@ -10,8 +10,6 @@ const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
 export class LevelManager extends Component {
-    @property(Camera)
-    private camera: Camera = null;
     @property(Node)
     private maskLayer: Node = null;
     @property(Node)
@@ -256,6 +254,8 @@ export class LevelManager extends Component {
     }
 
     resetGame() {
+        console.log('removeAllChildren');
+        
         this.enemyLayer.removeAllChildren();
         this.ammoLayer.removeAllChildren();
         this.towerLayer.removeAllChildren();

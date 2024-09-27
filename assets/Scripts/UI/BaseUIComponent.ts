@@ -24,7 +24,10 @@ export class BaseUIComponent extends BaseComponent {
 
     hideNode() {
         this.node.parent = null;
-        this._store.gameState = GameState.PlayGame;
+        
+        if(this._store.gameState != GameState.LoadingGame){
+            this._store.gameState = GameState.PlayGame;
+        }
         eventTarget.emit(UN_PAUSE_GAME);
     }
 }
