@@ -1,6 +1,7 @@
-import { _decorator, Color, Sprite } from 'cc';
-import Store from '../Store';
+import { _decorator } from 'cc';
 import { BaseComponent } from '../BaseComponent';
+import { eventTarget } from '../Events';
+import { HIDE_POPUP } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('BaseUIComponent')
@@ -14,6 +15,7 @@ export class BaseUIComponent extends BaseComponent {
     }
 
     showNode() {
+        eventTarget.emit(HIDE_POPUP);
         this.node.parent = this._store.canvas;
     }
 

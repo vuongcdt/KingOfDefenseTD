@@ -1,7 +1,7 @@
-import { _decorator, Button} from 'cc';
+import { _decorator, BlockInputEvents, Button, Node} from 'cc';
 import { BaseUIComponent } from './BaseUIComponent';
 import { eventTarget } from '../Events';
-import { RESET_GAME, SHOW_GAMEOVER_POPUP } from '../CONSTANTS';
+import { HIDE_POPUP, RESET_GAME, SHOW_GAMEOVER_POPUP } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameOverPopup')
@@ -10,6 +10,7 @@ export class GameOverPopup extends BaseUIComponent {
         super.start();
         
         this.hideNode();
+        eventTarget.on(HIDE_POPUP, this.hideNode, this);
 
         const replayBtn = this.node.getComponentInChildren(Button);
         replayBtn.node.on(Button.EventType.CLICK, this.onReplayGame, this);
@@ -21,7 +22,6 @@ export class GameOverPopup extends BaseUIComponent {
     }
 
     onReplayGame() {
-        this.hideNode();
         eventTarget.emit(RESET_GAME);
     }
 }

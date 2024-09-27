@@ -6,9 +6,6 @@ const { ccclass } = _decorator;
 export default class Store {
     private static instance: Store;
 
-    private state: any = {};
-    private observers: Array<(state: any) => void> = [];
-
     public canvas: Node;
     public levelManager: Node;
     public ammoLayer: Node;

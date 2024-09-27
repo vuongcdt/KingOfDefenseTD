@@ -5,7 +5,7 @@ import Store from './Store';
 import { enemiesData, EnemySpawn } from './EnemyData';
 import { CharacterType, GameState } from './Enums';
 import { eventTarget } from './Events';
-import { RESET_GAME } from './CONSTANTS';
+import { RESET_GAME, SHOW_GAMEOVER_POPUP } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -26,12 +26,6 @@ export class LevelManager extends Component {
     private endPoint: Node = null;
     @property([Prefab])
     private prefabEnemies: Prefab[] = [];
-    @property(Prefab)
-    private soldierPrefab: Prefab = null;
-    @property(Prefab)
-    private tankPrefab: Prefab = null;
-    @property(Prefab)
-    private planePrefab: Prefab = null;
     @property(Node)
     private wayPathBlock: Node;
     @property(Node)
@@ -62,19 +56,13 @@ export class LevelManager extends Component {
 
 
     start() {
-
-        // PhysicsSystem2D.instance.debugDrawFlags = 
-        // EPhysics2DDrawFlags.Aabb
-        //     | EPhysics2DDrawFlags.Pair
-        //     | EPhysics2DDrawFlags.CenterOfMass
-        //     | EPhysics2DDrawFlags.Joint
-        //     | EPhysics2DDrawFlags.Shape
-        //     ;
         eventTarget.on(RESET_GAME, this.resetGame, this);
+        this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        const graphics = this.getComponent(Graphics);
         this.enemiesData = enemiesData;
         this._store = Store.getInstance();
+        const graphics = this.getComponent(Graphics);
+
         this._store.levelManager = this.node;
         this._store.graphics = graphics;
         this._store.ammoLayer = this.ammoLayer;
@@ -93,19 +81,16 @@ export class LevelManager extends Component {
 
         this.generateWay();
         this.generateStoneAndTree();
-
-        this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.generateTowerPlacement();
 
         this.startGame();
-
-        this.generateTowerPlacement();
     }
 
     update(deltaTime: number) {
-
     }
 
     startGame() {
+        // return;
         this.spawnEnemyData();
 
         this._time = setInterval(() => {
@@ -115,7 +100,7 @@ export class LevelManager extends Component {
             }
 
             this.spawnEnemyData();
-        }, 5 * 1000);
+        }, 10 * 1000);
     }
 
     spawnEnemyData() {
@@ -229,7 +214,6 @@ export class LevelManager extends Component {
     generateTowerPlacement() {
         this._towerPlacements.forEach(point => {
             const towerPlacement = instantiate(this.towerPlacementPrefab);
-            // towerPlacement.parent = this.towerPlacementBlock;
             towerPlacement.parent = this.towerLayer;
             towerPlacement.position = point;
             towerPlacement.getComponent(TowerPlacement).levelManager = this.node;
@@ -256,11 +240,10 @@ export class LevelManager extends Component {
     }
 
     resetGame() {
-        console.log('resetGame');
         this.enemyLayer.removeAllChildren();
         this.ammoLayer.removeAllChildren();
         this.towerLayer.removeAllChildren();
-    
+
         this._store.gameState = GameState.PlayGame;
 
         this.startGame();
