@@ -1,4 +1,4 @@
-import { _decorator, BlockInputEvents, Button, Node } from 'cc';
+import { _decorator, BlockInputEvents, Button, director, Node } from 'cc';
 import { HIDE_POPUP, SHOW_HOME_SCREEN, SHOW_SETTING_POPUP } from '../CONSTANTS';
 import { eventTarget } from '../Events';
 import { BaseUIComponent } from './BaseUIComponent';
@@ -15,7 +15,7 @@ export class SettingPopup extends BaseUIComponent {
         super.start();
         this.hideNode();
 
-        eventTarget.on(SHOW_SETTING_POPUP, this.showNode, this);
+        eventTarget.on(SHOW_SETTING_POPUP, this.showSettingPopup, this);
         eventTarget.on(HIDE_POPUP, this.hideNode, this);
 
         this.homeBtn.on(Button.EventType.CLICK, this.showHomeScreen, this);
@@ -27,6 +27,10 @@ export class SettingPopup extends BaseUIComponent {
 
     showHomeScreen() {
         eventTarget.emit(SHOW_HOME_SCREEN);
+    }
+
+    showSettingPopup(){
+        this.showNode();
     }
 }
 

@@ -18,5 +18,7 @@ export const SHOW_GAMEOVER_POPUP = 'SHOW_GAMEOVER_POPUP';
 
 export const RESET_GAME = 'RESET_GAME';
 export const START_GAME = 'START_GAME';
+export const PAUSE_GAME = 'PAUSE_GAME';
+export const UN_PAUSE_GAME = 'UN_PAUSE_GAME';
 
 

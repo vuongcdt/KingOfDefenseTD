@@ -1,8 +1,8 @@
-import { _decorator, Component, Node, Tween } from 'cc';
+import { _decorator, Component, director, Node, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
 import { eventTarget } from './Events';
-import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP } from './CONSTANTS';
+import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -17,6 +17,8 @@ export class GameManager extends Component {
         eventTarget.on(ADD_COINT, this.addCoint, this);
         eventTarget.on(SET_HEART, this.setHeart, this);
         eventTarget.on(RESET_GAME, this.resetGame, this);
+        eventTarget.on(PAUSE_GAME, this.pauseGame, this);
+        eventTarget.on(UN_PAUSE_GAME, this.unPauseGame, this);
     }
 
     start() {
@@ -60,6 +62,14 @@ export class GameManager extends Component {
         this._store.waves = 1;
         eventTarget.emit(RESET_GAMELAY_UI);
         eventTarget.emit(HIDE_POPUP);
+    }
+
+    pauseGame() {
+        director.pause();
+    }
+
+    unPauseGame() {
+        director.resume();
     }
 
 }

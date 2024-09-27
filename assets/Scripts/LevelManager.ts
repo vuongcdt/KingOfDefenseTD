@@ -59,25 +59,8 @@ export class LevelManager extends Component {
         eventTarget.on(RESET_GAME, this.resetGame, this);
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
 
-        this.enemiesData = enemiesData;
-        this._store = Store.getInstance();
-        const graphics = this.getComponent(Graphics);
-
-        this._store.levelManager = this.node;
-        this._store.graphics = graphics;
-        this._store.ammoLayer = this.ammoLayer;
-        this._store.towerLayer = this.towerLayer;
-
-        this._startPos = this.startPoint.position;
-        this._endPos = this.endPoint.position;
-        this._treeNodes = this.background.children;
-        this._wayPaths = this.wayPathBlock.children.map(node => node.position);
-
-        this._wayPaths.unshift(this._startPos);
-        this._wayPaths.push(this._endPos);
-
-        this._planePaths = this.planePathBlock.children.map(node => node.position);
-        this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
+        this.setStore();
+        this.setDataGenerate();
 
         this.generateWay();
         this.generateStoneAndTree();
@@ -89,25 +72,58 @@ export class LevelManager extends Component {
     update(deltaTime: number) {
     }
 
+    setStore()
+    {
+        this._store = Store.getInstance();
+        const graphics = this.getComponent(Graphics);
+
+        this._store.levelManager = this.node;
+        this._store.graphics = graphics;
+        this._store.ammoLayer = this.ammoLayer;
+        this._store.towerLayer = this.towerLayer;
+    }
+
+    setDataGenerate()
+    {
+        this.enemiesData = enemiesData;
+        this._startPos = this.startPoint.position;
+        this._endPos = this.endPoint.position;
+        this._treeNodes = this.background.children;
+        this._wayPaths = this.wayPathBlock.children.map(node => node.position);
+
+        this._wayPaths.unshift(this._startPos);
+        this._wayPaths.push(this._endPos);
+
+        this._planePaths = this.planePathBlock.children.map(node => node.position);
+        this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
+    }
+
     startGame() {
         // return;
-        this.spawnEnemyData();
-
+        
         this._time = setInterval(() => {
-            if (this._store.gameState != GameState.PlayGame) {
+            console.log(GameState[this._store.gameState]);
+            if (this._store.gameState == GameState.OverGame) {
                 clearInterval(this._time);
                 return;
             }
-
+            if (this._store.gameState != GameState.PlayGame) {
+                return;
+            }
+       
             this.spawnEnemyData();
         }, 10 * 1000);
     }
 
     spawnEnemyData() {
+        console.log('spawnEnemyData');
+
         this._countTime = 0;
+
         enemiesData.forEach(data => {
             const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
             this._countTime += data.time;
+
             setTimeout(() => {
                 if (this._store.gameState != GameState.PlayGame) {
                     return;
