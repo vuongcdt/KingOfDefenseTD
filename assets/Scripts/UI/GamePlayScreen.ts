@@ -1,6 +1,6 @@
-import { _decorator, Button, Label, Node } from 'cc';
-import { eventTarget } from '../Events';
-import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP } from '../CONSTANTS';
+import { _decorator, Button, director, Label, Node } from 'cc';
+import { eventTarget } from '../Common';
+import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP, SPEED_CHANGE } from '../CONSTANTS';
 import { BaseComponent } from '../BaseComponent';
 const { ccclass, property } = _decorator;
 
@@ -30,7 +30,6 @@ export class GamePlayScreen extends BaseComponent {
         eventTarget.on(SET_WAVES_TEXT, this.setWavesText, this);
         eventTarget.on(RESET_GAMELAY_UI, this.resetGamePlayUI, this);
     }
-
 
     start() {
         super.start();
@@ -73,6 +72,8 @@ export class GamePlayScreen extends BaseComponent {
     }
 
     onSpeedClick() {
+        console.log('speed');
+        director.getScheduler().setTimeScale(2);
     }
 }
 

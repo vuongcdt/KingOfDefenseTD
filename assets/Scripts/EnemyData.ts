@@ -24,6 +24,69 @@ export const enemiesData: EnemySpawn[] = [
 
 ]
 
+const levels = [
+    {
+        name:'level 1',
+        waves:[
+            {
+                name:'wave 1',
+                stage: [
+                    {
+                        type: CharacterType.Soldier,
+                        amount: 3,
+                    },
+                    {
+                        type: CharacterType.Soldier,
+                        amount: 3,
+                    },
+                ],
+            },
+            {
+                name:'wave 2',
+                stage: [
+                    {
+                        type: CharacterType.Soldier,
+                        amount: 3,
+                    },
+                    {
+                        type: CharacterType.Tank,
+                        amount: 3,
+                    }
+                ],
+               
+            },
+            {
+                name:'wave 3',
+                stage: [
+                    {
+                        type: CharacterType.Soldier,
+                        amount: 3,
+                    },
+                    {
+                        type: CharacterType.Plane,
+                        amount: 3,
+                    }
+                ],
+               
+            },
+            {
+                name:'wave 4',
+                stage: [
+                    {
+                        type: CharacterType.Tank,
+                        amount: 3,
+                    },
+                    {
+                        type: CharacterType.Plane,
+                        amount: 3,
+                    }
+                ],
+               
+            },
+        ]
+    }
+]
+
 // let level = {
 //     name: "",
 //     waves: [

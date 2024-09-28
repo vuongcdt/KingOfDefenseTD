@@ -4,7 +4,7 @@ import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
 import { enemiesData, EnemySpawn } from './EnemyData';
 import { CharacterType, GameState } from './Enums';
-import { eventTarget } from './Events';
+import { eventTarget } from './Common';
 import { RESET_GAME, SHOW_GAMEOVER_POPUP } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
@@ -100,7 +100,6 @@ export class LevelManager extends Component {
         // return;
         
         this._time = setInterval(() => {
-            console.log(GameState[this._store.gameState]);
             if (this._store.gameState == GameState.OverGame) {
                 clearInterval(this._time);
                 return;
@@ -110,7 +109,7 @@ export class LevelManager extends Component {
             }
        
             this.spawnEnemyData();
-        }, 10 * 1000);
+        }, 5 * 1000);
     }
 
     spawnEnemyData() {

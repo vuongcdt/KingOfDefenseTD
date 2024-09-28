@@ -21,4 +21,6 @@ export const START_GAME = 'START_GAME';
 export const PAUSE_GAME = 'PAUSE_GAME';
 export const UN_PAUSE_GAME = 'UN_PAUSE_GAME';
 
+export const SPEED_CHANGE = 'SPEED_CHANGE';
+
 

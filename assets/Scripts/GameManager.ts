@@ -1,7 +1,7 @@
 import { _decorator, Component, director, Node, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
-import { eventTarget } from './Events';
+import { eventTarget } from './Common';
 import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
@@ -60,6 +60,7 @@ export class GameManager extends Component {
         this._store.coinTotal = 1000;
         this._store.heart = 3;
         this._store.waves = 1;
+        
         eventTarget.emit(RESET_GAMELAY_UI);
         eventTarget.emit(HIDE_POPUP);
     }

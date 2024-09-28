@@ -1,6 +1,6 @@
 import { _decorator, BlockInputEvents, Button, director, Node } from 'cc';
 import { HIDE_POPUP, SHOW_HOME_SCREEN, SHOW_SETTING_POPUP } from '../CONSTANTS';
-import { eventTarget } from '../Events';
+import { eventTarget } from '../Common';
 import { BaseUIComponent } from './BaseUIComponent';
 const { ccclass, property } = _decorator;
 

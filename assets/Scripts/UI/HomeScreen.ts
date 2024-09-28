@@ -1,5 +1,5 @@
 import { _decorator, Button, Component, Label, Layout } from 'cc';
-import { eventTarget } from '../Events';
+import { eventTarget } from '../Common';
 import { RESET_GAME, SHOW_HOME_SCREEN } from '../CONSTANTS';
 import { BaseUIComponent } from './BaseUIComponent';
 import { GameState } from '../Enums';

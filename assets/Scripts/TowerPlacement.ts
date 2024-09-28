@@ -3,7 +3,7 @@ import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
 import { TurrentType } from './Enums';
-import { eventTarget } from './Events';
+import { eventTarget } from './Common';
 import { SUB_COINT, ADD_COINT } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 

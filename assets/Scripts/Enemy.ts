@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
-import { eventTarget } from "./Events";
-import { ADD_COINT } from "./CONSTANTS";
+import { eventTarget } from "./Common";
+import { ADD_COINT, SPEED_CHANGE } from "./CONSTANTS";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
@@ -80,7 +80,7 @@ export class Enemy extends Component {
     }
 
     getTimeMove(start: Vec3, end: Vec3) {
-        return Vec3.distance(start, end) / 100 * this._speed;
+        return Vec3.distance(start, end) / 50 / this._speed;
     }
 
     setHP(damage: number) {
@@ -95,6 +95,7 @@ export class Enemy extends Component {
             eventTarget.emit(ADD_COINT,100);
         }
     }
+
 }
 
 

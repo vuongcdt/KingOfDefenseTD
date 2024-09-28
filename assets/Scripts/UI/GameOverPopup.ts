@@ -1,6 +1,6 @@
 import { _decorator, BlockInputEvents, Button, Node} from 'cc';
 import { BaseUIComponent } from './BaseUIComponent';
-import { eventTarget } from '../Events';
+import { eventTarget } from '../Common';
 import { HIDE_POPUP, RESET_GAME, SHOW_GAMEOVER_POPUP, SHOW_HOME_SCREEN } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
