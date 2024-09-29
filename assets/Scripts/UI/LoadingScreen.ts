@@ -1,12 +1,14 @@
-import { _decorator, Component, Sprite } from 'cc';
+import { _decorator, Component, Label, ProgressBar, Sprite } from 'cc';
 import { BaseUIComponent } from './BaseUIComponent';
 import { GameState } from '../Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingScreen')
 export class LoadingScreen extends BaseUIComponent {
-    @property(Sprite)
-    private fill: Sprite;
+    @property(ProgressBar)
+    private progressBar: ProgressBar;
+    @property(Label)
+    private progressText: Label;
 
     private _count: number = 0;
     private _time: number = 0;
@@ -14,12 +16,14 @@ export class LoadingScreen extends BaseUIComponent {
 
     start() {
         super.start();
-        this.setSlider();
         this._store.gameState = GameState.LoadingGame;
+        this.setSlider();
     }
 
     setSlider() {
-        this.fill.fillRange = 0;
+        this.progressBar.progress = 0;
+        this.progressText.string = '0%';
+
         this._time = setInterval(() => {
             if (this._count > 100) {
                 clearInterval(this._time);
@@ -27,7 +31,8 @@ export class LoadingScreen extends BaseUIComponent {
                 return;
             }
             this._count++;
-            this.fill.fillRange = this._count / 100;
+            this.progressBar.progress = this._count / 100;
+            this.progressText.string = `${this._count}%`;
         }, 10);
     }
 
