@@ -41,10 +41,6 @@ export class GamePlayScreen extends BaseComponent {
         this.resetGamePlayUI();
     }
 
-    update(deltaTime: number) {
-
-    }
-
     resetGamePlayUI() {
         this.setCoinText();
         this.setHeartText();

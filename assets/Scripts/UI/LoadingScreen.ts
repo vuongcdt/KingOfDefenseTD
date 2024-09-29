@@ -35,11 +35,6 @@ export class LoadingScreen extends BaseUIComponent {
             this.progressText.string = `${this._count}%`;
         }, 10);
     }
-
-
-    update(deltaTime: number) {
-
-    }
 }
 
 

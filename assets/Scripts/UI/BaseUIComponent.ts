@@ -11,10 +11,6 @@ export class BaseUIComponent extends BaseComponent {
         super.start();
     }
 
-    update(deltaTime: number) {
-
-    }
-
     showNode() {
         eventTarget.emit(HIDE_POPUP);
         eventTarget.emit(PAUSE_GAME);

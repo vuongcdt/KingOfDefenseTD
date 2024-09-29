@@ -14,10 +14,6 @@ export class HomeScreen extends BaseUIComponent {
         this.generateLevelSelect();
     }
 
-    update(deltaTime: number) {
-
-    }
-
     generateLevelSelect() {
         const buttonList = this.node.getComponentInChildren(Layout).getComponentsInChildren(Button);
 

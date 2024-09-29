@@ -22,10 +22,6 @@ export class GameOverPopup extends BaseUIComponent {
         eventTarget.on(SHOW_GAMEOVER_POPUP, this.showNode, this);
     }
 
-    update(deltaTime: number) {
-
-    }
-
     onReplayGame() {
         eventTarget.emit(RESET_GAME);
     }
