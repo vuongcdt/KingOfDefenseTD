@@ -1,8 +1,10 @@
 import { _decorator, Component, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { eventTarget } from "./Common";
-import { ADD_COINT, SPEED_CHANGE } from "./CONSTANTS";
+import { ADD_COINT } from "./CONSTANTS";
 const { ccclass, property } = _decorator;
+
+
 
 @ccclass('Enemy')
 export class Enemy extends Component {
@@ -47,7 +49,11 @@ export class Enemy extends Component {
             pos = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
 
             const nodeTween = tween(this.node)
-                .to(timeMove, { position: pos });
+                .to(timeMove, { position: pos }, {
+                    onUpdate(target, ratio) {
+
+                    },
+                });
 
             const avatarTween = tween(this.avatar)
                 .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })
@@ -92,7 +98,7 @@ export class Enemy extends Component {
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();
 
-            eventTarget.emit(ADD_COINT,100);
+            eventTarget.emit(ADD_COINT, 100);
         }
     }
 

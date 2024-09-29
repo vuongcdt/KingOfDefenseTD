@@ -1,11 +1,11 @@
-import { _decorator, Camera, Color, Component, EventTouch, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Color, Component, EventTouch, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from './Store';
 import { enemiesData, EnemySpawn } from './EnemyData';
 import { CharacterType, GameState } from './Enums';
 import { eventTarget } from './Common';
-import { RESET_GAME, SHOW_GAMEOVER_POPUP } from './CONSTANTS';
+import { RESET_GAME } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -70,8 +70,7 @@ export class LevelManager extends Component {
     update(deltaTime: number) {
     }
 
-    setStore()
-    {
+    setStore() {
         this._store = Store.getInstance();
         const graphics = this.getComponent(Graphics);
 
@@ -81,8 +80,7 @@ export class LevelManager extends Component {
         this._store.towerLayer = this.towerLayer;
     }
 
-    setDataGenerate()
-    {
+    setDataGenerate() {
         this.enemiesData = enemiesData;
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
@@ -98,7 +96,7 @@ export class LevelManager extends Component {
 
     startGame() {
         // return;
-        
+
         this._time = setInterval(() => {
             if (this._store.gameState == GameState.OverGame) {
                 clearInterval(this._time);
@@ -107,9 +105,9 @@ export class LevelManager extends Component {
             if (this._store.gameState != GameState.PlayGame) {
                 return;
             }
-       
+
             this.spawnEnemyData();
-        }, 5 * 1000);
+        }, 10 * 1000);
     }
 
     spawnEnemyData() {

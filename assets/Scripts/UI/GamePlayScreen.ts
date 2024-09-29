@@ -31,6 +31,7 @@ export class GamePlayScreen extends BaseComponent {
         eventTarget.on(RESET_GAMELAY_UI, this.resetGamePlayUI, this);
     }
 
+
     start() {
         super.start();
 
@@ -73,6 +74,7 @@ export class GamePlayScreen extends BaseComponent {
 
     onSpeedClick() {
         console.log('speed');
+        // eventTarget.emit(SPEED_CHANGE,2);
         director.getScheduler().setTimeScale(2);
     }
 }
