@@ -719,20 +719,24 @@
     "avatarSprites": [
       null,
       {
+        "__uuid__": "48629ce4-538d-42b4-be3b-4a38a5c75397@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
+      {
         "__uuid__": "767bc37a-13fd-4ffc-bf7d-a7ec03bb93dd@f9941",
         "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "9dd7df60-e773-47a6-81fa-142ed6433cad@f9941",
         "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "48629ce4-538d-42b4-be3b-4a38a5c75397@f9941",
-        "__expectedType__": "cc.SpriteFrame"
       }
     ],
     "shootAvatarSprites": [
       null,
+      {
+        "__uuid__": "71933991-718d-4212-a2bd-784b0d09a90f@f9941",
+        "__expectedType__": "cc.SpriteFrame"
+      },
       {
         "__uuid__": "5ffa8ed0-6942-4e70-8f44-ee8c9c8b01b2@f9941",
         "__expectedType__": "cc.SpriteFrame"
@@ -740,17 +744,13 @@
       {
         "__uuid__": "9f450930-298f-4af2-b9b7-d1f5644c636a@f9941",
         "__expectedType__": "cc.SpriteFrame"
-      },
-      {
-        "__uuid__": "71933991-718d-4212-a2bd-784b0d09a90f@f9941",
-        "__expectedType__": "cc.SpriteFrame"
       }
     ],
     "gunBarrelNumbers": [
       1,
       1,
       2,
-      1
+      2
     ],
     "ammoPrefab": {
       "__uuid__": "8d4d85d4-3aae-4ef2-8772-210984f4c664",

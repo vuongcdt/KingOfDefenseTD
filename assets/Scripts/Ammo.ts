@@ -39,7 +39,9 @@ export class Ammo extends Component {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.node.getComponent(Enemy);
         
-        if (!target || target.characterType == CharacterType.Plane ) {
+        // const isGunTowerAttackPlane = target.characterType == CharacterType.Plane;
+
+        if (!target) {
             return;
         }
 
