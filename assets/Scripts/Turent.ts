@@ -127,13 +127,18 @@ export class Turent extends Component {
 
         ammo.position = new Vec3(position.x + offset, position.y + offset);
         ammo.parent = this._store.ammoLayer;
-        
+
         const damage = this.damage * this._levelTurrent;
+        
+        if (this.towerType == TurrentType.RocketTower) {
+            ammo.getComponent(Ammo).initWithRocket(this._target, this.speed, damage, this._angleShoot, this._levelTurrent);
+            return;
+        }
 
         ammo.getComponent(Ammo).init(target, this.speed, damage, this._angleShoot, this._levelTurrent);
     }
 
-    shooting() {        
+    shooting() {
         this.muzzleDouble.active = this.towerType == TurrentType.GunTower && this._levelTurrent != 2;
         this.muzzleSingle.active = this.towerType == TurrentType.GunTower && this._levelTurrent == 2;
 

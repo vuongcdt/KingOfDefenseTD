@@ -96,18 +96,18 @@ export class LevelManager extends Component {
 
     startGame() {
         // return;
+        this.spawnEnemyData();
+        // this._time = setInterval(() => {
+        //     if (this._store.gameState == GameState.OverGame) {
+        //         clearInterval(this._time);
+        //         return;
+        //     }
+        //     if (this._store.gameState != GameState.PlayGame) {
+        //         return;
+        //     }
 
-        this._time = setInterval(() => {
-            if (this._store.gameState == GameState.OverGame) {
-                clearInterval(this._time);
-                return;
-            }
-            if (this._store.gameState != GameState.PlayGame) {
-                return;
-            }
-
-            this.spawnEnemyData();
-        }, 10 * 1000);
+        //     this.spawnEnemyData();
+        // }, 10 * 1000);
     }
 
     spawnEnemyData() {

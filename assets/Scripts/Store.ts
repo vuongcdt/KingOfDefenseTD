@@ -13,7 +13,7 @@ export default class Store {
     public graphics: Graphics;
     public gameState: GameState = GameState.PlayGame;
     public heart: number = 3;
-    public coinTotal: number = 1000;
+    public coinTotal: number = 2000;
     public waves: number = 2;
     public level: number = 1;
 

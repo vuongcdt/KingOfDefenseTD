@@ -1,91 +1,111 @@
-import { _decorator, Collider2D, Color, Contact2DType, math, randomRangeInt, Sprite, tween, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Contact2DType, game, math, Node, randomRangeInt, Sprite, tween, v3, Vec3 } from 'cc';
 import { Ammo } from './Ammo';
 import Store from './Store';
 const { ccclass, property } = _decorator;
 
 @ccclass('Rocket')
 export class Rocket extends Ammo {
+    private _angleOffset: number = 20;
+    private _offsetRound: number = 70;
+    private _offsetLine: number = 250;
+    private _speed: number = 1;
+
     update(deltaTime: number) {
-        this.setAngleEnd();
+        this.setAngleEnd(deltaTime);
     }
 
-    setAngleEnd() {
+    setAngleEnd(deltaTime: number) {
     }
 
-    init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
+    initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {
+        this._target = target;
+        this._speed = speed;
         this._damage = damage;
         this.node.angle = angleShoot;
         this._collider = this.getComponent(Collider2D);
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
 
-        const p0 = this.node.position;
-        const p2 = target;
+        const diff = target.position.clone().subtract(this.node.position);
+        const dir = diff.normalize();
+        const addPos = dir.clone().multiplyScalar(this._offsetLine);
+        const newPos = target.position.clone().add(addPos);
 
-        let diff = p2.clone().subtract(p0);
-        diff = diff.normalize();
+        // this.drawLineFromPoints([this.node.position, newPos]);
 
-        const randomNum = randomRangeInt(8, 12);
-        const angleAxis = -30;
-
-        diff = this.rotateVector(diff, 15);
-        this.node.angle += 15;
-
-        let point = p0.clone().add(diff.clone().multiplyScalar(randomNum * 50));
-
-        let anglePoint = diff.clone().multiplyScalar(120);
-
-        this._currentPos = p0;
-        const points = [p0.clone(), point.clone()];
-
-        for (let index = 0; index < 6; index++) {
-            anglePoint.multiplyScalar(0.9);
-            const addPoint = this.rotateVector(anglePoint, angleAxis * (index + 1));
-            point.add(addPoint);
-            points.push(point.clone());
-        }
-
-        points.push(p2);
-
-        let angle = angleShoot;
-        let speedFly = speed * 0.1;
-
-        for (let index = 1; index < points.length; index++) {
-            const position = points[index];
-            speedFly *= 0.9;
-            let ducation = index == 1 ? speed * 0.4 : speedFly;
-
-            if (index == points.length - 1) {
-                ducation = speedFly * 3;
-            }
-
-            angle = (index == 1 || index == points.length - 1) ? angle : (angle + angleAxis) % 360;
-            let nodeTween;
-
-            if (index == points.length - 1) {
-                nodeTween = tween(this.node)
-                    .call(() => {
-
-                        this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-
-                        this.setAngleEnd = () => {
-                            this.node.angle = this.getAngleRocket(target);
-                            this.setAngleEnd = () => { };
-                        }
-                    })
-                    .to(ducation, { position });
-            } else {
-                nodeTween = tween(this.node).to(ducation, { position, angle });
-            }
-
-            this._tweenMove.push(nodeTween);
-        }
-
-        // this.drawLineFromPoints(points.slice(0, points.length - 1));
-
-        tween(this.node)
-            .sequence(...this._tweenMove)
-            .removeSelf()
+        tween(this.node).to(this.getTimeMove(newPos), { position: newPos })
+            .call(() => this.moveRocket(dir))
             .start();
+    }
+
+    moveRocket(dir: Vec3) {
+        let index = 1;
+
+        this.moveRound(dir, index);
+
+        let time = setInterval(() => {
+            index++;
+            const angleToTarget = this.getAngleToTarget();
+
+            if (this.node.angle - angleToTarget > this._angleOffset * 1) {
+                this.moveRound(dir, index);
+                return;
+            }
+
+            clearInterval(time);
+            this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
+
+            this.moveToTarget(angleToTarget);
+
+            time = setInterval(() => {
+                this.moveToTarget(time);
+            }, this._offsetRound);
+
+            setTimeout(() => {
+                clearInterval(time);
+            }, 1 * 1000);
+        }, this._offsetRound);
+    }
+
+    moveRound(dir: Vec3, index: number) {
+        this._currentPos = this.node.position;
+
+        const addPos = this.rotateVector(dir.clone().multiplyScalar(this._offsetRound), -this._angleOffset * index);
+        const position = this.node.position.clone().add(addPos);
+
+        const angle = this.node.angle - this._angleOffset;
+
+        // this.drawLineFromPoints([this.node.position, position]);
+
+        tween(this.node).to(this.getTimeMove(position), { position }).start();
+        tween(this.node).to(this.getTimeMove(position) * 0.5, { angle }).start();
+    }
+
+    moveToTarget(time: number) {
+        const diff = this._target.position.clone().subtract(this.node.position);
+        const dir = diff.normalize();
+        const distance = Vec3.distance(this._target.position, this.node.position);
+
+        const addPos = dir.clone().multiplyScalar(this._offsetRound);
+
+
+        let position = Vec3.ZERO
+        if (distance < this._offsetRound * 2) {
+            position = this._target.position;
+
+            clearInterval(time);
+        } else {
+            position = this.node.position.clone().add(addPos);
+        }
+
+        const angle = this.getAngleRocket(position);
+
+        tween(this.node).to(this.getTimeMove(position), { position }).start();
+        tween(this.node).to(this.getTimeMove(position) * 0.5, { angle }).start();
+    }
+
+    getTimeMove(target: Vec3): number {
+        const distance = Vec3.distance(target, this.node.position);
+        return distance / 1000 / this._speed;
     }
 
     drawLineFromPoints(points: Vec3[]) {
@@ -116,12 +136,18 @@ export class Rocket extends Ammo {
     }
 
     getAngleRocket(newPoint: Vec3) {
-        let diff = newPoint.clone().subtract(this._currentPos);
+        let diff = newPoint.clone().subtract(this._currentPos.clone());
 
         this._currentPos = newPoint.clone();
         const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);
-        const result = angle > 90 ? angle - 90 : 270 + angle;
-        return result;
+
+        return (270 + angle) % 360;
+    }
+
+    getAngleToTarget() {
+        const diff = this._target.position.clone().subtract(this._currentPos);
+        const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);
+        return angle - 90;
     }
 
     drawCurve(p0: Vec3, p1: Vec3, p2: Vec3) {

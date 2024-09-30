@@ -748,7 +748,7 @@
     ],
     "gunBarrelNumbers": [
       1,
-      2,
+      1,
       2,
       1
     ],
@@ -757,14 +757,13 @@
       "__expectedType__": "cc.Prefab"
     },
     "towerType": 2,
-    "damage": 3,
-    "speed": 1,
-    "reloadTime": 3,
     "targetNames": [
       1,
       2,
       3
     ],
+    "speed": 1,
+    "reloadTime": 3,
     "_id": ""
   },
   {

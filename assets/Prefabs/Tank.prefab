@@ -839,13 +839,12 @@
       "__expectedType__": "cc.Prefab"
     },
     "towerType": 3,
-    "damage": 3,
-    "speed": 0.3,
-    "reloadTime": 0.8,
     "targetNames": [
       4,
       5
     ],
+    "speed": 1,
+    "reloadTime": 0.8,
     "_id": ""
   },
   {
@@ -1081,7 +1080,6 @@
     "healthBar": {
       "__id__": 8
     },
-    "speed": 3,
     "avatar": {
       "__id__": 2
     },

@@ -757,13 +757,12 @@
       "__expectedType__": "cc.Prefab"
     },
     "towerType": 1,
-    "damage": 3,
-    "speed": 0.3,
-    "reloadTime": 0.8,
     "targetNames": [
       1,
       2
     ],
+    "speed": 1,
+    "reloadTime": 0.8,
     "_id": ""
   },
   {

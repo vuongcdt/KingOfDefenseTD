@@ -10,7 +10,6 @@ export class AmmoTank extends Ammo {
 
         if (target) {
             target.setHP(this._damage);
-            // tween(this.node).removeSelf().start();
         }
     }
 }

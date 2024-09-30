@@ -12,15 +12,6 @@ export class Ammo extends Component {
     protected _currentPos: Vec3 = Vec3.ZERO;
     protected _collider: Collider2D;
     protected _target: Node;
-    protected _angleEnd: number = 0;
-    protected _timeInterval: number = 0;
-
-    start() {
-        // this._collider = this.getComponent(Collider2D);
-        // if (this._collider) {
-        //     this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
-        // }
-    }
 
     init(target: Vec3, speed: number, damage: number, angleShoot: number, levelTower: number) {
         this._damage = damage;
@@ -29,10 +20,14 @@ export class Ammo extends Component {
         this._collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
 
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
-        
-        tween(this.node).to(speed, { position: target })
+
+        tween(this.node).to(1 / speed, { position: target })
             .removeSelf()
             .start();
+    }
+
+    initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {
+
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
