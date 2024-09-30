@@ -1,9 +1,14 @@
-import { _decorator, Component, ProgressBar, Slider } from 'cc';
+import { _decorator, Component, Enum, ProgressBar, Slider } from 'cc';
+import { eventTarget } from '../Common';
+import { CHANGE_VOLUME_BACKGROUND_MUSIC, CHANGE_VOLUME_SHOOT } from '../CONSTANTS';
+import { SliderType } from '../Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('SliderCustom')
 export class SliderCustom extends Component {
-    private _progressBar:ProgressBar;
+    @property({ type: Enum(SliderType) })
+    private type: SliderType;
+    private _progressBar: ProgressBar;
 
     onLoad() {
         this._progressBar = this.getComponentInChildren(ProgressBar);
@@ -14,6 +19,11 @@ export class SliderCustom extends Component {
 
     onChangeSlider(slider: Slider) {
         this._progressBar.progress = slider.progress;
+        if (this.type == SliderType.Music) {
+            eventTarget.emit(CHANGE_VOLUME_BACKGROUND_MUSIC, slider.progress);
+        } else {
+            eventTarget.emit(CHANGE_VOLUME_SHOOT, slider.progress);
+        }
     }
 }
 

@@ -1,6 +1,9 @@
-import { _decorator, Collider2D, Color, Contact2DType, game, math, Node, randomRangeInt, Sprite, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Contact2DType, game, IPhysics2DContact, math, Node, randomRangeInt, Sprite, tween, v3, Vec3 } from 'cc';
 import { Ammo } from './Ammo';
 import Store from './Store';
+import { eventTarget } from './Common';
+import { PLAY_EXPLOSION_SOUND, PLAY_ROCKET_SOUND } from './CONSTANTS';
+import { Enemy } from './Enemy';
 const { ccclass, property } = _decorator;
 
 @ccclass('Rocket')
@@ -11,6 +14,7 @@ export class Rocket extends Ammo {
     private _speed: number = 1;
 
     initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {
+        eventTarget.emit(PLAY_ROCKET_SOUND);
         this._target = target;
         this._speed = speed;
         this._damage = damage;
@@ -168,6 +172,19 @@ export class Rocket extends Ammo {
         }
 
         return points;
+    }
+
+    onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
+        const target = otherCollider.node.getComponent(Enemy);
+        
+        if (!target) {
+            return;
+        }
+        eventTarget.emit(PLAY_EXPLOSION_SOUND);
+
+        tween(this.node).removeSelf().start();
+
+        target.setHP(this._damage);
     }
 }
 

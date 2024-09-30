@@ -23,6 +23,11 @@ export enum CharacterType {
     RocketTower,
 }
 
+export enum SliderType {
+    Music,
+    Sound,
+}
+
 // export const TurretType  ={
 //     Soldier:"Soldier",
 //     Tank:"Tank",

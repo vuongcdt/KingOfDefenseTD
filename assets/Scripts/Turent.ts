@@ -139,7 +139,7 @@ export class Turent extends Component {
     }
 
     shooting() {
-        this.muzzleSingle.active = this.towerType == TurrentType.GunTower && this._levelTurrent == 1;
+        this.muzzleSingle.active = this._levelTurrent == 1;
         this.muzzleDouble.active = !this.muzzleSingle.active;
 
         if (this.towerType == TurrentType.RocketTower) {
