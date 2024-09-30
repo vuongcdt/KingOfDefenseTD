@@ -10,13 +10,6 @@ export class Rocket extends Ammo {
     private _offsetLine: number = 250;
     private _speed: number = 1;
 
-    update(deltaTime: number) {
-        this.setAngleEnd(deltaTime);
-    }
-
-    setAngleEnd(deltaTime: number) {
-    }
-
     initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {
         this._target = target;
         this._speed = speed;
@@ -25,9 +18,11 @@ export class Rocket extends Ammo {
         this._collider = this.getComponent(Collider2D);
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
 
+        const random = 0.7 * (1 + Math.random());
+
         const diff = target.position.clone().subtract(this.node.position);
         const dir = diff.normalize();
-        const addPos = dir.clone().multiplyScalar(this._offsetLine);
+        const addPos = dir.clone().multiplyScalar(this._offsetLine * random);
         const newPos = target.position.clone().add(addPos);
 
         // this.drawLineFromPoints([this.node.position, newPos]);
@@ -98,7 +93,7 @@ export class Rocket extends Ammo {
             position = this.node.position.clone().add(addPos);
             tween(this.node).to(this.getTimeMove(position), { position }).start();
         }
-        
+
         const angle = this.getAngleRocket(position);
         tween(this.node).to(this.getTimeMove(position) * 0.5, { angle }).start();
     }

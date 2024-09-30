@@ -844,7 +844,7 @@
       5
     ],
     "damage": 3,
-    "speed": 1,
+    "speed": 0.8,
     "reloadTime": 0.8,
     "_id": ""
   },
@@ -1078,6 +1078,7 @@
     "__prefab": {
       "__id__": 49
     },
+    "characterType": 2,
     "healthBar": {
       "__id__": 8
     },
@@ -1089,7 +1090,6 @@
       "__expectedType__": "cc.SpriteFrame"
     },
     "health": 32,
-    "characterType": 2,
     "headTank": {
       "__id__": 20
     },
