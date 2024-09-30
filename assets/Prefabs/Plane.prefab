@@ -534,6 +534,7 @@
       "__uuid__": "987f985e-afd0-4992-b1ef-6c31933c75bc@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
+    "health": 20,
     "_id": ""
   },
   {
@@ -560,7 +561,7 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": -20,
+      "x": -10,
       "y": 0
     },
     "_radius": 60,

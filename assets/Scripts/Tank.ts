@@ -9,8 +9,9 @@ export class Tank extends Enemy {
     private headTank: Node;
     @property(SpriteFrame)
     private headSprites: SpriteFrame;
-
-    protected _health: number = 20;
+    @property
+    protected health: number = 32;
+    
     protected _offset: number = 60;
 
     start() {

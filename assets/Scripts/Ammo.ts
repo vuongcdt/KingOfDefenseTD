@@ -6,8 +6,8 @@ const { ccclass, property } = _decorator;
 export class Ammo extends Component {
     @property([SpriteFrame])
     protected bodySprites: SpriteFrame[] = [];
-
     protected _damage: number;
+
     protected _tweenMove: Tween<Node>[] = [];
     protected _currentPos: Vec3 = Vec3.ZERO;
     protected _collider: Collider2D;
@@ -21,9 +21,14 @@ export class Ammo extends Component {
 
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
 
-        tween(this.node).to(1 / speed, { position: target })
+        tween(this.node).to(this.getTimeMove(target) / speed, { position: target })
             .removeSelf()
             .start();
+    }
+
+    getTimeMove(target: Vec3): number {
+        const distance = Vec3.distance(target, this.node.position);
+        return distance / 500;
     }
 
     initWithRocket(target: Node, speed: number, damage: number, angleShoot: number, levelTower: number) {

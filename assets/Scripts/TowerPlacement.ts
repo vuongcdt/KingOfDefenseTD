@@ -38,7 +38,7 @@ export class TowerPlacement extends Component {
     private _background: Sprite;
     private _levelTower: number = 0;
     private _turrent: Turent;
-    private _health: number = 1000;
+    private _health: number = 500;
     private _costGun: number = 150;
     private _costRocket: number = 300;
     private _currentHealth: number;

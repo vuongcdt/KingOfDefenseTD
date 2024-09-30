@@ -89,17 +89,17 @@ export class Rocket extends Ammo {
 
 
         let position = Vec3.ZERO
-        if (distance < this._offsetRound * 2) {
+        const isNearTarget = distance < this._offsetRound * 2;
+        if (isNearTarget) {
             position = this._target.position;
-
             clearInterval(time);
+            tween(this.node).to(this.getTimeMove(position), { position }).removeSelf().start();
         } else {
             position = this.node.position.clone().add(addPos);
+            tween(this.node).to(this.getTimeMove(position), { position }).start();
         }
-
+        
         const angle = this.getAngleRocket(position);
-
-        tween(this.node).to(this.getTimeMove(position), { position }).start();
         tween(this.node).to(this.getTimeMove(position) * 0.5, { angle }).start();
     }
 

@@ -4,8 +4,6 @@ import { eventTarget } from "./Common";
 import { ADD_COINT } from "./CONSTANTS";
 const { ccclass, property } = _decorator;
 
-
-
 @ccclass('Enemy')
 export class Enemy extends Component {
     @property(Node)
@@ -14,13 +12,14 @@ export class Enemy extends Component {
     protected avatar: Node;
     @property(SpriteFrame)
     protected avatarSprites: SpriteFrame;
+    @property
+    protected health: number = 14;
 
     protected _speed: number = 1;
     protected _damage: number;
     protected _paths: Vec3[] = [];
     protected tweenMove: Tween<Node>[] = [];
     protected tweenRotation: Tween<Node>[] = [];
-    protected _health: number = 10;
     protected _currentHealth: number;
     protected _currentPos: Vec3;
     protected _levelManage: LevelManager;
@@ -73,7 +72,7 @@ export class Enemy extends Component {
             .removeSelf()
             .start();
 
-        this._currentHealth = this._health;
+        this._currentHealth = this.health;
     }
 
     getAngleAvatar(currentPos: Vec3, newPos: Vec3) {
@@ -93,7 +92,7 @@ export class Enemy extends Component {
         this._currentHealth -= damage;
 
         this.healthBar.active = true;
-        this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this._health;
+        this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this.health;
 
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();

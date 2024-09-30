@@ -311,7 +311,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": {
       "__id__": 15
     },
@@ -323,13 +323,13 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0.1,
-      "y": -0.1
+      "x": 0.3,
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 99.4,
-      "height": 9.4
+      "width": 35.1,
+      "height": 29.8
     },
     "_id": ""
   },
@@ -390,7 +390,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": {
       "__id__": 19
     },

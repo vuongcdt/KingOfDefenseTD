@@ -20,9 +20,9 @@ export class Turent extends Component {
     protected ammoPrefab: Prefab;
     @property({ type: Enum(TurrentType) })
     protected towerType: TurrentType;
-    @property
     @property({ type: [Enum(CharacterType)] })
     protected targetNames: number[] = [CharacterType.Soldier, CharacterType.Tank, CharacterType.Plane];
+    @property
     protected damage: number = 3;
     @property
     protected speed: number = 1;
@@ -129,7 +129,7 @@ export class Turent extends Component {
         ammo.parent = this._store.ammoLayer;
 
         const damage = this.damage * this._levelTurrent;
-        
+
         if (this.towerType == TurrentType.RocketTower) {
             ammo.getComponent(Ammo).initWithRocket(this._target, this.speed, damage, this._angleShoot, this._levelTurrent);
             return;
