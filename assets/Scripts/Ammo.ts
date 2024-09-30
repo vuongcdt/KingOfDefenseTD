@@ -1,5 +1,6 @@
 import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
+import { CharacterType } from './Enums';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
@@ -37,8 +38,8 @@ export class Ammo extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         let target = otherCollider.node.getComponent(Enemy);
-
-        if (!target) {
+        
+        if (!target || target.characterType == CharacterType.Plane ) {
             return;
         }
 

@@ -1,11 +1,15 @@
-import { _decorator, Component, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, Component, Enum, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { eventTarget } from "./Common";
 import { ADD_COINT } from "./CONSTANTS";
+import { CharacterType } from "./Enums";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
 export class Enemy extends Component {
+    @property({ type: Enum(CharacterType) })
+    public characterType: CharacterType = CharacterType.Soldier;
+    
     @property(Node)
     protected healthBar: Node;
     @property(Node)

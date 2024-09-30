@@ -524,6 +524,7 @@
     "__prefab": {
       "__id__": 23
     },
+    "characterType": 3,
     "healthBar": {
       "__id__": 8
     },
