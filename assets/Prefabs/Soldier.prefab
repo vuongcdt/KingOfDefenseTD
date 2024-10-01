@@ -63,7 +63,7 @@
       "z": 1
     },
     "_mobility": 0,
-    "_layer": 33554432,
+    "_layer": 1073741824,
     "_euler": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -113,7 +113,7 @@
       "z": 1
     },
     "_mobility": 0,
-    "_layer": 33554432,
+    "_layer": 1073741824,
     "_euler": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -236,7 +236,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 80,
+      "y": 40,
       "z": 0
     },
     "_lrot": {
@@ -253,7 +253,7 @@
       "z": 1
     },
     "_mobility": 0,
-    "_layer": 33554432,
+    "_layer": 1073741824,
     "_euler": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -303,7 +303,7 @@
       "z": 1
     },
     "_mobility": 0,
-    "_layer": 33554432,
+    "_layer": 1073741824,
     "_euler": {
       "__type__": "cc.Vec3",
       "x": 0,
@@ -524,10 +524,10 @@
     "__prefab": {
       "__id__": 23
     },
+    "characterType": 1,
     "healthBar": {
       "__id__": 8
     },
-    "speed": 3,
     "avatar": {
       "__id__": 2
     },
@@ -535,6 +535,7 @@
       "__uuid__": "0430467e-5fc4-47df-8da0-7b4b376b4d79@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
+    "health": 14,
     "_id": ""
   },
   {

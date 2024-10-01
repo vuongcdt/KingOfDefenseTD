@@ -1,4 +1,4 @@
-import { _decorator, CircleCollider2D, Component, Enum, Node, RigidBody2D, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, CircleCollider2D, Component, Enum, Node, RigidBody2D, Sprite, SpriteFrame, Tween, tween, UITransform, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { eventTarget } from "../Common";
 import { ADD_COINT } from "../CONSTANTS";
@@ -102,6 +102,7 @@ export class Enemy extends Component {
 
         this.healthBar.active = true;
         this.healthBar.getComponentInChildren(Sprite).fillRange = this._currentHealth / this.health;
+        this.healthBar.setSiblingIndex(99);
 
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();

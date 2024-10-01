@@ -1,6 +1,6 @@
 import { _decorator, Button, Component, Label, Layout } from 'cc';
 import { eventTarget } from '../Common';
-import { RESET_GAME, SHOW_HOME_SCREEN } from '../CONSTANTS';
+import { RESET_GAME, SHOW_HOME_SCREEN, START_GAME } from '../CONSTANTS';
 import { BaseUIComponent } from './BaseUIComponent';
 import { GameState } from '../Enums';
 const { ccclass, property } = _decorator;
@@ -25,6 +25,7 @@ export class HomeScreen extends BaseUIComponent {
 
     onLevelClicked(value: number) {
         this._store.gameState = GameState.PlayGame;
+        eventTarget.emit(START_GAME);
         this.hideNode();
     }
 

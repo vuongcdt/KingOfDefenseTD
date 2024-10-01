@@ -5,7 +5,7 @@ import Store from '../Store';
 import { enemiesData, EnemySpawn } from '../EnemyData';
 import { CharacterType, GameState } from '../Enums';
 import { eventTarget } from '../Common';
-import { RESET_GAME } from '../CONSTANTS';
+import { RESET_GAME, START_GAME } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -36,8 +36,6 @@ export class LevelManager extends Component {
     private stoneSprites: SpriteFrame[] = [];
     @property(Node)
     private background: Node;
-    @property({ type: [EnemySpawn] })
-    private enemiesData: EnemySpawn[] = [];
 
     private _store: Store;
     private _treeNodes: Node[] = [];
@@ -50,12 +48,11 @@ export class LevelManager extends Component {
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
     private _countTime: number = 0;
-    private _time: number = 0;
-
 
     start() {
         eventTarget.on(RESET_GAME, this.resetGame, this);
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        eventTarget.on(START_GAME, this.startGame, this);
 
         this.setStore();
         this.setDataGenerate();
@@ -63,11 +60,6 @@ export class LevelManager extends Component {
         this.generateWay();
         this.generateStoneAndTree();
         this.generateTowerPlacement();
-
-        this.startGame();
-    }
-
-    update(deltaTime: number) {
     }
 
     setStore() {
@@ -81,7 +73,6 @@ export class LevelManager extends Component {
     }
 
     setDataGenerate() {
-        this.enemiesData = enemiesData;
         this._startPos = this.startPoint.position;
         this._endPos = this.endPoint.position;
         this._treeNodes = this.background.children;
@@ -95,22 +86,6 @@ export class LevelManager extends Component {
     }
 
     startGame() {
-        // return;
-        this.spawnEnemyData();
-        // this._time = setInterval(() => {
-        //     if (this._store.gameState == GameState.OverGame) {
-        //         clearInterval(this._time);
-        //         return;
-        //     }
-        //     if (this._store.gameState != GameState.PlayGame) {
-        //         return;
-        //     }
-
-        //     this.spawnEnemyData();
-        // }, 10 * 1000);
-    }
-
-    spawnEnemyData() {
         this._countTime = 0;
 
         enemiesData.forEach((data, indexWave) => {
@@ -120,15 +95,6 @@ export class LevelManager extends Component {
             for (const _ of Array(data.total)) {
                 this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave);
             }
-
-            // setTimeout(() => {
-            //     if (this._store.gameState != GameState.PlayGame) {
-            //         return;
-            //     }
-            //     for (const _ of Array(data.total)) {
-            //         this.spawnEnemy(this.prefabEnemies[data.type - 1], path);
-            //     }
-            // }, this._countTime * 1000);
         })
     }
 
