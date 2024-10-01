@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Color, Contact2DType, game, IPhysics2DContact, math, Node, randomRangeInt, Sprite, tween, v3, Vec3 } from 'cc';
+import { _decorator, Collider2D, Color, Contact2DType, IPhysics2DContact, math, Node, randomRangeInt, Sprite, tween, Vec3 } from 'cc';
 import { Ammo } from './Ammo';
 import Store from '../Store';
 import { eventTarget } from '../Common';
@@ -22,7 +22,7 @@ export class Rocket extends Ammo {
         this._collider = this.getComponent(Collider2D);
         this.getComponent(Sprite).spriteFrame = this.bodySprites[levelTower];
 
-        const random = 0.7 * (1 + Math.random());
+        const random = 0.7 + randomRangeInt(0, 5) / 5;
 
         const diff = target.position.clone().subtract(this.node.position);
         const dir = diff.normalize();
@@ -176,7 +176,7 @@ export class Rocket extends Ammo {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const target = otherCollider.node.getComponent(Enemy);
-        
+
         if (!target) {
             return;
         }

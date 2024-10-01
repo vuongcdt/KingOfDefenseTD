@@ -1,11 +1,11 @@
-import { _decorator, Color, Component, EventTouch, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
+import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from '../Store';
 import { enemiesData, EnemySpawn } from '../EnemyData';
 import { CharacterType, GameState } from '../Enums';
 import { eventTarget } from '../Common';
-import { RESET_GAME, START_GAME } from '../CONSTANTS';
+import { RESET_GAME, SHOW_GAME_WIN_POPUP, START_GAME } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -98,6 +98,34 @@ export class LevelManager extends Component {
         })
     }
 
+    spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
+        let newEnemy = instantiate(prefab);
+        newEnemy.parent = this.enemyLayer;
+        newEnemy.position = this._startPos;
+
+        const index = this._arrIndex[this._indexSpawn];
+
+        const enemy = newEnemy.getComponent(Enemy);
+
+        enemy.init(path, this, index, time, indexWave);
+
+        this._indexSpawn++;
+        if (this._indexSpawn > 2) {
+            this._indexSpawn = 0;
+        }
+    }
+
+    checkGameWin() {
+        const totalEnemy = this.enemyLayer.getComponentsInChildren(Enemy).length;
+
+        if (totalEnemy == 1) {
+            setTimeout(() => {
+                game.pause;
+                eventTarget.emit(SHOW_GAME_WIN_POPUP);
+            }, 1000);
+        }
+    }
+
     generateStoneAndTree() {
         const offset = 150;
         const stonePos = [];
@@ -171,23 +199,6 @@ export class LevelManager extends Component {
             let p2 = points[i + 1];
 
             graphics.bezierCurveTo(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
-        }
-    }
-
-    spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
-        let newEnemy = instantiate(prefab);
-        newEnemy.parent = this.enemyLayer;
-        newEnemy.position = this._startPos;
-
-        const index = this._arrIndex[this._indexSpawn];
-
-        const enemy = newEnemy.getComponent(Enemy);
-
-        enemy.init(path, this, index, time, indexWave);
-
-        this._indexSpawn++;
-        if (this._indexSpawn > 2) {
-            this._indexSpawn = 0;
         }
     }
 

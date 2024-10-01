@@ -38,7 +38,7 @@ export class GameManager extends Component {
     }
 
     setHeart() {
-        this._store.heart++;
+        this._store.heart--;
         eventTarget.emit(SET_HEART_TEXT);
 
         if (this._store.heart <= 0) {
