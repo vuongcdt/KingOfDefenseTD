@@ -1,6 +1,6 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { TurrentType, CharacterType, GameState } from "./Enums";
+import { CharacterType, GameState } from "./Enums";
 import Store from "./Store";
 const { ccclass, property } = _decorator;
 
@@ -18,8 +18,8 @@ export class Turent extends Component {
     protected gunBarrelNumbers: number[] = [];
     @property(Prefab)
     protected ammoPrefab: Prefab;
-    @property({ type: Enum(TurrentType) })
-    protected towerType: TurrentType;
+    @property({ type: Enum(CharacterType) })
+    protected towerType: CharacterType;
     @property({ type: [Enum(CharacterType)] })
     protected targetNames: number[] = [CharacterType.Soldier, CharacterType.Tank, CharacterType.Plane];
     @property
@@ -130,7 +130,7 @@ export class Turent extends Component {
 
         const damage = this.damage * this._levelTurrent;
 
-        if (this.towerType == TurrentType.RocketTower) {
+        if (this.towerType == CharacterType.RocketTower) {
             ammo.getComponent(Ammo).initWithRocket(this._target, this.speed, damage, this._angleShoot, this._levelTurrent);
             return;
         }
@@ -142,7 +142,7 @@ export class Turent extends Component {
         this.muzzleSingle.active = this._levelTurrent == 1;
         this.muzzleDouble.active = !this.muzzleSingle.active;
 
-        if (this.towerType == TurrentType.RocketTower) {
+        if (this.towerType == CharacterType.RocketTower) {
             this._avatar.spriteFrame = this.shootAvatarSprites[this._levelTurrent];
         }
 
@@ -152,7 +152,7 @@ export class Turent extends Component {
             }
             this.muzzleDouble.active = false;
             this.muzzleSingle.active = false;
-            if (this.towerType == TurrentType.RocketTower) {
+            if (this.towerType == CharacterType.RocketTower) {
                 this._avatar.spriteFrame = this.avatarSprites[this._levelTurrent];
             }
         }, 100);

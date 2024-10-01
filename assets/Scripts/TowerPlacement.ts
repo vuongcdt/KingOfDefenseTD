@@ -2,7 +2,7 @@ import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, S
 import { LevelManager } from './LevelManager';
 import Store from './Store';
 import { Turent } from './Turent';
-import { TurrentType } from './Enums';
+import { CharacterType } from './Enums';
 import { eventTarget } from './Common';
 import { SUB_COINT, ADD_COINT } from './CONSTANTS';
 const { ccclass, property } = _decorator;
@@ -42,7 +42,7 @@ export class TowerPlacement extends Component {
     private _costGun: number = 150;
     private _costRocket: number = 300;
     private _currentHealth: number;
-    private _turrentType: TurrentType;
+    private _turrentType: CharacterType;
 
     public set levelManager(value: Node) {
         this._levelManager = value;
@@ -79,7 +79,7 @@ export class TowerPlacement extends Component {
     }
 
     onUpgrade() {
-        const cost = this._turrentType == TurrentType.GunTower
+        const cost = this._turrentType == CharacterType.GunTower
             ? this._costGun * this._levelTower
             : this._costRocket * this._levelTower;
 
@@ -99,7 +99,7 @@ export class TowerPlacement extends Component {
         this._levelTower++;
         this.setTurrent(this.gunTowerPrefab);
         this.onSetSprite();
-        this._turrentType = TurrentType.GunTower;
+        this._turrentType = CharacterType.GunTower;
 
         eventTarget.emit(SUB_COINT, this._costGun);
     }
@@ -111,7 +111,7 @@ export class TowerPlacement extends Component {
         this._levelTower++;
         this.setTurrent(this.rocketTowerPrefab);
         this.onSetSprite();
-        this._turrentType = TurrentType.RocketTower;
+        this._turrentType = CharacterType.RocketTower;
 
         eventTarget.emit(SUB_COINT, this._costRocket);
     }
@@ -131,18 +131,18 @@ export class TowerPlacement extends Component {
         tween(this._turrent.node).destroySelf().start();
         this.healthBar.active = false;
 
-        const cost = this._turrentType == TurrentType.GunTower
+        const cost = this._turrentType == CharacterType.GunTower
             ? this._costGun * 0.5 * this._levelTower
             : this._costRocket * 0.5 * this._levelTower;
 
         eventTarget.emit(ADD_COINT, cost);
 
         this._levelTower = 0;
-        this._turrentType = TurrentType.None;
+        this._turrentType = CharacterType.None;
     }
 
     onRepair() {
-        const cost = this._turrentType == TurrentType.GunTower
+        const cost = this._turrentType == CharacterType.GunTower
             ? this._costGun * 0.5 * this._levelTower
             : this._costRocket * 0.5 * this._levelTower;
 

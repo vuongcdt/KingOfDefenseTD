@@ -17101,7 +17101,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Slider",
+    "_name": "SliderMusic",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -17849,7 +17849,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Slider",
+    "_name": "SliderSound",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -19299,10 +19299,10 @@
     "_enabled": true,
     "__prefab": null,
     "soundSlider": {
-      "__id__": 461
+      "__id__": 481
     },
     "musicSlider": {
-      "__id__": 481
+      "__id__": 461
     },
     "_id": "0956ygnOtIs72AgieIfRJy"
   },

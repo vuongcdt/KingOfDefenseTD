@@ -756,7 +756,7 @@
       "__uuid__": "8d4d85d4-3aae-4ef2-8772-210984f4c664",
       "__expectedType__": "cc.Prefab"
     },
-    "towerType": 2,
+    "towerType": 5,
     "targetNames": [
       1,
       2,

@@ -6,13 +6,13 @@ export enum GameState {
 }
 
 
-export enum TurrentType {
-    None,
-    GunTower,
-    RocketTower,
-    Tank,
-    // BigRocket,
-}
+// export enum TurrentType {
+//     None,
+//     GunTower,
+//     RocketTower,
+//     Tank,
+//     // BigRocket,
+// }
 
 export enum CharacterType {
     None,
