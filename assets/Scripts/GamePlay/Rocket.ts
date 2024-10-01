@@ -143,7 +143,7 @@ export class Rocket extends Ammo {
         return (270 + angle) % 360;
     }
 
-    getAngleToTarget() {
+    getAngleToTarget(): number {
         const diff = this._target.position.clone().subtract(this._currentPos);
         const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);
         return angle - 90;
