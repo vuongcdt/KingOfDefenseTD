@@ -93,7 +93,7 @@ export class LevelManager extends Component {
             this._countTime += data.time;
 
             for (const _ of Array(data.total)) {
-                this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave);
+                this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
             }
         })
     }
@@ -226,9 +226,8 @@ export class LevelManager extends Component {
 
         this._store.gameState = GameState.PlayGame;
 
-        this.startGame();
+        // this.startGame();
         this.generateTowerPlacement();
-
     }
 }
 

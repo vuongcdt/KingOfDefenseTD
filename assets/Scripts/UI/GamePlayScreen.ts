@@ -2,12 +2,11 @@ import { _decorator, Button, director, Label, Node } from 'cc';
 import { eventTarget } from '../Common';
 import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP, SPEED_CHANGE } from '../CONSTANTS';
 import { BaseComponent } from '../GamePlay/BaseComponent';
+import { enemiesData } from '../EnemyData';
 const { ccclass, property } = _decorator;
 
 @ccclass('GamePlayScreen')
 export class GamePlayScreen extends BaseComponent {
-    @property(Node)
-    private gameoverPopup: Node;
     @property(Label)
     private coinText: Label;
     @property(Label)
@@ -20,8 +19,8 @@ export class GamePlayScreen extends BaseComponent {
     private settingBtn: Node;
     @property(Node)
     private speedBtn: Node;
-    @property(Node)
-    private homeScreen: Node;
+
+    private _totalWave: number = 0;
 
     protected onLoad(): void {
         eventTarget.on(SET_COINT_TEXT, this.setCoinText, this);
@@ -29,6 +28,8 @@ export class GamePlayScreen extends BaseComponent {
         eventTarget.on(SET_LEVEL_TEXT, this.setLevelText, this);
         eventTarget.on(SET_WAVES_TEXT, this.setWavesText, this);
         eventTarget.on(RESET_GAMELAY_UI, this.resetGamePlayUI, this);
+
+        this._totalWave = enemiesData.length;
     }
 
 
@@ -53,7 +54,7 @@ export class GamePlayScreen extends BaseComponent {
     }
 
     setWavesText() {
-        this.wavesText.string = `Waves ${this._store.waves}/9`;
+        this.wavesText.string = `Waves ${this._store.waves}/${this._totalWave}`;
     }
 
     setHeartText() {
@@ -69,8 +70,6 @@ export class GamePlayScreen extends BaseComponent {
     }
 
     onSpeedClick() {
-        console.log('speed');
-        // eventTarget.emit(SPEED_CHANGE,2);
         director.getScheduler().setTimeScale(2);
     }
 }

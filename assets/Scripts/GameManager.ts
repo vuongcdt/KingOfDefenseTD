@@ -2,7 +2,7 @@ import { _decorator, Component, director, Node, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
 import { eventTarget } from './Common';
-import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME } from './CONSTANTS';
+import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME, SET_WAVES, SET_WAVES_TEXT } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -16,6 +16,7 @@ export class GameManager extends Component {
         eventTarget.on(SUB_COINT, this.subCoint, this);
         eventTarget.on(ADD_COINT, this.addCoint, this);
         eventTarget.on(SET_HEART, this.setHeart, this);
+        eventTarget.on(SET_WAVES, this.setWave, this);
         eventTarget.on(RESET_GAME, this.resetGame, this);
         eventTarget.on(PAUSE_GAME, this.pauseGame, this);
         eventTarget.on(UN_PAUSE_GAME, this.unPauseGame, this);
@@ -41,7 +42,7 @@ export class GameManager extends Component {
     }
 
     setHeart() {
-        --this._store.heart;
+        this._store.heart++;
         eventTarget.emit(SET_HEART_TEXT);
 
         if (this._store.heart <= 0) {
@@ -49,6 +50,14 @@ export class GameManager extends Component {
             this._store.gameState = GameState.OverGame;
             eventTarget.emit(SHOW_GAMEOVER_POPUP);
         }
+    }
+
+    setWave(value:number) {
+        if(value<= this._store.waves){
+            return;
+        }
+        this._store.waves = value;
+        eventTarget.emit(SET_WAVES_TEXT);
     }
 
     setLevel(value: number) {
@@ -60,7 +69,7 @@ export class GameManager extends Component {
         this._store.coinTotal = 1000;
         this._store.heart = 3;
         this._store.waves = 1;
-        
+
         eventTarget.emit(RESET_GAMELAY_UI);
         eventTarget.emit(HIDE_POPUP);
     }

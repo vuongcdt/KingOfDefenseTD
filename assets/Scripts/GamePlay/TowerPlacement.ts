@@ -29,7 +29,6 @@ export class TowerPlacement extends Component {
     private backgrounds: SpriteFrame[] = [];
     @property(Node)
     private healthBar: Node;
-
     @property(Node)
     private fire: Node;
 
