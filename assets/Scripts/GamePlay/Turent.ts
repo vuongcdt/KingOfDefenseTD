@@ -51,6 +51,7 @@ export class Turent extends Component {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
             collider.on(Contact2DType.END_CONTACT, this.onEndContact, this);
         }
+        this._countdown = this.reloadTime;
     }
 
     update(dt: number): void {
@@ -67,7 +68,8 @@ export class Turent extends Component {
         this.setAngleShoot();
         this.node.angle = this._angleShoot;
 
-        if (this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive && this._store.gameState == GameState.PlayGame) {
+        const isCanShoot = this._countdown > this.reloadTime && this._listTarget.length > 0 && this._isActive && this._store.gameState == GameState.PlayGame;
+        if (isCanShoot) {
             this._countdown = 0;
             this.attackTarget();
         }
