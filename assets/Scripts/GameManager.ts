@@ -2,7 +2,7 @@ import { _decorator, Component, director, Node, Tween } from 'cc';
 import { GameState } from './Enums';
 import Store from './Store';
 import { eventTarget } from './Common';
-import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAMEOVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME, SET_WAVES, SET_WAVES_TEXT } from './CONSTANTS';
+import { SUB_COINT, ADD_COINT, SET_HEART, SET_HEART_TEXT, SET_COINT_TEXT as SET_COIN_TEXT, SET_LEVEL_TEXT, SHOW_GAME_OVER_POPUP, RESET_GAMELAY_UI, RESET_GAME, HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME, SET_WAVES, SET_WAVES_TEXT } from './CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
@@ -48,7 +48,7 @@ export class GameManager extends Component {
         if (this._store.heart <= 0) {
             Tween.stopAll();
             this._store.gameState = GameState.OverGame;
-            eventTarget.emit(SHOW_GAMEOVER_POPUP);
+            eventTarget.emit(SHOW_GAME_OVER_POPUP);
         }
     }
 
