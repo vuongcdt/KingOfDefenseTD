@@ -113,18 +113,22 @@ export class LevelManager extends Component {
     spawnEnemyData() {
         this._countTime = 0;
 
-        enemiesData.forEach(data => {
+        enemiesData.forEach((data, indexWave) => {
             const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
             this._countTime += data.time;
 
-            setTimeout(() => {
-                if (this._store.gameState != GameState.PlayGame) {
-                    return;
-                }
-                for (const _ of Array(data.total)) {
-                    this.spawnEnemy(this.prefabEnemies[data.type - 1], path);
-                }
-            }, this._countTime * 1000);
+            for (const _ of Array(data.total)) {
+                this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave);
+            }
+
+            // setTimeout(() => {
+            //     if (this._store.gameState != GameState.PlayGame) {
+            //         return;
+            //     }
+            //     for (const _ of Array(data.total)) {
+            //         this.spawnEnemy(this.prefabEnemies[data.type - 1], path);
+            //     }
+            // }, this._countTime * 1000);
         })
     }
 
@@ -204,7 +208,7 @@ export class LevelManager extends Component {
         }
     }
 
-    spawnEnemy(prefab: Prefab, path: Vec3[]) {
+    spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
         let newEnemy = instantiate(prefab);
         newEnemy.parent = this.enemyLayer;
         newEnemy.position = this._startPos;
@@ -212,7 +216,8 @@ export class LevelManager extends Component {
         const index = this._arrIndex[this._indexSpawn];
 
         const enemy = newEnemy.getComponent(Enemy);
-        enemy.init(path, this, index)
+
+        enemy.init(path, this, index, time, indexWave);
 
         this._indexSpawn++;
         if (this._indexSpawn > 2) {

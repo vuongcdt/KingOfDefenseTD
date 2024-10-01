@@ -20,8 +20,8 @@ export class Tank extends Enemy {
     update(deltaTime: number) {
     }
 
-    init(path: Vec3[], levelManage: LevelManager, indexPos: number) {
-        super.init(path, levelManage, indexPos);
+    init(path: Vec3[], levelManage: LevelManager, indexPos: number, time: number, indexWave: number) {
+        super.init(path, levelManage, indexPos, time, indexWave);
     }
 }
 

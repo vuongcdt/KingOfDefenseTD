@@ -1,4 +1,4 @@
-import { _decorator, Component, Enum, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
+import { _decorator, CircleCollider2D, Component, Enum, Node, RigidBody2D, Sprite, SpriteFrame, Tween, tween, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { eventTarget } from "../Common";
 import { ADD_COINT } from "../CONSTANTS";
@@ -9,7 +9,7 @@ const { ccclass, property } = _decorator;
 export class Enemy extends Component {
     @property({ type: Enum(CharacterType) })
     public characterType: CharacterType = CharacterType.Soldier;
-    
+
     @property(Node)
     protected healthBar: Node;
     @property(Node)
@@ -28,14 +28,10 @@ export class Enemy extends Component {
     protected _currentPos: Vec3;
     protected _levelManage: LevelManager;
     protected _offset: number = 30;
+    protected _collider: CircleCollider2D;
+    protected _rigibody: RigidBody2D;
 
-    start(): void {
-    }
-
-    update(dt: number): void {
-    }
-
-    init(path: Vec3[], levelManage: LevelManager, indexPos: number) {
+    init(path: Vec3[], levelManage: LevelManager, indexPos: number, time: number, indexWave: number) {
         this._levelManage = levelManage;
         this.healthBar.active = false;
         this._paths = [];
@@ -45,20 +41,24 @@ export class Enemy extends Component {
         this._currentPos = this.node.position;
         this.avatar.angle = 180;
 
-        this._paths.forEach((point, index) => {
-            const timeMove = this.getTimeMove(index == 0 ? this.node.position : this._paths[index - 1], point);
-            let pos = Vec3.ZERO;
+        this._collider = this.getComponent(CircleCollider2D);
+        this._rigibody = this.getComponent(RigidBody2D);
 
-            pos = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
+        this.setPhysic(false);
+
+        this._paths.forEach((point, index) => {
+            const startPoint = index == 0 ? this.node.position : this._paths[index - 1];
+            let timeMove = this.getTimeMove(startPoint, point);
+
+            const position = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
 
             const nodeTween = tween(this.node)
-                .to(timeMove, { position: pos }, {
-                    onUpdate(target, ratio) {
-
-                    },
-                });
+                .delay(index == 0 ? time * 2 : 0)
+                .call(() => this.setPhysic(true))
+                .to(timeMove, { position: position });
 
             const avatarTween = tween(this.avatar)
+                .delay(index == 0 ? time * 2 : 0)
                 .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })
                 .delay(timeMove - 1);
 
@@ -79,7 +79,12 @@ export class Enemy extends Component {
         this._currentHealth = this.health;
     }
 
-    getAngleAvatar(currentPos: Vec3, newPos: Vec3) {
+    setPhysic(isActice: boolean) {
+        this._rigibody.enabled = isActice;
+        this._collider.enabled = isActice;
+    }
+
+    getAngleAvatar(currentPos: Vec3, newPos: Vec3): number {
         let diff = new Vec3();
         Vec3.subtract(diff, currentPos, newPos);
         const angle = 270 - Math.atan2(diff.x, diff.y) * (180 / Math.PI);
@@ -88,7 +93,7 @@ export class Enemy extends Component {
         return angle;
     }
 
-    getTimeMove(start: Vec3, end: Vec3) {
+    getTimeMove(start: Vec3, end: Vec3): number {
         return Vec3.distance(start, end) / 50 / this._speed;
     }
 

@@ -19,8 +19,28 @@ export class EnemySpawn {
 
 export const enemiesData: EnemySpawn[] = [
     new EnemySpawn(CharacterType.Soldier, 3, 1),
-    new EnemySpawn(CharacterType.Tank, 3, 2),
-    new EnemySpawn(CharacterType.Plane, 3, 2),
+
+    new EnemySpawn(CharacterType.Soldier, 3, 11),
+    new EnemySpawn(CharacterType.Soldier, 3, 12),
+
+    new EnemySpawn(CharacterType.Tank, 1, 20),
+    new EnemySpawn(CharacterType.Soldier, 3, 21),
+
+    new EnemySpawn(CharacterType.Tank, 3, 30),
+    new EnemySpawn(CharacterType.Soldier, 3, 31),
+    new EnemySpawn(CharacterType.Plane, 3, 32),
+
+    new EnemySpawn(CharacterType.Tank, 3, 40),
+    new EnemySpawn(CharacterType.Plane, 3, 41),
+    new EnemySpawn(CharacterType.Soldier, 3, 41),
+
+    new EnemySpawn(CharacterType.Tank, 3, 50),
+    new EnemySpawn(CharacterType.Soldier, 3, 51),
+    new EnemySpawn(CharacterType.Plane, 3, 52),
+
+    new EnemySpawn(CharacterType.Plane, 3, 60),
+    new EnemySpawn(CharacterType.Plane, 3, 62),
+    new EnemySpawn(CharacterType.Plane, 3, 64),
 ]
 
 const levels = [
@@ -85,52 +105,3 @@ const levels = [
         ]
     }
 ]
-
-// let level = {
-//     name: "",
-//     waves: [
-//         {
-//             stage: [
-//                 [
-//                     group: multiple
-//                     {
-//                         type: CharacterType.Soldier,
-//                         amount: 100,
-//                         rate: 1,
-//                     },
-//                     {
-//                         type: CharacterType.Soldier,
-//                         amount: 100,
-//                         rate: 1.2,
-//                     }
-//                 ],
-//                 {
-//                     group: single,
-                    
-//                     type: CharacterType.Soldier,
-//                     amount: 100,
-//                     rate: 1,
-//                 },
-//                 {
-//                     type: CharacterType.Soldier,
-//                     amount: 100,
-//                     rate: 1.2,
-//                 }
-//             ]
-//         },
-//         {
-//             stage: [
-//                 {
-//                     type: CharacterType.Soldier,
-//                     amount: 100,
-//                     rate: 1,
-//                 },
-//                 {
-//                     type: CharacterType.Soldier,
-//                     amount: 100,
-//                     rate: 1,
-//                 }
-//             ]
-//         }
-//     ]
-// }
