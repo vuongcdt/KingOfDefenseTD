@@ -27,10 +27,6 @@ export class GameManager extends Component {
         this._store.canvas = this.canvas;
     }
 
-    update(deltaTime: number) {
-
-    }
-
     addCoint(cost: number) {
         this._store.coinTotal += cost;
         eventTarget.emit(SET_COIN_TEXT);
