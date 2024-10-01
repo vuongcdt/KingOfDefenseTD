@@ -1,10 +1,10 @@
 import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
 import { LevelManager } from './LevelManager';
-import Store from './Store';
+import Store from '../Store';
 import { Turent } from './Turent';
-import { CharacterType } from './Enums';
-import { eventTarget } from './Common';
-import { SUB_COINT, ADD_COINT } from './CONSTANTS';
+import { CharacterType } from '../Enums';
+import { eventTarget } from '../Common';
+import { SUB_COINT, ADD_COINT } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('TowerPlacement')

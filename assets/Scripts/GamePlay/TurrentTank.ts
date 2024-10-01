@@ -1,5 +1,5 @@
 import { _decorator , instantiate, Vec3 } from "cc";
-import { CharacterType } from "./Enums";
+import { CharacterType } from "../Enums";
 import { Turent } from "./Turent";
 import { Ammo } from "./Ammo";
 const { ccclass } = _decorator;

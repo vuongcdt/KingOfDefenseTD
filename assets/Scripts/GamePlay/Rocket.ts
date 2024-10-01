@@ -1,8 +1,8 @@
 import { _decorator, Collider2D, Color, Contact2DType, game, IPhysics2DContact, math, Node, randomRangeInt, Sprite, tween, v3, Vec3 } from 'cc';
 import { Ammo } from './Ammo';
-import Store from './Store';
-import { eventTarget } from './Common';
-import { PLAY_EXPLOSION_SOUND, PLAY_ROCKET_SOUND } from './CONSTANTS';
+import Store from '../Store';
+import { eventTarget } from '../Common';
+import { PLAY_EXPLOSION_SOUND, PLAY_ROCKET_SOUND } from '../CONSTANTS';
 import { Enemy } from './Enemy';
 const { ccclass, property } = _decorator;
 

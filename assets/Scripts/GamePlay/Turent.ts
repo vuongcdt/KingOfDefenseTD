@@ -1,7 +1,7 @@
 import { _decorator, CCInteger, Collider2D, Component, Contact2DType, Enum, instantiate, IPhysics2DContact, Node, Prefab, Sprite, SpriteFrame, Vec3 } from "cc";
 import { Ammo } from "./Ammo";
-import { CharacterType, GameState } from "./Enums";
-import Store from "./Store";
+import { CharacterType, GameState } from "../Enums";
+import Store from "../Store";
 const { ccclass, property } = _decorator;
 
 @ccclass('Turent')

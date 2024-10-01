@@ -1,5 +1,5 @@
 import { _decorator } from 'cc';
-import { BaseComponent } from '../BaseComponent';
+import { BaseComponent } from '../GamePlay/BaseComponent';
 import { eventTarget } from '../Common';
 import { HIDE_POPUP, PAUSE_GAME, UN_PAUSE_GAME } from '../CONSTANTS';
 import { GameState } from '../Enums';

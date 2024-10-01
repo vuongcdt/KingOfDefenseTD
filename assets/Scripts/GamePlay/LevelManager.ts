@@ -1,11 +1,11 @@
 import { _decorator, Color, Component, EventTouch, Graphics, instantiate, Node, Prefab, randomRange, randomRangeInt, Sprite, SpriteFrame, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
-import Store from './Store';
-import { enemiesData, EnemySpawn } from './EnemyData';
-import { CharacterType, GameState } from './Enums';
-import { eventTarget } from './Common';
-import { RESET_GAME } from './CONSTANTS';
+import Store from '../Store';
+import { enemiesData, EnemySpawn } from '../EnemyData';
+import { CharacterType, GameState } from '../Enums';
+import { eventTarget } from '../Common';
+import { RESET_GAME } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')

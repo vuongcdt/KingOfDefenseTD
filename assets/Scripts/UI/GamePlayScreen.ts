@@ -1,7 +1,7 @@
 import { _decorator, Button, director, Label, Node } from 'cc';
 import { eventTarget } from '../Common';
 import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP, SPEED_CHANGE } from '../CONSTANTS';
-import { BaseComponent } from '../BaseComponent';
+import { BaseComponent } from '../GamePlay/BaseComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('GamePlayScreen')

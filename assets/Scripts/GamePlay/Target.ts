@@ -1,7 +1,7 @@
 import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact } from "cc";
 import { Enemy } from "./Enemy";
-import { eventTarget } from "./Common";
-import { SET_HEART } from "./CONSTANTS";
+import { eventTarget } from "../Common";
+import { SET_HEART } from "../CONSTANTS";
 const { ccclass, property } = _decorator;
 
 @ccclass('Target')
