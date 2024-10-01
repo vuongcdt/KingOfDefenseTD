@@ -45,7 +45,7 @@ export class Turent extends Component {
         this._store = Store.getInstance();
         this._levelManager = this._store.levelManager;
 
-        let collider = this.getComponent(Collider2D);
+        const collider = this.getComponent(Collider2D);
 
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);

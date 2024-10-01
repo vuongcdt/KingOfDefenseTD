@@ -49,7 +49,7 @@ export class Enemy extends Component {
 
         this._paths.forEach((point, index) => {
             const startPoint = index == 0 ? this.node.position : this._paths[index - 1];
-            let timeMove = this.getTimeMove(startPoint, point);
+            const timeMove = this.getTimeMove(startPoint, point);
 
             const position = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
 
@@ -86,7 +86,7 @@ export class Enemy extends Component {
     }
 
     getAngleAvatar(currentPos: Vec3, newPos: Vec3): number {
-        let diff = new Vec3();
+        const diff = new Vec3();
         Vec3.subtract(diff, currentPos, newPos);
         const angle = 270 - Math.atan2(diff.x, diff.y) * (180 / Math.PI);
 

@@ -135,7 +135,7 @@ export class Rocket extends Ammo {
     }
 
     getAngleRocket(newPoint: Vec3) {
-        let diff = newPoint.clone().subtract(this._currentPos.clone());
+        const diff = newPoint.clone().subtract(this._currentPos.clone());
 
         this._currentPos = newPoint.clone();
         const angle = Math.atan2(diff.y, diff.x) * (180 / Math.PI);

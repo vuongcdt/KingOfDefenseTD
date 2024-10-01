@@ -99,7 +99,7 @@ export class LevelManager extends Component {
     }
 
     spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
-        let newEnemy = instantiate(prefab);
+        const newEnemy = instantiate(prefab);
         newEnemy.parent = this.enemyLayer;
         newEnemy.position = this._startPos;
 
@@ -180,7 +180,7 @@ export class LevelManager extends Component {
     }
 
     generateWay() {
-        let graphics = this.getComponent(Graphics);
+        const graphics = this.getComponent(Graphics);
 
         // graphics.strokeColor = new Color().fromHEX("#dc7633");//FC9451
         graphics.strokeColor = new Color().fromHEX("#47565A");
@@ -194,9 +194,9 @@ export class LevelManager extends Component {
         graphics.moveTo(points[0].x, points[0].y);
 
         for (let i = 1; i < points.length - 1; i += 3) {
-            let p0 = points[i - 1];
-            let p1 = points[i];
-            let p2 = points[i + 1];
+            const p0 = points[i - 1];
+            const p1 = points[i];
+            const p2 = points[i + 1];
 
             graphics.bezierCurveTo(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
         }

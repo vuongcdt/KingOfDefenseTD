@@ -6,7 +6,7 @@ const { ccclass, property } = _decorator;
 @ccclass('AmmoTank')
 export class AmmoTank extends Ammo {
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        let tower = otherCollider.node.getParent().getComponent(TowerPlacement);
+        const tower = otherCollider.node.getParent().getComponent(TowerPlacement);
         if (otherCollider instanceof BoxCollider2D && tower){
             tower.setHP(this._damage);
         }
