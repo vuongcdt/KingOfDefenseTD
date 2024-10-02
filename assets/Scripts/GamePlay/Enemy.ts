@@ -56,8 +56,10 @@ export class Enemy extends Component {
             const nodeTween = tween(this.node)
                 .delay(index == 0 ? time * 1.5 : 0)
                 .call(() => {
-                    index == 0 && this.setPhysic(true);
-                    eventTarget.emit(SET_WAVES,indexWave);
+                    if (index == 0) {
+                        this.setPhysic(true);
+                        eventTarget.emit(SET_WAVES, indexWave);
+                    }
                 })
                 .to(timeMove, { position: position });
 

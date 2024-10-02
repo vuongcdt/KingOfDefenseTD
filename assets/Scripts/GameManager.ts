@@ -49,9 +49,6 @@ export class GameManager extends Component {
     }
 
     setWave(value:number) {
-        if(value<= this._store.waves){
-            return;
-        }
         this._store.waves = value;
         eventTarget.emit(SET_WAVES_TEXT);
     }

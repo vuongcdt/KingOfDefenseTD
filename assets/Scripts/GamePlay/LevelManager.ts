@@ -88,14 +88,25 @@ export class LevelManager extends Component {
     startGame() {
         this._countTime = 0;
 
-        enemiesData.forEach((data, indexWave) => {
-            const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
-            this._countTime += data.time;
+        enemiesData.forEach((dataEnemy, indexWave) => {
+            dataEnemy.data.forEach((data) => {
+                const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
+                this._countTime += data.time;
 
-            for (const _ of Array(data.total)) {
-                this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
-            }
+                for (const _ of Array(data.total)) {
+                    this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
+                }
+            })
         })
+
+        // enemiesData.forEach((data, indexWave) => {
+        //     const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
+        //     this._countTime += data.time;
+
+        //     for (const _ of Array(data.total)) {
+        //         this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
+        //     }
+        // })
     }
 
     spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
@@ -119,6 +130,7 @@ export class LevelManager extends Component {
         const totalEnemy = this.enemyLayer.getComponentsInChildren(Enemy).length;
 
         if (totalEnemy == 1) {
+            console.log('game win');
             setTimeout(() => {
                 game.pause;
                 eventTarget.emit(SHOW_GAME_WIN_POPUP);

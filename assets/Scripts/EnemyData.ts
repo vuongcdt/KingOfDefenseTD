@@ -1,107 +1,132 @@
 import { _decorator } from "cc";
-const { ccclass, property } = _decorator;
 import { CharacterType } from "./Enums";
 
-export class EnemySpawn {
-    @property({ type: CharacterType, displayName: "type" })
-    public type: CharacterType;
-    @property({ type: Number, displayName: "total" })
-    public total: number = 0;
-    @property({ type: Number, displayName: "time" })
-    public time: number = 0;
-
-    constructor(type: CharacterType, total: number, time: number) {
-        this.time = time;
-        this.total = total;
-        this.type = type;
-    }
+export class DataEnemy {
+    public name: string;
+    public data: EnemySpawn[];
 }
 
-export const enemiesData: EnemySpawn[] = [
-    new EnemySpawn(CharacterType.Soldier, 3, 1),
+export class EnemySpawn {
+    public type: CharacterType;
+    public total: number = 0;
+    public time: number = 0;
+}
 
-    // new EnemySpawn(CharacterType.Soldier, 3, 11),
-    // new EnemySpawn(CharacterType.Soldier, 3, 12),
-
-    // new EnemySpawn(CharacterType.Tank, 1, 20),
-    // new EnemySpawn(CharacterType.Soldier, 3, 21),
-
-    // new EnemySpawn(CharacterType.Tank, 3, 30),
-    // new EnemySpawn(CharacterType.Soldier, 3, 31),
-    // new EnemySpawn(CharacterType.Plane, 3, 32),
-
-    // new EnemySpawn(CharacterType.Tank, 3, 40),
-    // new EnemySpawn(CharacterType.Plane, 3, 41),
-    // new EnemySpawn(CharacterType.Soldier, 3, 41),
-
-    // new EnemySpawn(CharacterType.Tank, 3, 50),
-    // new EnemySpawn(CharacterType.Soldier, 3, 51),
-    // new EnemySpawn(CharacterType.Plane, 3, 52),
-
-    // new EnemySpawn(CharacterType.Plane, 3, 60),
-    // new EnemySpawn(CharacterType.Plane, 3, 62),
-    // new EnemySpawn(CharacterType.Plane, 3, 64),
-]
-
-const levels = [
+export const enemiesData: DataEnemy[] = [
     {
-        name:'level 1',
-        waves:[
-            {
-                name:'wave 1',
-                stage: [
-                    {
-                        type: CharacterType.Soldier,
-                        amount: 3,
-                    },
-                    {
-                        type: CharacterType.Soldier,
-                        amount: 3,
-                    },
-                ],
-            },
-            {
-                name:'wave 2',
-                stage: [
-                    {
-                        type: CharacterType.Soldier,
-                        amount: 3,
-                    },
-                    {
-                        type: CharacterType.Tank,
-                        amount: 3,
-                    }
-                ],
-               
-            },
-            {
-                name:'wave 3',
-                stage: [
-                    {
-                        type: CharacterType.Soldier,
-                        amount: 3,
-                    },
-                    {
-                        type: CharacterType.Plane,
-                        amount: 3,
-                    }
-                ],
-               
-            },
-            {
-                name:'wave 4',
-                stage: [
-                    {
-                        type: CharacterType.Tank,
-                        amount: 3,
-                    },
-                    {
-                        type: CharacterType.Plane,
-                        amount: 3,
-                    }
-                ],
-               
-            },
-        ]
-    }
+        name: 'wave 1',
+        data: [{
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 1
+        }]
+    },
+    {
+        name: 'wave 2',
+        data: [{
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 11
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 12
+        }]
+    },
+    {
+        name: 'wave 3',
+        data: [{
+            type: CharacterType.Tank,
+            total: 1,
+            time: 21
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 23
+        }]
+    },
+    {
+        name: 'wave 4',
+        data: [{
+            type: CharacterType.Tank,
+            total: 3,
+            time: 31
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 33
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 34
+        }]
+    },
+    {
+        name: 'wave 5',
+        data: [{
+            type: CharacterType.Tank,
+            total: 3,
+            time: 41
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 43
+        },
+        {
+            type: CharacterType.Plane,
+            total: 3,
+            time: 44
+        }]
+    },
+    {
+        name: 'wave 6',
+        data: [{
+            type: CharacterType.Tank,
+            total: 3,
+            time: 51
+        },
+        {
+            type: CharacterType.Tank,
+            total: 3,
+            time: 53
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 55
+        },
+        {
+            type: CharacterType.Soldier,
+            total: 3,
+            time: 56
+        },
+        {
+            type: CharacterType.Plane,
+            total: 3,
+            time: 56
+        }]
+    },
+    {
+        name: 'wave 7',
+        data: [{
+            type: CharacterType.Plane,
+            total: 3,
+            time: 61
+        },
+        {
+            type: CharacterType.Plane,
+            total: 3,
+            time: 63
+        },
+        {
+            type: CharacterType.Plane,
+            total: 3,
+            time: 65
+        }]
+    },
 ]
