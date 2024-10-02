@@ -1,6 +1,4 @@
-import { EventTarget, log } from 'cc';
-import { SET_COINT_TEXT } from './CONSTANTS';
-
+import { EventTarget } from 'cc';
 
 export const eventTarget = new EventTarget();
 

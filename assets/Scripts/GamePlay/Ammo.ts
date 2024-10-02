@@ -1,7 +1,7 @@
 import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, Node, Sprite, SpriteFrame, Tween, tween, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
 import { eventTarget } from '../Common';
-import { PLAY_AMMO_SOUND, PLAY_EXPLOSION_SOUND } from '../CONSTANTS';
+import { PLAY_AMMO_SOUND } from '../CONSTANTS';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')

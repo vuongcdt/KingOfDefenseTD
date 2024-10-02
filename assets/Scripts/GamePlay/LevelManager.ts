@@ -123,7 +123,6 @@ export class LevelManager extends Component {
         const totalEnemy = this.enemyLayer.getComponentsInChildren(Enemy).length;
 
         if (totalEnemy == 1) {
-            console.log('game win');
             setTimeout(() => {
                 game.pause;
                 eventTarget.emit(SHOW_GAME_WIN_POPUP);
@@ -186,10 +185,14 @@ export class LevelManager extends Component {
 
     generateWay() {
         const graphics = this.getComponent(Graphics);
+        graphics.strokeColor = new Color().fromHEX("#B1B1B1");
+        graphics.lineWidth = 170;
 
-        // graphics.strokeColor = new Color().fromHEX("#dc7633");//FC9451
+        this.drawBezierCurve(graphics, this._wayPaths);
+        graphics.stroke();
+
         graphics.strokeColor = new Color().fromHEX("#47565A");
-        graphics.lineWidth = 150;
+        graphics.lineWidth = 155;
 
         this.drawBezierCurve(graphics, this._wayPaths);
         graphics.stroke();

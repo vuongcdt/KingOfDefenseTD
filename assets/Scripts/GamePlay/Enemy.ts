@@ -108,6 +108,7 @@ export class Enemy extends Component {
 
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();
+            
             this._levelManage.checkGameWin();
             eventTarget.emit(ADD_COINT, 100);
         }
