@@ -48,6 +48,7 @@ export class LevelManager extends Component {
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
     private _countTime: number = 0;
+    private _timeWave: number = 20;
 
     start() {
         eventTarget.on(RESET_GAME, this.resetGame, this);
@@ -91,22 +92,14 @@ export class LevelManager extends Component {
         enemiesData.forEach((dataEnemy, indexWave) => {
             dataEnemy.data.forEach((data) => {
                 const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
-                this._countTime += data.time;
+                this._countTime += data.timeDelay;
+                const waveTime = indexWave * this._timeWave + data.timeDelay * 1.5
 
                 for (const _ of Array(data.total)) {
-                    this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
+                    this.spawnEnemy(this.prefabEnemies[data.type - 1], path, waveTime, indexWave + 1);
                 }
             })
         })
-
-        // enemiesData.forEach((data, indexWave) => {
-        //     const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
-        //     this._countTime += data.time;
-
-        //     for (const _ of Array(data.total)) {
-        //         this.spawnEnemy(this.prefabEnemies[data.type - 1], path, data.time, indexWave + 1);
-        //     }
-        // })
     }
 
     spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
@@ -134,7 +127,7 @@ export class LevelManager extends Component {
             setTimeout(() => {
                 game.pause;
                 eventTarget.emit(SHOW_GAME_WIN_POPUP);
-            }, 1000);
+            }, 200);
         }
     }
 

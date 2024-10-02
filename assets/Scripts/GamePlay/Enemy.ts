@@ -54,7 +54,7 @@ export class Enemy extends Component {
             const position = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
 
             const nodeTween = tween(this.node)
-                .delay(index == 0 ? time * 1.5 : 0)
+                .delay(index == 0 ? time : 0)
                 .call(() => {
                     if (index == 0) {
                         this.setPhysic(true);
@@ -64,7 +64,7 @@ export class Enemy extends Component {
                 .to(timeMove, { position: position });
 
             const avatarTween = tween(this.avatar)
-                .delay(index == 0 ? time * 1.5 : 0)
+                .delay(index == 0 ? time : 0)
                 .to(1, { angle: this.getAngleAvatar(this._currentPos, point) })
                 .delay(timeMove - 1);
 

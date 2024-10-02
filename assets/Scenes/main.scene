@@ -6604,7 +6604,7 @@
     "_restitution": 0,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 50,
+      "x": 0,
       "y": 0
     },
     "_size": {

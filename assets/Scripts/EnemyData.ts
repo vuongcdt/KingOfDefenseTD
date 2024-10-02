@@ -1,7 +1,7 @@
 import { _decorator } from "cc";
 import { CharacterType } from "./Enums";
 
-export class DataEnemy {
+export class WaveData {
     public name: string;
     public data: EnemySpawn[];
 }
@@ -9,16 +9,16 @@ export class DataEnemy {
 export class EnemySpawn {
     public type: CharacterType;
     public total: number = 0;
-    public time: number = 0;
+    public timeDelay: number = 0;
 }
 
-export const enemiesData: DataEnemy[] = [
+export const enemiesData: WaveData[] = [
     {
         name: 'wave 1',
         data: [{
             type: CharacterType.Soldier,
             total: 3,
-            time: 1
+            timeDelay: 1
         }]
     },
     {
@@ -26,12 +26,12 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Soldier,
             total: 3,
-            time: 11
+            timeDelay: 1
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 12
+            timeDelay: 2
         }]
     },
     {
@@ -39,12 +39,12 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Tank,
             total: 1,
-            time: 21
+            timeDelay: 1
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 23
+            timeDelay: 3
         }]
     },
     {
@@ -52,17 +52,17 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Tank,
             total: 3,
-            time: 31
+            timeDelay: 1
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 33
+            timeDelay: 3
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 34
+            timeDelay: 4
         }]
     },
     {
@@ -70,17 +70,17 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Tank,
             total: 3,
-            time: 41
+            timeDelay: 1
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 43
+            timeDelay: 3
         },
         {
             type: CharacterType.Plane,
             total: 3,
-            time: 44
+            timeDelay: 4
         }]
     },
     {
@@ -88,27 +88,27 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Tank,
             total: 3,
-            time: 51
+            timeDelay: 1
         },
         {
             type: CharacterType.Tank,
             total: 3,
-            time: 53
+            timeDelay: 3
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 55
+            timeDelay: 5
         },
         {
             type: CharacterType.Soldier,
             total: 3,
-            time: 56
+            timeDelay: 6
         },
         {
             type: CharacterType.Plane,
             total: 3,
-            time: 56
+            timeDelay: 6
         }]
     },
     {
@@ -116,17 +116,17 @@ export const enemiesData: DataEnemy[] = [
         data: [{
             type: CharacterType.Plane,
             total: 3,
-            time: 61
+            timeDelay: 1
         },
         {
             type: CharacterType.Plane,
             total: 3,
-            time: 63
+            timeDelay: 3
         },
         {
             type: CharacterType.Plane,
             total: 3,
-            time: 65
+            timeDelay: 5
         }]
     },
 ]
