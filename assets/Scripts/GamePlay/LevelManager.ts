@@ -44,6 +44,7 @@ export class LevelManager extends Component {
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
     private _countTime: number = 0;
     private _timeWave: number = 20;
+    private _offsetWay: number = 250;
 
     start() {
         eventTarget.on(RESET_GAME, this.resetGame, this);
@@ -136,14 +137,13 @@ export class LevelManager extends Component {
     }
 
     generateStoneAndTree() {
-        const offset = 150;
         const stonePos = [];
         while (true) {
             if (stonePos.length > this._treeNodes.length - 1) {
                 break;
             }
             const randomX = randomRange(-960, 960);
-            const randomY = randomRange(-540, 540);
+            const randomY = randomRange(-600, 600);
             let isPass = true;
 
             for (let index = 0; index < this._wayPaths.length; index++) {
@@ -157,7 +157,7 @@ export class LevelManager extends Component {
 
                     const maxY = Math.max(point1.y, point2.y);
                     const minY = Math.min(point1.y, point2.y);
-                    if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
+                    if (randomX < maxX + this._offsetWay && randomX > minX - this._offsetWay && randomY < maxY + this._offsetWay && randomY > minY - this._offsetWay) {
                         isPass = false;
                         break;
                     }
@@ -166,7 +166,6 @@ export class LevelManager extends Component {
                     break;
                 }
             }
-
 
 
             for (let index = 0; index < this._towerPlacements.length - 1; index++) {
@@ -178,7 +177,7 @@ export class LevelManager extends Component {
 
                 const maxY = Math.max(point1.y, point2.y);
                 const minY = Math.min(point1.y, point2.y);
-                if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
+                if (randomX < maxX + this._offsetWay && randomX > minX - this._offsetWay && randomY < maxY + this._offsetWay && randomY > minY - this._offsetWay) {
                     isPass = false;
                     break;
                 }
