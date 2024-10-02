@@ -3,7 +3,8 @@ import { CharacterType } from "./Enums";
 
 export class WaveData {
     public name: string;
-    public data: EnemySpawn[];
+    public dataEnemy: EnemySpawn[];
+    public way: number;
 }
 
 export class EnemySpawn {
@@ -15,7 +16,8 @@ export class EnemySpawn {
 export const enemiesData: WaveData[] = [
     {
         name: 'wave 1',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Soldier,
             total: 3,
             timeDelay: 1
@@ -23,7 +25,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 2',
-        data: [{
+        way: 1,
+        dataEnemy: [{
             type: CharacterType.Soldier,
             total: 3,
             timeDelay: 1
@@ -36,7 +39,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 3',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Tank,
             total: 1,
             timeDelay: 1
@@ -49,7 +53,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 4',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Tank,
             total: 3,
             timeDelay: 1
@@ -67,7 +72,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 5',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Tank,
             total: 3,
             timeDelay: 1
@@ -85,7 +91,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 6',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Tank,
             total: 3,
             timeDelay: 1
@@ -113,7 +120,8 @@ export const enemiesData: WaveData[] = [
     },
     {
         name: 'wave 7',
-        data: [{
+        way: 0,
+        dataEnemy: [{
             type: CharacterType.Plane,
             total: 3,
             timeDelay: 1

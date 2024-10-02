@@ -2,7 +2,7 @@ import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, 
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from '../Store';
-import { enemiesData, EnemySpawn } from '../EnemyData';
+import { enemiesData } from '../EnemyData';
 import { CharacterType, GameState } from '../Enums';
 import { eventTarget } from '../Common';
 import { RESET_GAME, SHOW_GAME_WIN_POPUP, START_GAME } from '../CONSTANTS';
@@ -18,10 +18,6 @@ export class LevelManager extends Component {
     private ammoLayer: Node = null;
     @property(Node)
     private towerLayer: Node = null;
-    @property(Node)
-    private startPoint: Node = null;
-    @property(Node)
-    private endPoint: Node = null;
     @property([Prefab])
     private prefabEnemies: Prefab[] = [];
     @property(Node)
@@ -39,11 +35,10 @@ export class LevelManager extends Component {
 
     private _store: Store;
     private _treeNodes: Node[] = [];
-    private _wayPaths: Vec3[] = [];
-    private _planePaths: Vec3[] = [];
+    private _wayPaths: Vec3[][] = [];
+    private _planePath: Vec3[] = [];
     private _towerPlacements: Vec3[] = [];
-    private _startPos: Vec3;
-    private _endPos: Vec3;
+
     private _towerPlacementList: TowerPlacement[] = [];
     private _indexSpawn: number = 0;
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
@@ -74,24 +69,34 @@ export class LevelManager extends Component {
     }
 
     setDataGenerate() {
-        this._startPos = this.startPoint.position;
-        this._endPos = this.endPoint.position;
         this._treeNodes = this.background.children;
-        this._wayPaths = this.wayPathBlock.children.map(node => node.position);
-
-        this._wayPaths.unshift(this._startPos);
-        this._wayPaths.push(this._endPos);
-
-        this._planePaths = this.planePathBlock.children.map(node => node.position);
+        this._planePath = this.planePathBlock.children.map(node => node.position);
         this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
+
+        const wayPaths = this.wayPathBlock.children;
+
+        wayPaths.forEach((way, indexWay) => {
+            this._wayPaths[indexWay] = [];
+            const points = way.children;
+
+            for (let index = 0; index < points.length - 1; index++) {
+                const p1 = points[index].position;
+                const p2 = points[index + 1].position;
+                const dividePoints = this.findDividePoints(p1, p2, 2);
+
+                this._wayPaths[indexWay].push(p1);
+                this._wayPaths[indexWay].push(...dividePoints);
+            }
+        })
+
     }
 
     startGame() {
         this._countTime = 0;
 
-        enemiesData.forEach((dataEnemy, indexWave) => {
-            dataEnemy.data.forEach((data) => {
-                const path = data.type == CharacterType.Plane ? this._planePaths : this._wayPaths;
+        enemiesData.forEach(({dataEnemy,way}, indexWave) => {
+            dataEnemy.forEach((data) => {
+                const path = data.type == CharacterType.Plane ? this._planePath : this._wayPaths[way];
                 this._countTime += data.timeDelay;
                 const waveTime = indexWave * this._timeWave + data.timeDelay * 1.5
 
@@ -105,7 +110,7 @@ export class LevelManager extends Component {
     spawnEnemy(prefab: Prefab, path: Vec3[], time: number, indexWave: number) {
         const newEnemy = instantiate(prefab);
         newEnemy.parent = this.enemyLayer;
-        newEnemy.position = this._startPos;
+        newEnemy.position = path[0];
 
         const index = this._arrIndex[this._indexSpawn];
 
@@ -141,20 +146,28 @@ export class LevelManager extends Component {
             const randomY = randomRange(-540, 540);
             let isPass = true;
 
-            for (let index = 0; index < this._wayPaths.length - 1; index++) {
-                const point1 = this._wayPaths[index];
-                const point2 = this._wayPaths[index + 1];
+            for (let index = 0; index < this._wayPaths.length; index++) {
+                const points = this._wayPaths[index];
+                for (let index = 0; index < this._wayPaths.length - 1; index++) {
+                    const point1 = points[index];
+                    const point2 = points[index + 1];
 
-                const maxX = Math.max(point1.x, point2.x);
-                const minX = Math.min(point1.x, point2.x);
+                    const maxX = Math.max(point1.x, point2.x);
+                    const minX = Math.min(point1.x, point2.x);
 
-                const maxY = Math.max(point1.y, point2.y);
-                const minY = Math.min(point1.y, point2.y);
-                if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
-                    isPass = false;
+                    const maxY = Math.max(point1.y, point2.y);
+                    const minY = Math.min(point1.y, point2.y);
+                    if (randomX < maxX + offset && randomX > minX - offset && randomY < maxY + offset && randomY > minY - offset) {
+                        isPass = false;
+                        break;
+                    }
+                }
+                if(!isPass){
                     break;
                 }
             }
+
+
 
             for (let index = 0; index < this._towerPlacements.length - 1; index++) {
                 const point1 = this._towerPlacements[index];
@@ -178,24 +191,28 @@ export class LevelManager extends Component {
 
         stonePos.forEach((pos, index) => {
             this._treeNodes[index].position = pos;
-            // this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[index % this.stoneSprites.length];
             this._treeNodes[index].getComponent(Sprite).spriteFrame = this.stoneSprites[randomRangeInt(0, this.stoneSprites.length)];
         })
     }
 
     generateWay() {
         const graphics = this.getComponent(Graphics);
-        graphics.strokeColor = new Color().fromHEX("#B1B1B1");
-        graphics.lineWidth = 170;
+        this._wayPaths.forEach(points => {
+            graphics.strokeColor = new Color().fromHEX("#B1B1B1");
+            graphics.lineWidth = 170;
 
-        this.drawBezierCurve(graphics, this._wayPaths);
-        graphics.stroke();
+            this.drawBezierCurve(graphics, points);
+            graphics.stroke();
+        })
 
-        graphics.strokeColor = new Color().fromHEX("#47565A");
-        graphics.lineWidth = 155;
+        this._wayPaths.forEach(points => {
+            graphics.strokeColor = new Color().fromHEX("#47565A");
+            graphics.lineWidth = 150;
 
-        this.drawBezierCurve(graphics, this._wayPaths);
-        graphics.stroke();
+            this.drawBezierCurve(graphics, points);
+            graphics.stroke();
+        })
+
     }
 
     drawBezierCurve(graphics: Graphics, points: Vec3[]) {
@@ -208,6 +225,28 @@ export class LevelManager extends Component {
 
             graphics.bezierCurveTo(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y);
         }
+    }
+
+    findDividePoints(p1: Vec3, p2: Vec3, numPoints: number): Vec3[] {
+        const result: Vec3[] = [];
+
+        const vector = new Vec3(
+            (p2.x - p1.x),
+            (p2.y - p1.y),
+            (p2.z - p1.z)
+        );
+
+        for (let i = 1; i <= numPoints; i++) {
+            const scale = i / (numPoints + 1);
+            const dividePoint = new Vec3(
+                p1.x + vector.x * scale,
+                p1.y + vector.y * scale,
+                p1.z + vector.z * scale
+            );
+            result.push(dividePoint);
+        }
+
+        return result;
     }
 
     generateTowerPlacement() {
