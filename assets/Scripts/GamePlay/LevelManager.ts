@@ -44,7 +44,7 @@ export class LevelManager extends Component {
     private _arrIndex: number[] = [0, 1, -1, 2, -2, 3, -3];
     private _countTime: number = 0;
     private _timeWave: number = 20;
-    private _offsetWay: number = 250;
+    private _offsetWay: number = 150;
 
     start() {
         eventTarget.on(RESET_GAME, this.resetGame, this);
@@ -148,9 +148,9 @@ export class LevelManager extends Component {
 
             for (let index = 0; index < this._wayPaths.length; index++) {
                 const points = this._wayPaths[index];
-                for (let index = 0; index < this._wayPaths.length - 1; index++) {
-                    const point1 = points[index];
-                    const point2 = points[index + 1];
+                for (let i = 0; i < points.length - 1; i++) {
+                    const point1 = points[i];
+                    const point2 = points[i + 1];
 
                     const maxX = Math.max(point1.x, point2.x);
                     const minX = Math.min(point1.x, point2.x);
