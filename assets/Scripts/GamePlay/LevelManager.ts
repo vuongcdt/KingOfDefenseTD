@@ -2,10 +2,10 @@ import { _decorator, Color, Component, EventTouch, game, Graphics, instantiate, 
 import { Enemy } from './Enemy';
 import { TowerPlacement } from './TowerPlacement';
 import Store from '../Store';
-import { enemiesData } from '../EnemyData';
 import { CharacterType, GameState } from '../Enums';
 import { eventTarget } from '../Common';
 import { RESET_GAME, SHOW_GAME_WIN_POPUP, START_GAME } from '../CONSTANTS';
+import { levels } from '../LevelData';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelManager')
@@ -94,8 +94,13 @@ export class LevelManager extends Component {
 
     startGame() {
         this._countTime = 0;
+        if (!levels[this._store.level]?.dataLevel) {
+            console.log('no data');
+            return;
+        }
+        console.log('level', this._store.level);
 
-        enemiesData.forEach(({dataEnemy,way}, indexWave) => {
+        levels[this._store.level].dataLevel.forEach(({ dataEnemy, way }, indexWave) => {
             dataEnemy.forEach((data) => {
                 const path = data.type == CharacterType.Plane ? this._planePath : this._wayPaths[way];
                 this._countTime += data.timeDelay;
@@ -162,7 +167,7 @@ export class LevelManager extends Component {
                         break;
                     }
                 }
-                if(!isPass){
+                if (!isPass) {
                     break;
                 }
             }
@@ -282,8 +287,6 @@ export class LevelManager extends Component {
         this.towerLayer.removeAllChildren();
 
         this._store.gameState = GameState.PlayGame;
-
-        // this.startGame();
         this.generateTowerPlacement();
     }
 }

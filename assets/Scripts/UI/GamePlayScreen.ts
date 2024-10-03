@@ -2,7 +2,7 @@ import { _decorator, Button, director, Label, Node } from 'cc';
 import { eventTarget } from '../Common';
 import { RESET_GAMELAY_UI, SET_COINT_TEXT, SET_HEART_TEXT, SET_LEVEL_TEXT, SET_WAVES_TEXT, SHOW_SETTING_POPUP, SPEED_CHANGE } from '../CONSTANTS';
 import { BaseComponent } from '../GamePlay/BaseComponent';
-import { enemiesData } from '../EnemyData';
+import { levels } from '../LevelData';
 const { ccclass, property } = _decorator;
 
 @ccclass('GamePlayScreen')
@@ -28,13 +28,13 @@ export class GamePlayScreen extends BaseComponent {
         eventTarget.on(SET_LEVEL_TEXT, this.setLevelText, this);
         eventTarget.on(SET_WAVES_TEXT, this.setWavesText, this);
         eventTarget.on(RESET_GAMELAY_UI, this.resetGamePlayUI, this);
-
-        this._totalWave = enemiesData.length;
     }
 
 
     start() {
         super.start();
+        
+        this._totalWave = levels[this._store.level].dataLevel.length;
 
         this.settingBtn.on(Button.EventType.CLICK, this.showSettingPopup, this);
         this.speedBtn.on(Button.EventType.CLICK, this.onSpeedClick, this);
