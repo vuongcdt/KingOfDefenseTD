@@ -51,7 +51,7 @@ export class Enemy extends Component {
             const startPoint = index == 0 ? this.node.position : this._paths[index - 1];
             const timeMove = this.getTimeMove(startPoint, point);
 
-            const position = new Vec3(point.x + Math.abs(indexPos) * this._offset, point.y - indexPos * this._offset);
+            const position = new Vec3(point.x + Math.abs(indexPos) * this._offset - 30, point.y - indexPos * this._offset);
 
             const nodeTween = tween(this.node)
                 .delay(index == 0 ? time : 0)
