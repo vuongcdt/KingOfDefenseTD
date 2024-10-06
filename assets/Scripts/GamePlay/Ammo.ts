@@ -2,6 +2,7 @@ import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, No
 import { Enemy } from './Enemy';
 import { eventTarget } from '../Common';
 import { PLAY_AMMO_SOUND } from '../CONSTANTS';
+import { Plane } from './Plane';
 const { ccclass, property } = _decorator;
 
 @ccclass('Ammo')
@@ -40,8 +41,12 @@ export class Ammo extends Component {
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
         const target = otherCollider.node.getComponent(Enemy);
-        
+        const plane = otherCollider.node.getComponent(Plane);
+
         if (!target) {
+            return;
+        }
+        if (plane) {
             return;
         }
 

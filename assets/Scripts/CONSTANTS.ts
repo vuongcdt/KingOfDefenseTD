@@ -17,6 +17,7 @@ export const SHOW_SETTING_POPUP = 'SHOW_SETTING_POPUP';
 export const SHOW_GAME_OVER_POPUP = 'SHOW_GAME_OVER_POPUP';
 export const SHOW_GAME_WIN_POPUP = 'SHOW_GAME_WIN_POPUP';
 
+export const CHECK_GAME_WIN = 'CHECK_GAME_WIN';
 export const RESET_GAME = 'RESET_GAME';
 export const START_GAME = 'START_GAME';
 export const PAUSE_GAME = 'PAUSE_GAME';

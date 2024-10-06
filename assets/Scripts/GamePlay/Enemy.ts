@@ -1,7 +1,7 @@
 import { _decorator, CircleCollider2D, Component, Enum, Node, RigidBody2D, Sprite, SpriteFrame, Tween, tween, UITransform, Vec3 } from "cc";
 import { LevelManager } from "./LevelManager";
 import { eventTarget } from "../Common";
-import { ADD_COINT, SET_WAVES } from "../CONSTANTS";
+import { ADD_COINT, CHECK_GAME_WIN, SET_WAVES } from "../CONSTANTS";
 import { CharacterType } from "../Enums";
 const { ccclass, property } = _decorator;
 
@@ -109,7 +109,8 @@ export class Enemy extends Component {
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();
             
-            this._levelManage.checkGameWin();
+            // this._levelManage.checkGameWin();
+            eventTarget.emit(CHECK_GAME_WIN);
             eventTarget.emit(ADD_COINT, 100);
         }
     }

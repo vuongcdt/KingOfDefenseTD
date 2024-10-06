@@ -28,7 +28,7 @@ export const levels: LevelData[] = [
                 way: 0,
                 dataEnemy: [{
                     type: CharacterType.Soldier,
-                    total: 3,
+                    total: 2,
                     timeDelay: 1
                 }]
             },
@@ -151,84 +151,84 @@ export const levels: LevelData[] = [
     {
         name: 'level 2',
         dataLevel: [
-            {
-                name: 'wave 1',
-                way: 0,
-                dataEnemy: [{
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 1
-                }]
-            },
-            {
-                name: 'wave 2',
-                way: 1,
-                dataEnemy: [{
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 1
-                },
-                {
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 2
-                }]
-            },
-            {
-                name: 'wave 3',
-                way: 0,
-                dataEnemy: [{
-                    type: CharacterType.Tank,
-                    total: 1,
-                    timeDelay: 1
-                },
-                {
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 3
-                }]
-            },
-            {
-                name: 'wave 4',
-                way: 0,
-                dataEnemy: [{
-                    type: CharacterType.Tank,
-                    total: 3,
-                    timeDelay: 1
-                },
-                {
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 3
-                },
-                {
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 4
-                }]
-            },
-            {
-                name: 'wave 5',
-                way: 0,
-                dataEnemy: [{
-                    type: CharacterType.Tank,
-                    total: 3,
-                    timeDelay: 1
-                },
-                {
-                    type: CharacterType.Soldier,
-                    total: 3,
-                    timeDelay: 3
-                },
-                {
-                    type: CharacterType.Plane,
-                    total: 3,
-                    timeDelay: 4
-                }]
-            },
+            // {
+            //     name: 'wave 1',
+            //     way: 0,
+            //     dataEnemy: [{
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 1
+            //     }]
+            // },
+            // {
+            //     name: 'wave 2',
+            //     way: 1,
+            //     dataEnemy: [{
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 1
+            //     },
+            //     {
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 2.5
+            //     }]
+            // },
+            // {
+            //     name: 'wave 3',
+            //     way: 0,
+            //     dataEnemy: [{
+            //         type: CharacterType.Tank,
+            //         total: 1,
+            //         timeDelay: 1
+            //     },
+            //     {
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 2.5
+            //     }]
+            // },
+            // {
+            //     name: 'wave 4',
+            //     way: 0,
+            //     dataEnemy: [{
+            //         type: CharacterType.Tank,
+            //         total: 3,
+            //         timeDelay: 1
+            //     },
+            //     {
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 3.5
+            //     },
+            //     {
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 5
+            //     }]
+            // },
+            // {
+            //     name: 'wave 5',
+            //     way: 1,
+            //     dataEnemy: [{
+            //         type: CharacterType.Tank,
+            //         total: 3,
+            //         timeDelay: 1
+            //     },
+            //     {
+            //         type: CharacterType.Soldier,
+            //         total: 3,
+            //         timeDelay: 3
+            //     },
+            //     {
+            //         type: CharacterType.Plane,
+            //         total: 3,
+            //         timeDelay: 4
+            //     }]
+            // },
             {
                 name: 'wave 6',
-                way: 0,
+                way: 1,
                 dataEnemy: [{
                     type: CharacterType.Tank,
                     total: 3,
@@ -237,22 +237,22 @@ export const levels: LevelData[] = [
                 {
                     type: CharacterType.Tank,
                     total: 3,
-                    timeDelay: 3
+                    timeDelay: 4
                 },
                 {
                     type: CharacterType.Soldier,
                     total: 3,
-                    timeDelay: 5
+                    timeDelay: 7
                 },
                 {
                     type: CharacterType.Soldier,
                     total: 3,
-                    timeDelay: 6
+                    timeDelay: 8.5
                 },
                 {
                     type: CharacterType.Plane,
                     total: 3,
-                    timeDelay: 6
+                    timeDelay: 1
                 }]
             },
             {

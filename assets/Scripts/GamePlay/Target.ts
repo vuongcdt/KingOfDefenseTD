@@ -1,4 +1,4 @@
-import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact } from "cc";
+import { _decorator, Collider2D, Component, Contact2DType, IPhysics2DContact, tween } from "cc";
 import { Enemy } from "./Enemy";
 import { eventTarget } from "../Common";
 import { SET_HEART } from "../CONSTANTS";
@@ -19,7 +19,8 @@ export class Target extends Component {
         if (!enemy) {
             return;
         }
-
+        
+        tween(enemy.node).removeSelf().start();
         eventTarget.emit(SET_HEART);
     }
 

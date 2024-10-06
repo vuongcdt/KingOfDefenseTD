@@ -51,22 +51,25 @@ export class LevelManager extends Component {
         this.maskLayer.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
         eventTarget.on(START_GAME, this.startGame, this);
 
-        this.setStore();
-        this.setDataGenerate();
+        this.node.active = false;
+        this.enabled = false;
 
-        this.generateWay();
-        this.generateStoneAndTree();
-        this.generateTowerPlacement();
+        this.setStore();
+        // this.setDataGenerate();
+
+        // this.generateWay();
+        // this.generateStoneAndTree();
+        // this.generateTowerPlacement();
     }
 
     setStore() {
         this._store = Store.getInstance();
-        const graphics = this.getComponent(Graphics);
+        // const graphics = this.getComponent(Graphics);
 
+        // this._store.graphics = graphics;
+        // this._store.ammoLayer = this.ammoLayer;
+        // this._store.towerLayer = this.towerLayer;
         this._store.levelManager = this.node;
-        this._store.graphics = graphics;
-        this._store.ammoLayer = this.ammoLayer;
-        this._store.towerLayer = this.towerLayer;
     }
 
     setDataGenerate() {
@@ -93,12 +96,27 @@ export class LevelManager extends Component {
     }
 
     startGame() {
+        const siblingIndex = this.node.getSiblingIndex();
+        const isPass = siblingIndex == this._store.level;
+        if(!isPass){
+            return;
+        }
+        this.node.active = siblingIndex == this._store.level;
+        // this.enabled = siblingIndex == this._store.level;
+
+        this.setDataGenerate();
+
+        this.generateWay();
+        this.generateStoneAndTree();
+        this.generateTowerPlacement();
+
         this._countTime = 0;
         if (!levels[this._store.level]?.dataLevel) {
             console.log('no data');
             return;
         }
-        console.log('level', this._store.level);
+
+        this.enemyLayer.removeAllChildren();
 
         levels[this._store.level].dataLevel.forEach(({ dataEnemy, way }, indexWave) => {
             dataEnemy.forEach((data) => {
@@ -127,17 +145,6 @@ export class LevelManager extends Component {
         this._indexSpawn++;
         if (this._indexSpawn > 2) {
             this._indexSpawn = 0;
-        }
-    }
-
-    checkGameWin() {
-        const totalEnemy = this.enemyLayer.getComponentsInChildren(Enemy).length;
-
-        if (totalEnemy == 1) {
-            setTimeout(() => {
-                game.pause;
-                eventTarget.emit(SHOW_GAME_WIN_POPUP);
-            }, 200);
         }
     }
 
@@ -200,7 +207,10 @@ export class LevelManager extends Component {
     }
 
     generateWay() {
-        const graphics = this.getComponent(Graphics);
+        // const graphics = this.getComponent(Graphics);
+        const graphics = this._store.graphics;
+        graphics.clear();
+
         this._wayPaths.forEach(points => {
             graphics.strokeColor = new Color().fromHEX("#B1B1B1");
             graphics.lineWidth = 170;
