@@ -40,13 +40,13 @@ export class Ammo extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        const target = otherCollider.node.getComponent(Enemy);
         const plane = otherCollider.node.getComponent(Plane);
-
-        if (!target) {
+        if (plane) {
             return;
         }
-        if (plane) {
+        const target = otherCollider.node.getComponent(Enemy);
+
+        if (!target) {
             return;
         }
 
