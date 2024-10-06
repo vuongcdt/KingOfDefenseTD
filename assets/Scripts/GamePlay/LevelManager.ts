@@ -55,20 +55,10 @@ export class LevelManager extends Component {
         this.enabled = false;
 
         this.setStore();
-        // this.setDataGenerate();
-
-        // this.generateWay();
-        // this.generateStoneAndTree();
-        // this.generateTowerPlacement();
     }
 
     setStore() {
         this._store = Store.getInstance();
-        // const graphics = this.getComponent(Graphics);
-
-        // this._store.graphics = graphics;
-        // this._store.ammoLayer = this.ammoLayer;
-        // this._store.towerLayer = this.towerLayer;
         this._store.levelManager = this.node;
     }
 
@@ -112,7 +102,7 @@ export class LevelManager extends Component {
 
         this._countTime = 0;
         if (!levels[this._store.level]?.dataLevel) {
-            console.log('no data');
+            console.error('No data!');
             return;
         }
 
