@@ -15,7 +15,8 @@ export default class Store {
     public heart: number = 3;
     public coinTotal: number = 1000;
     public waves: number = 1;
-    public level: number = 0;
+    public levelPlaying: number = 0;
+    public levelMax: number = 0;
 
     private constructor() { }
 

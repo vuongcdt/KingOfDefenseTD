@@ -31,6 +31,11 @@ export class GameWinPopup extends BaseUIComponent {
         eventTarget.emit(RESET_GAME);
         eventTarget.emit(SHOW_HOME_SCREEN);
     }
+
+    // onNextClick() {
+    //     eventTarget.emit(RESET_GAME);
+    //     eventTarget.emit(SHOW_HOME_SCREEN);
+    // }
 }
 
 

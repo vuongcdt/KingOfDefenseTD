@@ -34,7 +34,7 @@ export class GamePlayScreen extends BaseComponent {
     start() {
         super.start();
         
-        this._totalWave = levels[this._store.level].dataLevel.length;
+        this._totalWave = levels[this._store.levelPlaying].dataLevel.length;
 
         this.settingBtn.on(Button.EventType.CLICK, this.showSettingPopup, this);
         this.speedBtn.on(Button.EventType.CLICK, this.onSpeedClick, this);
@@ -62,7 +62,7 @@ export class GamePlayScreen extends BaseComponent {
     }
 
     setLevelText() {
-        this.levelText.string = this._store.level.toString();
+        this.levelText.string = this._store.levelPlaying.toString();
     }
 
     showSettingPopup() {

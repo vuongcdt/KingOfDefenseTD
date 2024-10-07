@@ -70,7 +70,7 @@ export class GameManager extends Component {
     }
 
     setLevel(value: number) {
-        this._store.level = value;
+        this._store.levelPlaying = value;
         eventTarget.emit(SET_LEVEL_TEXT);
     }
 
@@ -92,14 +92,17 @@ export class GameManager extends Component {
     }
 
     checkGameWin() {
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             const totalEnemy = this.enemyLayer.getComponentsInChildren(Enemy).length;
 
             if (totalEnemy == 0 && this._store.heart > 0) {
                 console.log('GAME WIN');
-                
+
                 this.pauseGame();
                 eventTarget.emit(SHOW_GAME_WIN_POPUP);
+                if (this._store.levelPlaying == this._store.levelMax) {
+                    this._store.levelMax++;
+                }
             }
         });
     }

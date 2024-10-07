@@ -87,12 +87,11 @@ export class LevelManager extends Component {
 
     startGame() {
         const siblingIndex = this.node.getSiblingIndex();
-        const isPass = siblingIndex == this._store.level;
+        const isPass = siblingIndex == this._store.levelPlaying;
         if(!isPass){
             return;
         }
-        this.node.active = siblingIndex == this._store.level;
-        // this.enabled = siblingIndex == this._store.level;
+        this.node.active = isPass;
 
         this.setDataGenerate();
 
@@ -101,14 +100,14 @@ export class LevelManager extends Component {
         this.generateTowerPlacement();
 
         this._countTime = 0;
-        if (!levels[this._store.level]?.dataLevel) {
+        if (!levels[this._store.levelPlaying]?.dataLevel) {
             console.error('No data!');
             return;
         }
 
         this.enemyLayer.removeAllChildren();
 
-        levels[this._store.level].dataLevel.forEach(({ dataEnemy, way }, indexWave) => {
+        levels[this._store.levelPlaying].dataLevel.forEach(({ dataEnemy, way }, indexWave) => {
             dataEnemy.forEach((data) => {
                 const path = data.type == CharacterType.Plane ? this._planePath : this._wayPaths[way];
                 this._countTime += data.timeDelay;
