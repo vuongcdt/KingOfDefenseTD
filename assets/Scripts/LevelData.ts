@@ -249,31 +249,62 @@ export const levels: LevelData[] = [
                     total: 3,
                     timeDelay: 8.5
                 },
-                {
-                    type: CharacterType.Plane,
-                    total: 3,
-                    timeDelay: 1
-                }]
+                // {
+                //     type: CharacterType.Plane,
+                //     total: 3,
+                //     timeDelay: 1
+                // }
+            ]
             },
             {
-                name: 'wave 7',
+                name: 'wave 6',
                 way: 0,
                 dataEnemy: [{
-                    type: CharacterType.Plane,
+                    type: CharacterType.Tank,
                     total: 3,
                     timeDelay: 1
                 },
                 {
-                    type: CharacterType.Plane,
+                    type: CharacterType.Tank,
                     total: 3,
-                    timeDelay: 3
+                    timeDelay: 4
+                },
+                {
+                    type: CharacterType.Soldier,
+                    total: 3,
+                    timeDelay: 7
+                },
+                {
+                    type: CharacterType.Soldier,
+                    total: 3,
+                    timeDelay: 8.5
                 },
                 {
                     type: CharacterType.Plane,
                     total: 3,
-                    timeDelay: 5
-                }]
+                    timeDelay: 1
+                }
+            ]
             },
+            // {
+            //     name: 'wave 7',
+            //     way: 0,
+            //     dataEnemy: [{
+            //         type: CharacterType.Plane,
+            //         total: 3,
+            //         timeDelay: 1
+            //     },
+            //     {
+            //         type: CharacterType.Plane,
+            //         total: 3,
+            //         timeDelay: 3
+            //     },
+            //     {
+            //         type: CharacterType.Plane,
+            //         total: 3,
+            //         timeDelay: 5
+            //     }]
+            // },
         ]
     },
     {
@@ -1051,7 +1082,7 @@ export const levels: LevelData[] = [
                 name: 'wave 1',
                 way: 0,
                 dataEnemy: [{
-                    type: CharacterType.Soldier,
+                    type: CharacterType.Plane,
                     total: 3,
                     timeDelay: 1
                 }]

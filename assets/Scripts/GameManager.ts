@@ -16,6 +16,8 @@ export class GameManager extends Component {
     private ammoLayer: Node = null;
     @property(Node)
     private towerLayer: Node = null;
+    @property(Node)
+    private homeScreen: Node = null;
 
     private _store: Store;
 
@@ -36,6 +38,8 @@ export class GameManager extends Component {
         this._store.ammoLayer = this.ammoLayer;
         this._store.towerLayer = this.towerLayer;
         this._store.canvas = this.canvas;
+
+        this.homeScreen.active = true;
     }
 
     addCoint(cost: number) {
