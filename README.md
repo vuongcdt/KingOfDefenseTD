@@ -1,6 +1,6 @@
-demo:
-https://kod-build.vercel.app/
+
 # My Awesome Game
+Demo: https://kod-build.vercel.app/
 
 This is a description of my awesome game developed using Cocos Creator and deployed on Vercel.
 ![KOD](https://github.com/user-attachments/assets/484c14e1-5587-46c0-9fe9-3fdc58abc47f)
