@@ -63,6 +63,9 @@ export class LevelManager extends Component {
     }
 
     setDataGenerate() {
+        this.planePathBlock.children.forEach(node => {
+            node.getComponent(Sprite).spriteFrame = null;
+        })
         this._treeNodes = this.background.children;
         this._planePath = this.planePathBlock.children.map(node => node.position);
         this._towerPlacements = this.towerPlacementBlock.children.map(node => node.position);
@@ -74,6 +77,8 @@ export class LevelManager extends Component {
             const points = way.children;
 
             for (let index = 0; index < points.length - 1; index++) {
+                points[index].getComponent(Sprite).spriteFrame = null;
+
                 const p1 = points[index].position;
                 const p2 = points[index + 1].position;
                 const dividePoints = this.findDividePoints(p1, p2, 2);
