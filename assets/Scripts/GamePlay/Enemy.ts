@@ -3,6 +3,8 @@ import { LevelManager } from "./LevelManager";
 import { eventTarget } from "../Common";
 import { ADD_COINT, CHECK_GAME_WIN, SET_WAVES } from "../CONSTANTS";
 import { CharacterType } from "../Enums";
+import { Plane } from "./Plane";
+import { Tank } from "./Tank";
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
@@ -109,9 +111,22 @@ export class Enemy extends Component {
         if (this._currentHealth <= 0) {
             tween(this.node).removeSelf().start();
             
-            // this._levelManage.checkGameWin();
             eventTarget.emit(CHECK_GAME_WIN);
-            eventTarget.emit(ADD_COINT, 100);
+
+            switch (this.characterType) {
+                case CharacterType.Soldier:
+                    eventTarget.emit(ADD_COINT, 30);
+                    break;
+                case CharacterType.Tank:
+                    eventTarget.emit(ADD_COINT, 100);
+                    break;
+                case CharacterType.Plane:
+                    eventTarget.emit(ADD_COINT, 50);
+                    break;
+            
+                default:
+                    break;
+            }
         }
     }
 

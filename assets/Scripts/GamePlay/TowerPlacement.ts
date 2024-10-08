@@ -1,4 +1,4 @@
-import { _decorator, Component, EventTouch, instantiate, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
+import { _decorator, Component, EventTouch, instantiate, Label, Node, Prefab, Sprite, SpriteFrame, tween } from 'cc';
 import { LevelManager } from './LevelManager';
 import Store from '../Store';
 import { Turent } from './Turent';
@@ -60,6 +60,9 @@ export class TowerPlacement extends Component {
         this.actionSell.on(Node.EventType.TOUCH_START, this.onSell, this);
         this.actionUpgrade.on(Node.EventType.TOUCH_START, this.onUpgrade, this);
         this.actionRepair.on(Node.EventType.TOUCH_START, this.onRepair, this);
+
+        this.actionBuyGun.getComponentInChildren(Label).string = this._costGun.toString();
+        this.actionBuyRocket.getComponentInChildren(Label).string = this._costRocket.toString();
     }
 
     update(dt: number): void {
@@ -75,12 +78,14 @@ export class TowerPlacement extends Component {
         this.actionBuyGun.active = this._levelTower == 0;
         this.actionBuyRocket.active = this._levelTower == 0;
         this.actionRepair.active = this._currentHealth < this._health && this._levelTower > 0;
+
+        this.actionRepair.getComponentInChildren(Label).string = this.getCostRepair().toString();
+        this.actionSell.getComponentInChildren(Label).string = this.getCostSell().toString();
+        this.actionUpgrade.getComponentInChildren(Label).string = this.getCostUpgrate().toString();
     }
 
     onUpgrade() {
-        const cost = this._turrentType == CharacterType.GunTower
-            ? this._costGun * this._levelTower
-            : this._costRocket * this._levelTower;
+        const cost = this.getCostUpgrate();
 
         if (this._store.coinTotal < cost) {
             return;
@@ -89,6 +94,11 @@ export class TowerPlacement extends Component {
         this.onSetSprite();
 
         eventTarget.emit(SUB_COINT, cost);
+    }
+
+    getCostUpgrate(): number {
+        const cost = this._turrentType == CharacterType.GunTower ? this._costGun : this._costRocket;
+        return cost * (this._levelTower + 1);
     }
 
     onBuyGun() {
@@ -130,10 +140,7 @@ export class TowerPlacement extends Component {
         tween(this._turrent.node).destroySelf().start();
         this.healthBar.active = false;
 
-        const cost = this._turrentType == CharacterType.GunTower
-            ? this._costGun * 0.5 * this._levelTower
-            : this._costRocket * 0.5 * this._levelTower;
-
+        const cost = this.getCostSell();
         eventTarget.emit(ADD_COINT, cost);
 
         this._levelTower = 0;
@@ -141,9 +148,7 @@ export class TowerPlacement extends Component {
     }
 
     onRepair() {
-        const cost = this._turrentType == CharacterType.GunTower
-            ? this._costGun * 0.5 * this._levelTower
-            : this._costRocket * 0.5 * this._levelTower;
+        const cost = this.getCostRepair();
 
         this._currentHealth = this._health;
         this.healthBar.getComponentInChildren(Sprite).fillRange = 1;
@@ -157,6 +162,21 @@ export class TowerPlacement extends Component {
                 this.healthBar.active = false;
             }
         }, 200);
+    }
+
+    getCostSell(): number {
+        const cost = this._turrentType == CharacterType.GunTower ? this._costGun : this._costRocket;
+        return Math.round(cost * 0.75 * this._levelTower);
+    }
+
+    getCost(): number {
+        const cost = this._turrentType == CharacterType.GunTower ? this._costGun : this._costRocket;
+        return Math.round(cost * 0.5 * this._levelTower);
+    }
+
+    getCostRepair(): number {
+        const cost = this._turrentType == CharacterType.GunTower ? this._costGun : this._costRocket;
+        return Math.round(cost * this._levelTower * (1 - this._currentHealth / this._health));
     }
 
     onSetSprite() {

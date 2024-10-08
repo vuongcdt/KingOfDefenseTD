@@ -39,6 +39,7 @@ export class GameManager extends Component {
         this._store.towerLayer = this.towerLayer;
         this._store.canvas = this.canvas;
 
+        this._store.levelMax = Number(localStorage.getItem('levelMax'));
         this.homeScreen.active = true;
     }
 
@@ -102,6 +103,7 @@ export class GameManager extends Component {
                 eventTarget.emit(SHOW_GAME_WIN_POPUP);
                 if (this._store.levelPlaying == this._store.levelMax) {
                     this._store.levelMax++;
+                    localStorage.setItem('levelMax',this._store.levelMax.toString());
                 }
             }
         });
