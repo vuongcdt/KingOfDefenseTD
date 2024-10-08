@@ -189,7 +189,6 @@ export class TowerPlacement extends Component {
 
     onHideAction() {
         this.action.setParent(null);
-        // this.action.active = false;
     }
 
     setHP(damage: number) {
