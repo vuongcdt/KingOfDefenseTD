@@ -28,6 +28,7 @@ export class HomeScreen extends BaseUIComponent {
     onLevelClicked(value: number) {
         this._store.levelPlaying = value - 1;
         this._store.gameState = GameState.PlayGame;
+        eventTarget.emit(RESET_GAME);
         eventTarget.emit(START_GAME);
         this.hideNode();
     }

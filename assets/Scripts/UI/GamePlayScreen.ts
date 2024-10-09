@@ -20,8 +20,6 @@ export class GamePlayScreen extends BaseComponent {
     @property(Node)
     private speedBtn: Node;
 
-    private _totalWave: number = 0;
-
     protected onLoad(): void {
         eventTarget.on(SET_COINT_TEXT, this.setCoinText, this);
         eventTarget.on(SET_HEART_TEXT, this.setHeartText, this);
@@ -34,8 +32,6 @@ export class GamePlayScreen extends BaseComponent {
     start() {
         super.start();
         
-        this._totalWave = levels[this._store.levelPlaying].dataLevel.length;
-
         this.settingBtn.on(Button.EventType.CLICK, this.showSettingPopup, this);
         this.speedBtn.on(Button.EventType.CLICK, this.onSpeedClick, this);
 
@@ -54,7 +50,8 @@ export class GamePlayScreen extends BaseComponent {
     }
 
     setWavesText() {
-        this.wavesText.string = `Waves ${this._store.waves}/${this._totalWave}`;
+        const totalWaves = levels[this._store.levelPlaying].dataLevel.length;
+        this.wavesText.string = `Waves ${this._store.waves}/${totalWaves}`;
     }
 
     setHeartText() {

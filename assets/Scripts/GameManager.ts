@@ -76,7 +76,7 @@ export class GameManager extends Component {
     }
 
     resetGame() {
-        this._store.coinTotal = 1000;
+        this._store.coinTotal = 500;
         this._store.heart = 3;
         this._store.waves = 1;
 
